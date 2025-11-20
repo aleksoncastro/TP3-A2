@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Alêkson\\Source\\Repos\\TP3-A2\\MediaMatch.csproj": {}
+    "C:\\Users\\Alêkson\\source\\repos\\TP3-A2\\MediaMatch.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Alêkson\\Source\\Repos\\TP3-A2\\MediaMatch.csproj": {
+    "C:\\Users\\Alêkson\\source\\repos\\TP3-A2\\MediaMatch.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Alêkson\\Source\\Repos\\TP3-A2\\MediaMatch.csproj",
+        "projectUniqueName": "C:\\Users\\Alêkson\\source\\repos\\TP3-A2\\MediaMatch.csproj",
         "projectName": "MediaMatch",
-        "projectPath": "C:\\Users\\Alêkson\\Source\\Repos\\TP3-A2\\MediaMatch.csproj",
+        "projectPath": "C:\\Users\\Alêkson\\source\\repos\\TP3-A2\\MediaMatch.csproj",
         "packagesPath": "C:\\Users\\Alêkson\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Alêkson\\Source\\Repos\\TP3-A2\\obj\\",
+        "outputPath": "C:\\Users\\Alêkson\\source\\repos\\TP3-A2\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -51,6 +51,22 @@
           "targetAlias": "net8.0",
           "dependencies": {
             "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
               "target": "Package",
               "version": "[8.0.0, )"
             },
