@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "6SK33oZBy8s=",
+  "dgSpecHash": "aW5v1nSVilQ=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Alêkson\\source\\repos\\TP3-A2\\MediaMatch.csproj",
+  "projectFilePath": "C:\\Users\\Alêkson\\Source\\Repos\\TP3-A2\\MediaMatch.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Alêkson\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\Alêkson\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

@@ -138,3 +138,5 @@ C:\Users\Alêkson\Source\Repos\TP3-A2\obj\Debug\net8.0\refint\MediaMatch.dll
 C:\Users\Alêkson\Source\Repos\TP3-A2\obj\Debug\net8.0\MediaMatch.pdb
 C:\Users\Alêkson\Source\Repos\TP3-A2\obj\Debug\net8.0\MediaMatch.genruntimeconfig.cache
 C:\Users\Alêkson\Source\Repos\TP3-A2\obj\Debug\net8.0\ref\MediaMatch.dll
+C:\Users\Alêkson\Source\Repos\TP3-A2\bin\Debug\net8.0\BCrypt.Net-Next.dll
+C:\Users\Alêkson\Source\Repos\TP3-A2\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

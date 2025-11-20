@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MediaMatch")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a65ca2badfd5b11e2eaec65469221f035ea6a7fa")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+95a4d53e144ea9796b4f9a0aa10054a489d0972f")]
 [assembly: System.Reflection.AssemblyProductAttribute("MediaMatch")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MediaMatch")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
