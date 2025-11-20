@@ -206,6 +206,58 @@ namespace MediaMatch.Migrations
                     b.ToTable("Tracks");
                 });
 
+            modelBuilder.Entity("MediaMatch.Models.TMDB.Club", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("OwnerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("Clubs");
+                });
+
+            modelBuilder.Entity("MediaMatch.Models.TMDB.ClubMember", b =>
+                {
+                    b.Property<int>("ClubId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsModerator")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("JoinedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ClubId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ClubMembers");
+                });
+
             modelBuilder.Entity("MediaMatch.Models.TMDB.Credit", b =>
                 {
                     b.Property<int>("Id")
@@ -342,6 +394,75 @@ namespace MediaMatch.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MediaItems");
+                });
+
+            modelBuilder.Entity("MediaMatch.Models.TMDB.MediaList", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("ClubId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClubId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("MediaLists");
+                });
+
+            modelBuilder.Entity("MediaMatch.Models.TMDB.MediaListItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AddedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MediaItemId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MediaListId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Note")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MediaItemId");
+
+                    b.HasIndex("MediaListId");
+
+                    b.ToTable("MediaListItems");
                 });
 
             modelBuilder.Entity("MediaMatch.Models.TMDB.Person", b =>
@@ -509,6 +630,36 @@ namespace MediaMatch.Migrations
                     b.Navigation("Album");
                 });
 
+            modelBuilder.Entity("MediaMatch.Models.TMDB.Club", b =>
+                {
+                    b.HasOne("MediaMatch.Models.User", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("MediaMatch.Models.TMDB.ClubMember", b =>
+                {
+                    b.HasOne("MediaMatch.Models.TMDB.Club", "Club")
+                        .WithMany("Members")
+                        .HasForeignKey("ClubId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MediaMatch.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Club");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("MediaMatch.Models.TMDB.Credit", b =>
                 {
                     b.HasOne("MediaMatch.Models.TMDB.MediaItem", "MediaItem")
@@ -556,6 +707,42 @@ namespace MediaMatch.Migrations
                     b.Navigation("Genre");
 
                     b.Navigation("MediaItem");
+                });
+
+            modelBuilder.Entity("MediaMatch.Models.TMDB.MediaList", b =>
+                {
+                    b.HasOne("MediaMatch.Models.TMDB.Club", "Club")
+                        .WithMany("MediaLists")
+                        .HasForeignKey("ClubId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MediaMatch.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Club");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MediaMatch.Models.TMDB.MediaListItem", b =>
+                {
+                    b.HasOne("MediaMatch.Models.TMDB.MediaItem", "MediaItem")
+                        .WithMany()
+                        .HasForeignKey("MediaItemId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("MediaMatch.Models.TMDB.MediaList", "MediaList")
+                        .WithMany("Items")
+                        .HasForeignKey("MediaListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MediaItem");
+
+                    b.Navigation("MediaList");
                 });
 
             modelBuilder.Entity("MediaMatch.Models.TMDB.Season", b =>
@@ -615,6 +802,13 @@ namespace MediaMatch.Migrations
                     b.Navigation("MediaSoundtracks");
                 });
 
+            modelBuilder.Entity("MediaMatch.Models.TMDB.Club", b =>
+                {
+                    b.Navigation("MediaLists");
+
+                    b.Navigation("Members");
+                });
+
             modelBuilder.Entity("MediaMatch.Models.TMDB.Genre", b =>
                 {
                     b.Navigation("MediaGenres");
@@ -627,6 +821,11 @@ namespace MediaMatch.Migrations
                     b.Navigation("MediaGenres");
 
                     b.Navigation("Seasons");
+                });
+
+            modelBuilder.Entity("MediaMatch.Models.TMDB.MediaList", b =>
+                {
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("MediaMatch.Models.TMDB.Person", b =>

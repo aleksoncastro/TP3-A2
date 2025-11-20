@@ -29,6 +29,10 @@ namespace MediaMatch.Data
         public DbSet<Credit> Credits { get; set; }
         public DbSet<Season> Seasons { get; set; }
         public DbSet<Episode> Episodes { get; set; }
+        public DbSet<Club> Clubs { get; set; }
+        public DbSet<ClubMember> ClubMembers { get; set; }
+        public DbSet<MediaList> MediaLists { get; set; }
+        public DbSet<MediaListItem> MediaListItems { get; set; }
 
         // --- TADB (Música) ---
         public DbSet<Artist> Artists { get; set; }
@@ -151,6 +155,64 @@ namespace MediaMatch.Data
                 .HasOne(ms => ms.User)
                 .WithMany()
                 .HasForeignKey(ms => ms.AddedBy)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // ============================================================
+            // CONFIGURAÇÃO DE CLUBES
+            // ============================================================
+
+            // ClubMember (N:N entre User e Club)
+            modelBuilder.Entity<ClubMember>()
+                .HasKey(cm => new { cm.ClubId, cm.UserId });
+
+            modelBuilder.Entity<ClubMember>()
+                .HasOne(cm => cm.Club)
+                .WithMany(c => c.Members)
+                .HasForeignKey(cm => cm.ClubId)
+                .OnDelete(DeleteBehavior.Cascade); // Se apagar o clube, remove as associações de membros
+
+            modelBuilder.Entity<ClubMember>()
+                .HasOne(cm => cm.User)
+                .WithMany() // Adicione ICollection<ClubMember> em User se quiser navegar User -> Clubes
+                .HasForeignKey(cm => cm.UserId)
+                .OnDelete(DeleteBehavior.Restrict); // Evita apagar User e levar o clube junto incorretamente
+
+            // Dono do Clube
+            modelBuilder.Entity<Club>()
+                .HasOne(c => c.Owner)
+                .WithMany()
+                .HasForeignKey(c => c.OwnerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // ============================================================
+            // CONFIGURAÇÃO DE LISTAS (MediaList)
+            // ============================================================
+
+            // Lista pertencente a Usuário
+            modelBuilder.Entity<MediaList>()
+                .HasOne(ml => ml.User)
+                .WithMany() // Adicione ICollection<MediaList> em User se quiser
+                .HasForeignKey(ml => ml.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Lista pertencente a Clube
+            modelBuilder.Entity<MediaList>()
+                .HasOne(ml => ml.Club)
+                .WithMany(c => c.MediaLists)
+                .HasForeignKey(ml => ml.ClubId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Itens da Lista
+            modelBuilder.Entity<MediaListItem>()
+                .HasOne(i => i.MediaList)
+                .WithMany(l => l.Items)
+                .HasForeignKey(i => i.MediaListId)
+                .OnDelete(DeleteBehavior.Cascade); // Apagar lista apaga os itens
+
+            modelBuilder.Entity<MediaListItem>()
+                .HasOne(i => i.MediaItem)
+                .WithMany()
+                .HasForeignKey(i => i.MediaItemId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

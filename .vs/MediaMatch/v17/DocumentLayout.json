@@ -3,76 +3,108 @@
   "WorkspaceRootPath": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Migrations\\20251120191804_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Migrations\\20251120191804_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\models\\role.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:models\\role.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\models\\tadb\\musicgenre.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:models\\tadb\\musicgenre.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\controllers\\tadb\\trackcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:controllers\\tadb\\trackcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\controllers\\tadb\\albumcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:controllers\\tadb\\albumcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\controllers\\tadb\\artistcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:controllers\\tadb\\artistcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\services\\audiodbimportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:services\\audiodbimportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\services\\audiodbapiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:services\\audiodbapiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\dto\\tadb\\audiodbgenredto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:dto\\tadb\\audiodbgenredto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\dto\\tadb\\audiodbtrackdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:dto\\tadb\\audiodbtrackdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\dto\\tadb\\audiodbartistdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:dto\\tadb\\audiodbartistdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\dto\\tadb\\audiodbalbumdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:dto\\tadb\\audiodbalbumdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\services\\tmdbservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:services\\tmdbservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\mediamatch.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:mediamatch.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\data\\mediamatchcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:data\\mediamatchcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\models\\tadb\\artist.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:models\\tadb\\artist.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\controllers\\medialistcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:controllers\\medialistcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\models\\tadb\\artistgenre.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:models\\tadb\\artistgenre.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\controllers\\clubcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:controllers\\clubcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\models\\tadb\\mediasoundtrack.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:models\\tadb\\mediasoundtrack.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\services\\medialistitemservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:services\\medialistitemservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\models\\tadb\\track.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:models\\tadb\\track.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\services\\medialistservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:services\\medialistservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\models\\tadb\\album.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:models\\tadb\\album.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\services\\clubservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:services\\clubservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\models\\tmdb\\episode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:models\\tmdb\\episode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\models\\tmdb\\medialistitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:models\\tmdb\\medialistitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\models\\tmdb\\season.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:models\\tmdb\\season.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\models\\tmdb\\medialist.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:models\\tmdb\\medialist.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\models\\tmdb\\mediaitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:models\\tmdb\\mediaitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\models\\tmdb\\clubmember.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:models\\tmdb\\clubmember.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\models\\tmdb\\mediagenre.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:models\\tmdb\\mediagenre.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\models\\tmdb\\club.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:models\\tmdb\\club.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\models\\tmdb\\credit.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:models\\tmdb\\credit.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\controllers\\tmdbcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:controllers\\tmdbcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\models\\tmdb\\person.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:models\\tmdb\\person.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\models\\tmdb\\mediatype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:models\\tmdb\\mediatype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\models\\tmdb\\genre.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:models\\tmdb\\genre.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|c:\\users\\al\u00EAkson\\source\\repos\\tp3-a2\\migrations\\20251120203010_clubeselistas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0C3C7B64-76C9-4795-8140-B21294EA437F}|MediaMatch.csproj|solutionrelative:migrations\\20251120203010_clubeselistas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -82,58 +114,121 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "MusicGenre.cs",
-              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TADB\\MusicGenre.cs",
-              "RelativeDocumentMoniker": "Models\\TADB\\MusicGenre.cs",
-              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TADB\\MusicGenre.cs",
-              "RelativeToolTip": "Models\\TADB\\MusicGenre.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-20T18:59:18.457Z",
-              "IsPinned": true,
+              "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-11-20T23:03:58.223Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "20251120191804_InitialCreate.cs",
-              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Migrations\\20251120191804_InitialCreate.cs",
-              "RelativeDocumentMoniker": "Migrations\\20251120191804_InitialCreate.cs",
-              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Migrations\\20251120191804_InitialCreate.cs",
-              "RelativeToolTip": "Migrations\\20251120191804_InitialCreate.cs",
-              "ViewState": "AgIAAEAAAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "Role.cs",
+              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\Role.cs",
+              "RelativeDocumentMoniker": "Models\\Role.cs",
+              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\Role.cs",
+              "RelativeToolTip": "Models\\Role.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-20T19:18:04.675Z",
+              "WhenOpened": "2025-11-20T23:01:41.978Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "TrackController.cs",
+              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Controllers\\TADB\\TrackController.cs",
+              "RelativeDocumentMoniker": "Controllers\\TADB\\TrackController.cs",
+              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Controllers\\TADB\\TrackController.cs",
+              "RelativeToolTip": "Controllers\\TADB\\TrackController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T22:43:25.657Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "AlbumController.cs",
+              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Controllers\\TADB\\AlbumController.cs",
+              "RelativeDocumentMoniker": "Controllers\\TADB\\AlbumController.cs",
+              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Controllers\\TADB\\AlbumController.cs",
+              "RelativeToolTip": "Controllers\\TADB\\AlbumController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T22:42:49.349Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ArtistController.cs",
+              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Controllers\\TADB\\ArtistController.cs",
+              "RelativeDocumentMoniker": "Controllers\\TADB\\ArtistController.cs",
+              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Controllers\\TADB\\ArtistController.cs",
+              "RelativeToolTip": "Controllers\\TADB\\ArtistController.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAB4AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T22:40:47.846Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 6,
-              "Title": "ArtistGenre.cs",
-              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TADB\\ArtistGenre.cs",
-              "RelativeDocumentMoniker": "Models\\TADB\\ArtistGenre.cs",
-              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TADB\\ArtistGenre.cs",
-              "RelativeToolTip": "Models\\TADB\\ArtistGenre.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAATAAAAAAAAAA==",
+              "Title": "AudioDbImportService.cs",
+              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Services\\AudioDbImportService.cs",
+              "RelativeDocumentMoniker": "Services\\AudioDbImportService.cs",
+              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Services\\AudioDbImportService.cs",
+              "RelativeToolTip": "Services\\AudioDbImportService.cs",
+              "ViewState": "AgIAAHQAAAAAAAAAAAAAADwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-20T18:58:46.49Z"
+              "WhenOpened": "2025-11-20T22:09:08.974Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "MediaMatchContext.cs",
-              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Data\\MediaMatchContext.cs",
-              "RelativeDocumentMoniker": "Data\\MediaMatchContext.cs",
-              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Data\\MediaMatchContext.cs",
-              "RelativeToolTip": "Data\\MediaMatchContext.cs",
-              "ViewState": "AgIAAH4AAAAAAAAAAAAAAJMAAAAzAAAAAAAAAA==",
+              "DocumentIndex": 8,
+              "Title": "AudioDbGenreDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\DTO\\TADB\\AudioDbGenreDTO.cs",
+              "RelativeDocumentMoniker": "DTO\\TADB\\AudioDbGenreDTO.cs",
+              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\DTO\\TADB\\AudioDbGenreDTO.cs",
+              "RelativeToolTip": "DTO\\TADB\\AudioDbGenreDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-20T18:24:01.796Z"
+              "WhenOpened": "2025-11-20T21:32:53.337Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "AudioDbArtistDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\DTO\\TADB\\AudioDbArtistDTO.cs",
+              "RelativeDocumentMoniker": "DTO\\TADB\\AudioDbArtistDTO.cs",
+              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\DTO\\TADB\\AudioDbArtistDTO.cs",
+              "RelativeToolTip": "DTO\\TADB\\AudioDbArtistDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T21:31:24.575Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "AudioDbTrackDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\DTO\\TADB\\AudioDbTrackDTO.cs",
+              "RelativeDocumentMoniker": "DTO\\TADB\\AudioDbTrackDTO.cs",
+              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\DTO\\TADB\\AudioDbTrackDTO.cs",
+              "RelativeToolTip": "DTO\\TADB\\AudioDbTrackDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T21:29:20.637Z"
             },
             {
               "$type": "Document",
@@ -143,167 +238,202 @@
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAAKAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAADAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-20T17:45:50.1Z",
+              "WhenOpened": "2025-11-20T19:58:07.446Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\appsettings.json",
-              "RelativeDocumentMoniker": "appsettings.json",
-              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\appsettings.json",
-              "RelativeToolTip": "appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-11-20T17:38:19.778Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "MediaSoundtrack.cs",
-              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TADB\\MediaSoundtrack.cs",
-              "RelativeDocumentMoniker": "Models\\TADB\\MediaSoundtrack.cs",
-              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TADB\\MediaSoundtrack.cs",
-              "RelativeToolTip": "Models\\TADB\\MediaSoundtrack.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-20T17:38:02.701Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "Track.cs",
-              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TADB\\Track.cs",
-              "RelativeDocumentMoniker": "Models\\TADB\\Track.cs",
-              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TADB\\Track.cs",
-              "RelativeToolTip": "Models\\TADB\\Track.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABoAAABeAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-20T17:37:23.179Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "Album.cs",
-              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TADB\\Album.cs",
-              "RelativeDocumentMoniker": "Models\\TADB\\Album.cs",
-              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TADB\\Album.cs",
-              "RelativeToolTip": "Models\\TADB\\Album.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAAeAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-20T17:36:53.099Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Artist.cs",
-              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TADB\\Artist.cs",
-              "RelativeDocumentMoniker": "Models\\TADB\\Artist.cs",
-              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TADB\\Artist.cs",
-              "RelativeToolTip": "Models\\TADB\\Artist.cs",
-              "ViewState": "AgIAABEAAAAAAAAAAAAwwB8AAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-20T17:36:35.533Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "Episode.cs",
-              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TMDB\\Episode.cs",
-              "RelativeDocumentMoniker": "Models\\TMDB\\Episode.cs",
-              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TMDB\\Episode.cs",
-              "RelativeToolTip": "Models\\TMDB\\Episode.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-20T16:49:25.547Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 11,
-              "Title": "Season.cs",
-              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TMDB\\Season.cs",
-              "RelativeDocumentMoniker": "Models\\TMDB\\Season.cs",
-              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TMDB\\Season.cs",
-              "RelativeToolTip": "Models\\TMDB\\Season.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAFAAAAAAAAAA==",
+              "Title": "AudioDbAlbumDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\DTO\\TADB\\AudioDbAlbumDTO.cs",
+              "RelativeDocumentMoniker": "DTO\\TADB\\AudioDbAlbumDTO.cs",
+              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\DTO\\TADB\\AudioDbAlbumDTO.cs",
+              "RelativeToolTip": "DTO\\TADB\\AudioDbAlbumDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-20T16:49:05.892Z"
+              "WhenOpened": "2025-11-20T21:27:50.563Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "Credit.cs",
-              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TMDB\\Credit.cs",
-              "RelativeDocumentMoniker": "Models\\TMDB\\Credit.cs",
-              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TMDB\\Credit.cs",
-              "RelativeToolTip": "Models\\TMDB\\Credit.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAFAAAAAAAAAA==",
+              "DocumentIndex": 7,
+              "Title": "AudioDbApiService.cs",
+              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Services\\AudioDbApiService.cs",
+              "RelativeDocumentMoniker": "Services\\AudioDbApiService.cs",
+              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Services\\AudioDbApiService.cs",
+              "RelativeToolTip": "Services\\AudioDbApiService.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAswC8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-20T16:48:31.555Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "Person.cs",
-              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TMDB\\Person.cs",
-              "RelativeDocumentMoniker": "Models\\TMDB\\Person.cs",
-              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TMDB\\Person.cs",
-              "RelativeToolTip": "Models\\TMDB\\Person.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAeAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-20T16:48:05.185Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "MediaType.cs",
-              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TMDB\\MediaType.cs",
-              "RelativeDocumentMoniker": "Models\\TMDB\\MediaType.cs",
-              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TMDB\\MediaType.cs",
-              "RelativeToolTip": "Models\\TMDB\\MediaType.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-20T16:47:33.52Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "Genre.cs",
-              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TMDB\\Genre.cs",
-              "RelativeDocumentMoniker": "Models\\TMDB\\Genre.cs",
-              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TMDB\\Genre.cs",
-              "RelativeToolTip": "Models\\TMDB\\Genre.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAABaAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-20T16:46:39.417Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "MediaGenre.cs",
-              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TMDB\\MediaGenre.cs",
-              "RelativeDocumentMoniker": "Models\\TMDB\\MediaGenre.cs",
-              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TMDB\\MediaGenre.cs",
-              "RelativeToolTip": "Models\\TMDB\\MediaGenre.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-20T16:45:33.849Z"
+              "WhenOpened": "2025-11-20T21:11:49.003Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 12,
-              "Title": "MediaItem.cs",
-              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TMDB\\MediaItem.cs",
-              "RelativeDocumentMoniker": "Models\\TMDB\\MediaItem.cs",
-              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TMDB\\MediaItem.cs",
-              "RelativeToolTip": "Models\\TMDB\\MediaItem.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAA9wB8AAAAhAAAAAAAAAA==",
+              "Title": "TmdbService.cs",
+              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Services\\TmdbService.cs",
+              "RelativeDocumentMoniker": "Services\\TmdbService.cs",
+              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Services\\TmdbService.cs",
+              "RelativeToolTip": "Services\\TmdbService.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAQwAwAAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-20T16:45:09Z"
+              "WhenOpened": "2025-11-20T19:56:36.967Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "MediaListController.cs",
+              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Controllers\\MediaListController.cs",
+              "RelativeDocumentMoniker": "Controllers\\MediaListController.cs",
+              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Controllers\\MediaListController.cs",
+              "RelativeToolTip": "Controllers\\MediaListController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T21:01:31.534Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "ClubController.cs",
+              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Controllers\\ClubController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ClubController.cs",
+              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Controllers\\ClubController.cs",
+              "RelativeToolTip": "Controllers\\ClubController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T21:00:24.191Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "MediaListItemService.cs",
+              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Services\\MediaListItemService.cs",
+              "RelativeDocumentMoniker": "Services\\MediaListItemService.cs",
+              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Services\\MediaListItemService.cs",
+              "RelativeToolTip": "Services\\MediaListItemService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T20:59:09.774Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "MediaListService.cs",
+              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Services\\MediaListService.cs",
+              "RelativeDocumentMoniker": "Services\\MediaListService.cs",
+              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Services\\MediaListService.cs",
+              "RelativeToolTip": "Services\\MediaListService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T20:53:53.997Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "ClubService.cs",
+              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Services\\ClubService.cs",
+              "RelativeDocumentMoniker": "Services\\ClubService.cs",
+              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Services\\ClubService.cs",
+              "RelativeToolTip": "Services\\ClubService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T20:51:51.883Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "MediaMatch.csproj",
+              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\Source\\Repos\\TP3-A2\\MediaMatch.csproj",
+              "RelativeDocumentMoniker": "MediaMatch.csproj",
+              "ToolTip": "C:\\Users\\Al\u00EAkson\\Source\\Repos\\TP3-A2\\MediaMatch.csproj",
+              "RelativeToolTip": "MediaMatch.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-11-20T20:00:32.024Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "MediaListItem.cs",
+              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TMDB\\MediaListItem.cs",
+              "RelativeDocumentMoniker": "Models\\TMDB\\MediaListItem.cs",
+              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TMDB\\MediaListItem.cs",
+              "RelativeToolTip": "Models\\TMDB\\MediaListItem.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T20:28:24.083Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "MediaList.cs",
+              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TMDB\\MediaList.cs",
+              "RelativeDocumentMoniker": "Models\\TMDB\\MediaList.cs",
+              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TMDB\\MediaList.cs",
+              "RelativeToolTip": "Models\\TMDB\\MediaList.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAowCMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T20:28:05.543Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "MediaMatchContext.cs",
+              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Data\\MediaMatchContext.cs",
+              "RelativeDocumentMoniker": "Data\\MediaMatchContext.cs",
+              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Data\\MediaMatchContext.cs",
+              "RelativeToolTip": "Data\\MediaMatchContext.cs",
+              "ViewState": "AgIAALgAAAAAAAAAAADwv9oAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T20:28:55.281Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "ClubMember.cs",
+              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TMDB\\ClubMember.cs",
+              "RelativeDocumentMoniker": "Models\\TMDB\\ClubMember.cs",
+              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TMDB\\ClubMember.cs",
+              "RelativeToolTip": "Models\\TMDB\\ClubMember.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T20:27:03.462Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "Club.cs",
+              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TMDB\\Club.cs",
+              "RelativeDocumentMoniker": "Models\\TMDB\\Club.cs",
+              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Models\\TMDB\\Club.cs",
+              "RelativeToolTip": "Models\\TMDB\\Club.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAwwB8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T20:26:03.472Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "20251120203010_ClubesEListas.cs",
+              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Migrations\\20251120203010_ClubesEListas.cs",
+              "RelativeDocumentMoniker": "Migrations\\20251120203010_ClubesEListas.cs",
+              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Migrations\\20251120203010_ClubesEListas.cs",
+              "RelativeToolTip": "Migrations\\20251120203010_ClubesEListas.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T20:30:10.621Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "TmdbController.cs",
+              "DocumentMoniker": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Controllers\\TmdbController.cs",
+              "RelativeDocumentMoniker": "Controllers\\TmdbController.cs",
+              "ToolTip": "C:\\Users\\Al\u00EAkson\\source\\repos\\TP3-A2\\Controllers\\TmdbController.cs",
+              "RelativeToolTip": "Controllers\\TmdbController.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAACAAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T19:58:50.554Z"
             }
           ]
         }
