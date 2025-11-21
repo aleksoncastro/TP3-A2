@@ -35,6 +35,12 @@ namespace MediaMatch.Services
             return JsonSerializer.Deserialize<AudioDbAlbumResponse>(json, _jsonOptions);
         }
 
+        public async Task<AudioDbAlbumResponse?> GetAlbumByIdAsync(int albumId)
+        {
+            var json = await _http.GetStringAsync($"album.php?m={albumId}");
+            return JsonSerializer.Deserialize<AudioDbAlbumResponse>(json, _jsonOptions);
+        }
+
         // ======================================================
         // BUSCAR FAIXAS DO ÁLBUM
         // ======================================================
@@ -42,6 +48,34 @@ namespace MediaMatch.Services
         {
             var json = await _http.GetStringAsync($"track.php?m={albumId}");
             return JsonSerializer.Deserialize<AudioDbTrackResponse>(json, _jsonOptions);
+        }
+
+        public async Task<AudioDbTrackResponse?> SearchTrackAsync(string artist, string track)
+        {
+            var json = await _http.GetStringAsync($"searchtrack.php?s={Uri.EscapeDataString(artist)}&t={Uri.EscapeDataString(track)}");
+            if (string.IsNullOrWhiteSpace(json)) return null;
+            try
+            {
+                return JsonSerializer.Deserialize<AudioDbTrackResponse>(json, _jsonOptions);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<AudioDbTrackResponse?> SearchTrackByNameAsync(string track)
+        {
+            var json = await _http.GetStringAsync($"searchtrack.php?t={Uri.EscapeDataString(track)}");
+            if (string.IsNullOrWhiteSpace(json)) return null;
+            try
+            {
+                return JsonSerializer.Deserialize<AudioDbTrackResponse>(json, _jsonOptions);
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

@@ -2,6 +2,7 @@ using MediaMatch.Data; // Importante: Namespace onde est� o seu DbContext
 using MediaMatch.Services;
 using Microsoft.EntityFrameworkCore;
 
+LoadEnv(Path.Combine(Directory.GetCurrentDirectory(), ".env"));
 var builder = WebApplication.CreateBuilder(args);
 
 // 1. Recupera a string de conex�o do arquivo appsettings.json
@@ -19,9 +20,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddHttpClient<TmdbService>();
+builder.Services.AddHttpClient<SpotifyService>();
 builder.Services.AddScoped<ClubService>();
 builder.Services.AddScoped<MediaListService>();
 builder.Services.AddScoped<MediaListItemService>();
+builder.Services.AddScoped<SoundtrackAggregator>();
 
 
 builder.Services.AddHttpClient<AudioDbApiService>(c =>
@@ -45,3 +48,24 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+// temporario, uso de ENV para configurar as chaves da API do spotiy 
+// - lembrar de colocar aquelas das outras api aqui tb
+static void LoadEnv(string path)
+{
+    if (!File.Exists(path)) return;
+    foreach (var line in File.ReadAllLines(path))
+    {
+        var s = line.Trim();
+        if (string.IsNullOrEmpty(s)) continue;
+        if (s.StartsWith("#")) continue;
+        var idx = s.IndexOf('=');
+        if (idx <= 0) continue;
+        var key = s.Substring(0, idx).Trim();
+        var value = s.Substring(idx + 1).Trim();
+        if ((value.StartsWith("\"") && value.EndsWith("\"")) || (value.StartsWith("'") && value.EndsWith("'")))
+        {
+            value = value.Substring(1, value.Length - 2);
+        }
+        Environment.SetEnvironmentVariable(key, value);
+    }
+}
