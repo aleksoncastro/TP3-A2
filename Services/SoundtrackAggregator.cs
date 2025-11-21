@@ -8,6 +8,8 @@ namespace MediaMatch.Services
         private readonly TmdbService _tmdb;
         private readonly SpotifyService _spotify;
         private readonly AudioDbApiService _audioDb;
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, SpotifyService.SpotifyAlbum?> AlbumCache = new();
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, MediaMatch.DTO.TADB.AudioDbTrackResponse?> TrackEnrichCache = new();
 
         public SoundtrackAggregator(TmdbService tmdb, SpotifyService spotify, AudioDbApiService audioDb)
         {
@@ -18,25 +20,36 @@ namespace MediaMatch.Services
 
         public async Task<SoundtrackDto?> GetMovieSoundtrackAsync(int movieId)
         {
-            var detailsJson = await _tmdb.GetMovieDetailsAsync(movieId);
-            var creditsJson = await _tmdb.GetMovieCreditsAsync(movieId);
+            var detailsTask = _tmdb.GetMovieDetailsAsync(movieId);
+            var creditsTask = _tmdb.GetMovieCreditsAsync(movieId);
+            await Task.WhenAll(detailsTask, creditsTask);
 
-            var title = GetTitle(detailsJson);
-            var year = GetYear(detailsJson);
-            var composer = GetComposer(creditsJson);
+            var title = GetTitle(detailsTask.Result);
+            var year = GetYear(detailsTask.Result);
+            var composer = GetComposer(creditsTask.Result);
 
-            var album = await _spotify.SearchAlbumAsync(title, year, composer);
-            if (album == null)
+            var cacheKey = $"movie|{title}|{year}|{composer}";
+            if (!AlbumCache.TryGetValue(cacheKey, out var album) || album == null)
             {
-                album = await _spotify.SearchAlbumAsync(title, year, null);
-            }
-            if (album == null)
-            {
-                album = await _spotify.SearchAlbumBasicAsync(title, year);
-            }
-            if (album == null)
-            {
-                album = await _spotify.SearchAlbumLooseAsync($"{title} soundtrack");
+                var albumTasks = new List<Task<SpotifyService.SpotifyAlbum?>>
+                {
+                    _spotify.SearchAlbumAsync(title, year, composer),
+                    _spotify.SearchAlbumAsync(title, year, null),
+                    _spotify.SearchAlbumBasicAsync(title, year),
+                    _spotify.SearchAlbumLooseAsync($"{title} soundtrack")
+                };
+                while (albumTasks.Count > 0)
+                {
+                    var done = await Task.WhenAny(albumTasks);
+                    var candidate = await done;
+                    if (candidate != null)
+                    {
+                        album = candidate;
+                        break;
+                    }
+                    albumTasks.Remove(done);
+                }
+                AlbumCache[cacheKey] = album;
             }
             if (album == null) return null;
 
@@ -58,73 +71,107 @@ namespace MediaMatch.Services
                 confidence = ComputeConfidence(album.name, title)
             };
 
-            foreach (var t in tracks)
+            var limiter = new System.Threading.SemaphoreSlim(3);
+            var tasks = new List<Task<SoundtrackTrackDto>>();
+            var maxEnrich = Math.Min(tracks.Count, 6);
+            for (int i = 0; i < tracks.Count; i++)
             {
-                var artists = t.artists?.Select(a => a.name).ToList() ?? new List<string>();
-                var enriched = await _audioDb.SearchTrackAsync(artists.FirstOrDefault() ?? string.Empty, t.name);
-                var dto = enriched?.track?.FirstOrDefault();
-                if (dto == null)
+                var t = tracks[i];
+                tasks.Add(Task.Run(async () =>
                 {
-                    var byName = await _audioDb.SearchTrackByNameAsync(t.name);
-                    dto = byName?.track?.FirstOrDefault();
-                }
-
-                var thumb = dto?.strTrackThumb ?? string.Empty;
-                var video = dto?.strMusicVid ?? string.Empty;
-                var mood = dto?.strMood ?? string.Empty;
-                var description = dto?.strDescriptionEN ?? string.Empty;
-                var genre = dto?.strGenre ?? string.Empty;
-
-                if (string.IsNullOrEmpty(genre) && !string.IsNullOrEmpty(dto?.idAlbum))
-                {
-                    if (int.TryParse(dto.idAlbum, out var aid))
+                    var artists = t.artists?.Select(a => a.name).ToList() ?? new List<string>();
+                    string thumb = string.Empty, video = string.Empty, mood = string.Empty, description = string.Empty, genre = string.Empty;
+                    if (i < maxEnrich)
                     {
-                        var albumRes = await _audioDb.GetAlbumByIdAsync(aid);
-                        var albumDto = albumRes?.album?.FirstOrDefault();
-                        genre = albumDto?.strGenre ?? string.Empty;
+                        await limiter.WaitAsync();
+                        try
+                        {
+                            var key = (artists.FirstOrDefault() ?? "") + "|" + t.name;
+                            MediaMatch.DTO.TADB.AudioDbTrackResponse? enriched;
+                            if (!TrackEnrichCache.TryGetValue(key, out enriched))
+                            {
+                                enriched = await _audioDb.SearchTrackAsync(artists.FirstOrDefault() ?? string.Empty, t.name);
+                                if (enriched == null || enriched.track == null || enriched.track.Count == 0)
+                                {
+                                    enriched = await _audioDb.SearchTrackByNameAsync(t.name);
+                                }
+                                TrackEnrichCache[key] = enriched;
+                            }
+                            var dto = enriched?.track?.FirstOrDefault();
+                            thumb = dto?.strTrackThumb ?? string.Empty;
+                            video = dto?.strMusicVid ?? string.Empty;
+                            mood = dto?.strMood ?? string.Empty;
+                            description = dto?.strDescriptionEN ?? string.Empty;
+                            genre = dto?.strGenre ?? string.Empty;
+                            if (string.IsNullOrEmpty(genre) && !string.IsNullOrEmpty(dto?.idAlbum))
+                            {
+                                if (int.TryParse(dto.idAlbum, out var aid))
+                                {
+                                    var albumRes = await _audioDb.GetAlbumByIdAsync(aid);
+                                    var albumDto = albumRes?.album?.FirstOrDefault();
+                                    genre = albumDto?.strGenre ?? string.Empty;
+                                }
+                            }
+                        }
+                        finally
+                        {
+                            limiter.Release();
+                        }
                     }
-                }
-
-                result.tracks.Add(new SoundtrackTrackDto
-                {
-                    id = t.id,
-                    title = t.name,
-                    artists = artists,
-                    duration_ms = t.duration_ms,
-                    url = t.external_urls?.spotify ?? string.Empty,
-                    preview_url = t.preview_url,
-                    genre = genre,
-                    mood = mood,
-                    description = description,
-                    thumb_url = thumb,
-                    video_url = video
-                });
+                    return new SoundtrackTrackDto
+                    {
+                        id = t.id,
+                        title = t.name,
+                        artists = artists,
+                        duration_ms = t.duration_ms,
+                        url = t.external_urls?.spotify ?? string.Empty,
+                        preview_url = t.preview_url,
+                        genre = genre,
+                        mood = mood,
+                        description = description,
+                        thumb_url = thumb,
+                        video_url = video
+                    };
+                }));
             }
+            var built = await Task.WhenAll(tasks);
+            result.tracks.AddRange(built);
 
             return result;
         }
 
         public async Task<SoundtrackDto?> GetSeriesSoundtrackAsync(int seriesId)
         {
-            var detailsJson = await _tmdb.GetSeriesDetailsAsync(seriesId);
-            var creditsJson = await _tmdb.GetSeriesCreditsAsync(seriesId);
+            var detailsTask = _tmdb.GetSeriesDetailsAsync(seriesId);
+            var creditsTask = _tmdb.GetSeriesCreditsAsync(seriesId);
+            await Task.WhenAll(detailsTask, creditsTask);
 
-            var title = GetTitle(detailsJson);
-            var year = GetYear(detailsJson);
-            var composer = GetComposer(creditsJson);
+            var title = GetTitle(detailsTask.Result);
+            var year = GetYear(detailsTask.Result);
+            var composer = GetComposer(creditsTask.Result);
 
-            var album = await _spotify.SearchAlbumAsync(title, year, composer);
-            if (album == null)
+            var cacheKey = $"tv|{title}|{year}|{composer}";
+            if (!AlbumCache.TryGetValue(cacheKey, out var album) || album == null)
             {
-                album = await _spotify.SearchAlbumAsync(title, year, null);
-            }
-            if (album == null)
-            {
-                album = await _spotify.SearchAlbumBasicAsync(title, year);
-            }
-            if (album == null)
-            {
-                album = await _spotify.SearchAlbumLooseAsync($"{title} soundtrack");
+                var albumTasks = new List<Task<SpotifyService.SpotifyAlbum?>>
+                {
+                    _spotify.SearchAlbumAsync(title, year, composer),
+                    _spotify.SearchAlbumAsync(title, year, null),
+                    _spotify.SearchAlbumBasicAsync(title, year),
+                    _spotify.SearchAlbumLooseAsync($"{title} soundtrack")
+                };
+                while (albumTasks.Count > 0)
+                {
+                    var done = await Task.WhenAny(albumTasks);
+                    var candidate = await done;
+                    if (candidate != null)
+                    {
+                        album = candidate;
+                        break;
+                    }
+                    albumTasks.Remove(done);
+                }
+                AlbumCache[cacheKey] = album;
             }
             if (album == null) return null;
 
@@ -146,27 +193,54 @@ namespace MediaMatch.Services
                 confidence = ComputeConfidence(album.name, title)
             };
 
-            foreach (var t in tracks)
+            var limiter = new System.Threading.SemaphoreSlim(3);
+            var tasks = new List<Task<SoundtrackTrackDto>>();
+            var maxEnrich = Math.Min(tracks.Count, 6);
+            for (int i = 0; i < tracks.Count; i++)
             {
-                var artists = t.artists?.Select(a => a.name).ToList() ?? new List<string>();
-                var enriched = await _audioDb.SearchTrackAsync(artists.FirstOrDefault() ?? string.Empty, t.name);
-                var dto = enriched?.track?.FirstOrDefault();
-
-                result.tracks.Add(new SoundtrackTrackDto
+                var t = tracks[i];
+                tasks.Add(Task.Run(async () =>
                 {
-                    id = t.id,
-                    title = t.name,
-                    artists = artists,
-                    duration_ms = t.duration_ms,
-                    url = t.external_urls?.spotify ?? string.Empty,
-                    preview_url = t.preview_url,
-                    genre = string.Empty,
-                    mood = string.Empty,
-                    description = string.Empty,
-                    thumb_url = dto?.strTrackThumb ?? string.Empty,
-                    video_url = string.Empty
-                });
+                    var artists = t.artists?.Select(a => a.name).ToList() ?? new List<string>();
+                    string thumb = string.Empty, video = string.Empty;
+                    if (i < maxEnrich)
+                    {
+                        await limiter.WaitAsync();
+                        try
+                        {
+                            var key = (artists.FirstOrDefault() ?? "") + "|" + t.name;
+                            MediaMatch.DTO.TADB.AudioDbTrackResponse? enriched;
+                            if (!TrackEnrichCache.TryGetValue(key, out enriched))
+                            {
+                                enriched = await _audioDb.SearchTrackAsync(artists.FirstOrDefault() ?? string.Empty, t.name);
+                                TrackEnrichCache[key] = enriched;
+                            }
+                            var dto = enriched?.track?.FirstOrDefault();
+                            thumb = dto?.strTrackThumb ?? string.Empty;
+                        }
+                        finally
+                        {
+                            limiter.Release();
+                        }
+                    }
+                    return new SoundtrackTrackDto
+                    {
+                        id = t.id,
+                        title = t.name,
+                        artists = artists,
+                        duration_ms = t.duration_ms,
+                        url = t.external_urls?.spotify ?? string.Empty,
+                        preview_url = t.preview_url,
+                        genre = string.Empty,
+                        mood = string.Empty,
+                        description = string.Empty,
+                        thumb_url = thumb,
+                        video_url = string.Empty
+                    };
+                }));
             }
+            var built = await Task.WhenAll(tasks);
+            result.tracks.AddRange(built);
 
             return result;
         }
