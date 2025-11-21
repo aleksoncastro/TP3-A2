@@ -1,0 +1,84 @@
+# Arquivos de Build e Binários
+
+## Diretórios de Saída de Build
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+[Tt]emp/
+**/*.pdb
+**/*.mdb
+**/*.lock.json
+
+## Pacotes NuGet e cache de dependências
+# Diretório de pacotes NuGet globais, geralmente ignorado
+# se você usa `dotnet restore` ou `msbuild /t:restore`.
+**/packages/
+# Cache de restauração local (se estiver sendo usado)
+.nuget/
+# Excluir o diretório de ferramentas .NET (se existir)
+.dotnet/
+# Diretórios de SDKs (se algum for adicionado localmente)
+.vs/
+.vscode/
+
+## Arquivos Gerados e de Configuração do Visual Studio
+*.suo
+*.user
+*.useros
+*.userprefs
+*.vspscc
+*.vssscc
+*.bak
+*.resharper
+*.dotSettings
+*_i.c
+*_p.c
+*gen.cpp
+*.log
+*.filter
+*.metaproj
+*.tlog
+
+## Arquivos de Configuração do IIS Express
+**/apphost.config
+**/applicationhost.config
+
+## Outros Arquivos Temporários e de Ferramentas
+*.pidb
+*.vsp
+*.vspx
+*.sqlc
+*.scc
+# Arquivos de cobertura de código
+*.trx
+*.coverage
+*.opencover
+*.gcda
+*.gcno
+
+## Diretório de Publicação/Deployment
+[Pp]ublish/
+
+# Aplicações Web Específicas (MVC/Core)
+
+## Diretórios de dependências de frontend (se estiver usando)
+[Nn]ode_modules/
+# BUNDLE CONFIGS e arquivos minificados
+**/*.min.css
+**/*.min.js
+# Excluir o ambiente de teste local (se usar)
+.env
+.env.development
+.env.production
+.env.local
+
+# Se você estiver usando secrets do usuário
+appsettings.Development.json
+appsettings.json.user
+appsettings.*.user.json
+**/UserSecrets
+
+# Arquivos de sistema operacional
+.DS_Store
+Thumbs.db
