@@ -1,14 +1,14 @@
-using MediaMatch.Data; // Importante: Namespace onde está o seu DbContext
+using MediaMatch.Data; // Importante: Namespace onde estï¿½ o seu DbContext
 using MediaMatch.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Recupera a string de conexão do arquivo appsettings.json
+// 1. Recupera a string de conexï¿½o do arquivo appsettings.json
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-// 2. === CONFIGURAÇÃO DO DBCONTEXT ===
-// Injeta o MediaMatchContext no container de serviços usando SQL Server
+// 2. === CONFIGURAï¿½ï¿½O DO DBCONTEXT ===
+// Injeta o MediaMatchContext no container de serviï¿½os usando SQL Server
 builder.Services.AddDbContext<MediaMatchContext>(options =>
     options.UseSqlServer(connectionString));
 

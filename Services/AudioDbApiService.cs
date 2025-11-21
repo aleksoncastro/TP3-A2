@@ -1,4 +1,4 @@
-﻿using MediaMatch.DTO.TADB;
+using MediaMatch.DTO.TADB;
 using System.Text.Json;
 
 namespace MediaMatch.Services
