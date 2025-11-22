@@ -23,7 +23,7 @@ namespace MediaMatch.Controllers
             return Ok(result);
         }
 
-        [HttpGet("tv/{id:int}")]
+        [HttpGet("serie/{id:int}")]
         public async Task<IActionResult> GetTv(int id)
         {
             var result = await _aggregator.GetSeriesSoundtrackAsync(id);

@@ -1,0 +1,13 @@
+.container { max-width: 1100px; margin: 0 auto; padding: 1rem; }
+.header { display: flex; gap: 1rem; }
+.header img { width: 250px; border-radius: 8px; }
+.meta h1 { margin: 0; }
+.meta .sub { color: #777; }
+.soundtrack { margin-top: 2rem; }
+.album { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+.album-title { font-weight: 600; }
+.tracks { list-style: none; padding: 0; display: grid; grid-template-columns: 1fr; gap: 0.5rem; }
+.tracks li { border-bottom: 1px solid #eee; padding-bottom: 0.5rem; }
+.track-title { font-weight: 500; }
+.track-artists { color: #666; font-size: 0.9rem; }
+.track-actions a { margin-right: 0.75rem; }

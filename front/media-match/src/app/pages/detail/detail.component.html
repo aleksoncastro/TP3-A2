@@ -1,0 +1,32 @@
+<div class="container" *ngIf="details$ | async as d">
+  <a routerLink="/">Voltar</a>
+  <div class="header">
+    <img [src]="posterUrl(d.poster_path || d.backdrop_path || null)" alt="poster" />
+    <div class="meta">
+      <h1>{{ kind === 'movie' ? d.title : d.name }}</h1>
+      <p>{{ d.overview }}</p>
+      <p class="sub">{{ kind === 'movie' ? d.release_date : d.first_air_date }}</p>
+    </div>
+  </div>
+
+  <div class="soundtrack" *ngIf="soundtrack$ | async as st">
+    <h2>Soundtrack</h2>
+    <div class="album">
+      <div>
+        <div class="album-title">{{ st.album.name }}</div>
+        <div class="album-artists">{{ st.album.artists.join(', ') }}</div>
+        <a [href]="st.album.url" target="_blank">Abrir no Spotify</a>
+      </div>
+    </div>
+    <ul class="tracks">
+      <li *ngFor="let t of st.tracks">
+        <div class="track-title">{{ t.title }}</div>
+        <div class="track-artists">{{ t.artists.join(', ') }}</div>
+        <div class="track-actions">
+          <a [href]="t.url" target="_blank">Abrir</a>
+          <a *ngIf="t.preview_url" [href]="t.preview_url" target="_blank">Preview</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+<div class="container">
+  <h1>MediaMatch</h1>
+  <section>
+    <h2>Filmes Populares</h2>
+    <div class="grid" *ngIf="movies$ | async as movies">
+      <a class="card" *ngFor="let m of movies.results" [routerLink]="['/movie', m.id]" title="{{ m.title }}">
+        <img [src]="posterUrl(m.poster_path)" alt="{{ m.title }}" />
+        <div class="title">{{ m.title }}</div>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Séries Populares</h2>
+    <div class="grid" *ngIf="series$ | async as series">
+      <a class="card" *ngFor="let s of series.results" [routerLink]="['/serie', s.id]" title="{{ s.name }}">
+        <img [src]="posterUrl(s.poster_path)" alt="{{ s.name }}" />
+        <div class="title">{{ s.name }}</div>
+      </a>
+    </div>
+  </section>
+</div>
