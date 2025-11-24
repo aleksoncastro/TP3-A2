@@ -100,7 +100,7 @@ export class ApiService {
   }
   // tv = serie
   getTvSoundtrack(id: number): Observable<SoundtrackDto> {
-    const url = `${API_BASE}/Soundtrack/tv/${id}`;
+    const url = `${API_BASE}/Soundtrack/serie/${id}`;
     return this.parseJson<SoundtrackDto>(this.http.get(url, { responseType: 'text' }));
   }
 }
