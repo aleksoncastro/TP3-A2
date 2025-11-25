@@ -34,63 +34,74 @@ export class DetailComponent implements OnInit {
   credits$!: Observable<any>;
   soundtrack$!: Observable<SoundtrackDto>;
 
-  ngOnInit(): void {
-    // Lógica de Detalhes (Mantida igual)
-    this.details$ = this.route.data.pipe(
-      switchMap((d) => {
-        this.kind = (d['kind'] as Kind) ?? 'movie';
-        return this.route.paramMap.pipe(
-          switchMap((p) => {
-            this.id = Number(p.get('id'));
-            if (this.kind === 'movie') {
-              return this.movies.getDetails(this.id).pipe(
-                map((det) => {
-                  this.titleSvc.setTitle(`MediaMatch • ${det.title}`);
-                  return det;
-                })
-              );
-            }
-            return this.series.getDetails(this.id).pipe(
+ ngOnInit(): void {
+  this.details$ = this.route.data.pipe(
+    switchMap((d) => {
+
+      // ✅ Validação correta para 'movie' e 'serie'
+      const validKinds: Kind[] = ['movie', 'serie'];
+      const k = d['kind'] as string;
+      this.kind = validKinds.includes(k as Kind) ? (k as Kind) : 'movie';
+
+      return this.route.paramMap.pipe(
+        switchMap((p) => {
+          this.id = Number(p.get('id'));
+          if (this.kind === 'movie') {
+            return this.movies.getDetails(this.id).pipe(
               map((det) => {
-                this.titleSvc.setTitle(`MediaMatch • ${det.name}`);
+                this.titleSvc.setTitle(`MediaMatch • ${det.title}`);
                 return det;
               })
             );
-          })
-        );
-      }),
-      shareReplay(1)
-    );
+          }
+          return this.series.getDetails(this.id).pipe(
+            map((det) => {
+              this.titleSvc.setTitle(`MediaMatch • ${det.name}`);
+              return det;
+            })
+          );
+        })
+      );
+    }),
+    shareReplay(1)
+  );
 
-    // Lógica de Créditos (Mantida igual)
-    this.credits$ = this.route.data.pipe(
-      switchMap((d) => {
-        const kind = (d['kind'] as Kind) ?? 'movie';
-        return this.route.paramMap.pipe(
-          switchMap((p) => {
-            const id = Number(p.get('id'));
-            if (kind === 'movie') return this.movies.getCredits(id);
-            return this.series.getCredits(id);
-          })
-        );
-      }),
-      shareReplay(1)
-    );
+  // créditos
+  this.credits$ = this.route.data.pipe(
+    switchMap((d) => {
+      const validKinds: Kind[] = ['movie', 'serie'];
+      const k = d['kind'] as string;
+      const kind = validKinds.includes(k as Kind) ? (k as Kind) : 'movie';
 
-    // Lógica de Soundtrack (Mantida igual)
-    this.soundtrack$ = this.route.data.pipe(
-      switchMap((d) => {
-        const kind = (d['kind'] as Kind) ?? 'movie';
-        return this.route.paramMap.pipe(
-          switchMap((p) => {
-            const id = Number(p.get('id'));
-            if (kind === 'movie') return this.soundtrack.getMovieSoundtrack(id);
-            return this.soundtrack.getTvSoundtrack(id);
-          })
-        );
-      })
-    );
-  }
+      return this.route.paramMap.pipe(
+        switchMap((p) => {
+          const id = Number(p.get('id'));
+          if (kind === 'movie') return this.movies.getCredits(id);
+          return this.series.getCredits(id);
+        })
+      );
+    }),
+    shareReplay(1)
+  );
+
+  // soundtrack
+  this.soundtrack$ = this.route.data.pipe(
+    switchMap((d) => {
+      const validKinds: Kind[] = ['movie', 'serie'];
+      const k = d['kind'] as string;
+      const kind = validKinds.includes(k as Kind) ? (k as Kind) : 'movie';
+
+      return this.route.paramMap.pipe(
+        switchMap((p) => {
+          const id = Number(p.get('id'));
+          if (kind === 'movie') return this.soundtrack.getMovieSoundtrack(id);
+          return this.soundtrack.getTvSoundtrack(id);
+        })
+      );
+    })
+  );
+}
+
 
   // --- HELPERS DE IMAGEM ---
 

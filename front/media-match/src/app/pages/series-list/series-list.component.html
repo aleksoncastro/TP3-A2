@@ -4,7 +4,7 @@
   <div class="movie-grid" *ngIf="series$ | async as series; else loading">
     
     <div class="movie-item" *ngFor="let show of series">
-      <a [routerLink]="['/series', show.id]" class="media-card">
+      <a [routerLink]="['/serie', show.id]" class="media-card">
         <div class="poster-wrapper">
           <img 
             [src]="getImageUrl(show.poster_path)" 
