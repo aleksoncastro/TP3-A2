@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { HomeComponent } from './pages/home/home.component';
 
 export const routes: Routes = [
   // { path: '', loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent) },
@@ -8,4 +9,5 @@ export const routes: Routes = [
   // { path: 'serie/:id', loadComponent: () => import('./pages/detail/detail.component').then(m => m.DetailComponent), data: { kind: 'serie' } },
   // { path: 'collection/:id', loadComponent: () => import('./pages/collection/collection.component').then(m => m.CollectionDetailComponent) },
   // { path: '**', redirectTo: '' }
+  {path: 'home', component: HomeComponent, title: 'home',}
 ];

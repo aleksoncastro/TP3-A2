@@ -14,6 +14,8 @@ export interface TmdbTv {
   poster_path: string | null;
   overview: string;
   first_air_date?: string;
+  vote_average?: number;      // <--- ADICIONADO: Corrige o erro TS2339
+  backdrop_path?: string | null; // <--- ADICIONADO: Útil para detalhes
 }
 
 const API_BASE = environment.apiBase;
