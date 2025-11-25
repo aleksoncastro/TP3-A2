@@ -6,8 +6,8 @@
         <h1 class="title">{{ kind==='movie' ? d.title : d.name }}</h1>
         <p class="overview" *ngIf="d.overview">{{ d.overview }}</p>
         <div class="meta">
-          <span *ngIf="d.release_date">Lançamento: {{ d.release_date }}</span>
-          <span *ngIf="d.first_air_date">Estreia: {{ d.first_air_date }}</span>
+          <span *ngIf="d.release_date">Lançamento: {{ d.release_date | date:'dd/MM/yyyy' }}</span>
+          <span *ngIf="d.first_air_date">Estreia: {{ d.first_air_date | date:'dd/MM/yyyy' }}</span>
           <span *ngIf="d.vote_average">Nota: {{ d.vote_average | number:'1.1-1' }}</span>
         </div>
       </div>
@@ -15,24 +15,46 @@
   </section>
 
   <section class="container py-4">
-    <h2 class="text-xl mb-2">Elenco</h2>
+    <h2 class="section-heading">Elenco Principal</h2>
     <div class="carousel-track">
       <ng-container *ngIf="credits$ | async as c">
         <div *ngFor="let cast of c.cast" class="cast-card">
-          <div class="name">{{ cast.name }}</div>
-          <div class="character" *ngIf="cast.character">como {{ cast.character }}</div>
+          <div class="cast-photo-wrapper">
+             <img [src]="getProfileUrl(cast.profile_path)" [alt]="cast.name" class="cast-photo" loading="lazy">
+          </div>
+          <div class="cast-info">
+            <div class="name">{{ cast.name }}</div>
+            <div class="character" *ngIf="cast.character">{{ cast.character }}</div>
+          </div>
         </div>
       </ng-container>
     </div>
 
-    <brn-separator class="my-6"></brn-separator>
+    <brn-separator class="my-6 separator-line"></brn-separator>
 
-    <h2 class="text-xl mb-2">Soundtrack</h2>
+    <h2 class="section-heading">Trilha Sonora Oficial</h2>
     <ng-container *ngIf="soundtrack$ | async as s">
-      <div class="mt-2">
-        <div class="text-sm">{{ s.album.name }} • {{ s.album.artists?.join(', ') }}</div>
-        <iframe *ngIf="spotifyEmbed(s.album.id) as embed" [src]="embed" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      <div class="spotify-container">
+        <div class="album-info" *ngIf="s.album">
+           <h3>{{ s.album.name }}</h3>
+           <p>{{ s.album.artists ? s.album.artists.join(', ') : '' }}</p>
+        </div>
+        
+        <iframe 
+          *ngIf="spotifyEmbed(s.album.id) as embedUrl" 
+          [src]="embedUrl" 
+          width="100%" 
+          height="152" 
+          frameBorder="0" 
+          allowfullscreen="" 
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+          loading="lazy"
+          style="border-radius: 12px;">
+        </iframe>
       </div>
     </ng-container>
+    
+    <ng-template #noSoundtrack>
+       </ng-template>
   </section>
 </ng-container>

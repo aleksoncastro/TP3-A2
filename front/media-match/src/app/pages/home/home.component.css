@@ -1,28 +1,7 @@
 /* ============================================
    VARIÁVEIS (CSS Custom Properties)
    ============================================ */
-:host {
-  --color-bg-primary: #141414;
-  --color-bg-secondary: #1E1E1E;
-  --color-bg-tertiary: #2A2A2A;
 
-  /* Netflix Red */
-  --color-accent: #E50914;
-  --color-accent-light: #F61D27;
-  --color-accent-dark: #B90710;
-
-  --color-text-primary: #F5F5F5;
-  --color-text-secondary: #AAAAAA;
-  --color-text-tertiary: #707070;
-  --color-text-white: #FFFFFF;
-
-  --color-border: #3D3D3D;
-
-  --font-headings: 'Montserrat', sans-serif;
-  --font-body: 'Inter', 'Roboto', Arial, sans-serif;
-
-  display: block;
-}
 
 /* ============================================
    CONTAINER PRINCIPAL
