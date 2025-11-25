@@ -1,0 +1,39 @@
+<div class="container list-container">
+  <h1 class="page-title">{{ pageTitle }}</h1>
+
+  <div class="movie-grid">
+    
+    <div class="movie-item" *ngFor="let movie of movies">
+      <a [routerLink]="['/movie', movie.id]" class="media-card">
+        <div class="poster-wrapper">
+          <img 
+            [src]="getImageUrl(movie.poster_path)" 
+            [alt]="movie.title" 
+            class="media-poster" 
+            loading="lazy"
+          >
+          <div class="media-overlay">
+            <h3 class="media-title">{{ movie.title }}</h3>
+            <div class="media-rating">
+              <mat-icon class="rating-icon">star</mat-icon>
+              <span>{{ formatRating(movie.vote_average) }}</span>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+
+  </div>
+
+  <div class="loading-state" *ngIf="isLoading">
+    <mat-spinner diameter="40" color="accent"></mat-spinner>
+    </div>
+
+  <div *ngIf="!isLoading && movies.length === 0" class="no-results">
+    <p>Nenhum filme encontrado.</p>
+  </div>
+  
+  <div *ngIf="!hasMore && movies.length > 0" class="end-of-list">
+    <p>Você chegou ao fim da lista.</p>
+  </div>
+</div>
