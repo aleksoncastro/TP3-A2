@@ -1,0 +1,162 @@
+/* =========================================
+   CONTAINER GERAL
+   ========================================= */
+.site-footer {
+  background-color: var(--background);
+  border-top: 1px solid var(--border);
+  padding-top: 4rem;
+  margin-top: auto; /* Garante que o footer fique embaixo se o conteudo for curto */
+  font-family: var(--font-sans);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* =========================================
+   GRID LAYOUT
+   ========================================= */
+.footer-content {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 2rem;
+  padding-bottom: 3rem;
+}
+
+/* =========================================
+   ESTILOS DE MARCA
+   ========================================= */
+.brand-logo {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: var(--primary);
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: -0.5px;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+.brand-desc {
+  color: var(--muted-foreground);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  max-width: 300px;
+}
+
+/* =========================================
+   LINKS E LISTAS
+   ========================================= */
+.footer-heading {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--foreground);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.25rem;
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 0.75rem;
+}
+
+.footer-links a {
+  color: var(--muted-foreground);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.2s ease, transform 0.2s ease;
+  display: inline-block;
+}
+
+.footer-links a:hover {
+  color: var(--primary);
+  transform: translateX(4px); /* Efeito sutil de movimento */
+}
+
+/* =========================================
+   ICONES SOCIAIS
+   ========================================= */
+.social-icons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Estilizando o mat-icon-button para combinar */
+.social-icons a {
+  color: var(--muted-foreground);
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.social-icons a:hover {
+  color: var(--primary);
+  background-color: rgba(229, 9, 20, 0.1); /* Um vermelho bem suave no fundo */
+  border-color: var(--primary);
+}
+
+/* =========================================
+   RODAPÉ INFERIOR (COPYRIGHT)
+   ========================================= */
+.footer-bottom {
+  border-top: 1px solid var(--border);
+  padding: 1.5rem 0;
+  background-color: var(--card); /* Um tom levemente diferente para contraste */
+}
+
+.footer-bottom .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-bottom p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted-foreground);
+}
+
+.credits {
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+/* =========================================
+   RESPONSIVIDADE
+   ========================================= */
+@media (max-width: 900px) {
+  .footer-content {
+    grid-template-columns: 1fr 1fr; /* 2 colunas em tablets */
+  }
+}
+
+@media (max-width: 600px) {
+  .footer-content {
+    grid-template-columns: 1fr; /* 1 coluna em mobile */
+    text-align: center;
+  }
+
+  .brand-desc {
+    margin: 0 auto; /* Centraliza o texto no mobile */
+  }
+
+  .social-icons {
+    justify-content: center;
+  }
+
+  .footer-bottom .container {
+    flex-direction: column;
+    text-align: center;
+  }
+}
