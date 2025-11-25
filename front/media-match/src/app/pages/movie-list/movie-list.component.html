@@ -1,10 +1,10 @@
 <div class="container list-container">
   <h1 class="page-title">{{ pageTitle }}</h1>
 
-  <div class="movie-grid">
+  <div class="movie-grid" *ngIf="movies$ | async as movies; else loading">
     
     <div class="movie-item" *ngFor="let movie of movies">
-      <a [routerLink]="['/movie', movie.id]" class="media-card">
+      <a [routerLink]="['/movies', movie.id]" class="media-card">
         <div class="poster-wrapper">
           <img 
             [src]="getImageUrl(movie.poster_path)" 
@@ -23,17 +23,15 @@
       </a>
     </div>
 
-  </div>
-
-  <div class="loading-state" *ngIf="isLoading">
-    <mat-spinner diameter="40" color="accent"></mat-spinner>
+    <div *ngIf="movies.length === 0" class="no-results">
+      <p>Nenhum filme encontrado.</p>
     </div>
 
-  <div *ngIf="!isLoading && movies.length === 0" class="no-results">
-    <p>Nenhum filme encontrado.</p>
   </div>
-  
-  <div *ngIf="!hasMore && movies.length > 0" class="end-of-list">
-    <p>Você chegou ao fim da lista.</p>
-  </div>
+
+  <ng-template #loading>
+    <div class="loading-state">
+      <mat-spinner diameter="40" color="accent"></mat-spinner>
+    </div>
+  </ng-template>
 </div>
