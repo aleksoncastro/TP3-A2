@@ -1,21 +1,36 @@
 <header class="site-header">
-  <nav brnNavigationMenu class="container flex items-center justify-between gap-4 py-3">
-    <ul brnNavigationMenuList class="flex items-center gap-3">
-      <li brnNavigationMenuItem>
-        <a brnNavigationMenuLink routerLink="/" class="px-3 py-2">Home</a>
-      </li>
-      <li brnNavigationMenuItem>
-        <a brnNavigationMenuLink routerLink="/movie" class="px-3 py-2">Filmes</a>
-      </li>
-      <li brnNavigationMenuItem>
-        <a brnNavigationMenuLink routerLink="/series" class="px-3 py-2">Séries</a>
-      </li>
-    </ul>
+  <div class="container header-content">
+    
+    <nav brnNavigationMenu class="nav-menu">
+      <a routerLink="/" class="brand-logo">MediaMatch</a>
 
-    <form (submit)="onSearch()" class="flex items-center gap-2">
+      <ul brnNavigationMenuList class="nav-list">
+        <li brnNavigationMenuItem>
+          <a brnNavigationMenuLink routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link">Home</a>
+        </li>
+        <li brnNavigationMenuItem>
+          <a brnNavigationMenuLink routerLink="/movie" routerLinkActive="active" class="nav-link">Filmes</a>
+        </li>
+        <li brnNavigationMenuItem>
+          <a brnNavigationMenuLink routerLink="/series" routerLinkActive="active" class="nav-link">Séries</a>
+        </li>
+      </ul>
+    </nav>
+
+    <form (submit)="onSearch()" class="search-form">
       <label brnLabel for="q" class="sr-only">Buscar</label>
-      <input id="q" [(ngModel)]="q" name="q" type="text" placeholder="Buscar…" class="border rounded px-3 py-2 w-48 md:w-72" />
-      <button brnButton type="submit" class="px-3 py-2 border rounded">Buscar</button>
+      <input 
+        id="q" 
+        [(ngModel)]="q" 
+        name="q" 
+        type="text" 
+        placeholder="Títulos, gente e gêneros" 
+        class="search-input" 
+      />
+      <button brnButton type="submit" class="btn-primary">
+        Buscar
+      </button>
     </form>
-  </nav>
+
+  </div>
 </header>

@@ -9,5 +9,5 @@ export const routes: Routes = [
   // { path: 'serie/:id', loadComponent: () => import('./pages/detail/detail.component').then(m => m.DetailComponent), data: { kind: 'serie' } },
   // { path: 'collection/:id', loadComponent: () => import('./pages/collection/collection.component').then(m => m.CollectionDetailComponent) },
   // { path: '**', redirectTo: '' }
-  {path: 'home', component: HomeComponent, title: 'home',}
+  {path: '', component: HomeComponent, title: 'home',}
 ];
