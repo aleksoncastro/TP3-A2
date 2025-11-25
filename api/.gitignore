@@ -6,6 +6,7 @@
 [Dd]ebug/
 [Rr]elease/
 [Tt]emp/
+tempbin/
 **/*.pdb
 **/*.mdb
 **/*.lock.json

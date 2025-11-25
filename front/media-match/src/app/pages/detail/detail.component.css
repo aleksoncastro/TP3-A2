@@ -1,13 +1,11 @@
 .container { max-width: 1100px; margin: 0 auto; padding: 1rem; }
-.header { display: flex; gap: 1rem; }
-.header img { width: 250px; border-radius: 8px; }
-.meta h1 { margin: 0; }
-.meta .sub { color: #777; }
-.soundtrack { margin-top: 2rem; }
-.album { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
-.album-title { font-weight: 600; }
-.tracks { list-style: none; padding: 0; display: grid; grid-template-columns: 1fr; gap: 0.5rem; }
-.tracks li { border-bottom: 1px solid #eee; padding-bottom: 0.5rem; }
-.track-title { font-weight: 500; }
-.track-artists { color: #666; font-size: 0.9rem; }
-.track-actions a { margin-right: 0.75rem; }
+.hero { background-size: cover; background-position: center; color: #F5F5F5; }
+.hero-inner { display: grid; grid-template-columns: 150px 1fr; gap: 1rem; align-items: start; padding: 2rem 1rem; }
+.poster { width: 100%; border-radius: 8px; }
+.title { margin: 0; font-size: 2rem; }
+.overview { margin-top: 0.5rem; color: #AAAAAA; }
+.meta { margin-top: 0.5rem; display: flex; gap: 1rem; font-size: 0.9rem; color: #CCCCCC; }
+.carousel-track { display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 0.5rem; }
+.cast-card { min-width: 180px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 0.75rem; }
+.name { font-weight: 600; }
+.character { color: #9AA0A6; }

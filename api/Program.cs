@@ -1,6 +1,7 @@
 using MediaMatch.Data; 
 using MediaMatch.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 LoadEnv(Path.Combine(Directory.GetCurrentDirectory(), ".env"));
 var builder = WebApplication.CreateBuilder(args);
@@ -14,7 +15,15 @@ builder.Services.AddDbContext<MediaMatchContext>(options =>
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    if (File.Exists(xmlPath))
+    {
+        c.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
+    }
+});
 
 builder.Services.AddCors(options =>
 {

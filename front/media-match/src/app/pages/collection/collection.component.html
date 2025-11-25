@@ -1,0 +1,24 @@
+<div *ngIf="details$ | async as col">
+  <section class="collection-hero" [style.background-image]="'linear-gradient(180deg, rgba(20,20,20,0.85), rgba(20,20,20,0.85)), url(' + heroBgUrl(col) + ')'">
+    <div class="container">
+      <h1 class="title">{{ col.name }}</h1>
+      <p class="overview" *ngIf="col.overview">{{ col.overview }}</p>
+    </div>
+  </section>
+
+  <section class="container">
+    <h2>Filmes da coleção</h2>
+    <div class="carousel-wrap">
+      <div class="carousel">
+        <div *ngFor="let m of col.parts">
+          <a [routerLink]="['/movie', m.id]" class="card" title="{{ m.title }}">
+            <div class="card">
+              <img [src]="posterUrl(m.poster_path)" alt="{{ m.title }}" />
+              <div class="name">{{ m.title }}</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

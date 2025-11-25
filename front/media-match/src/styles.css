@@ -1,1 +1,119 @@
-/* You can add global styles to this file, and also import other style files */
+@import "@spartan-ng/brain/hlm-tailwind-preset.css";
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/preflight.css' layer(base);
+@import 'tailwindcss/utilities.css';
+@import "@angular/cdk/overlay-prebuilt.css";
+@layer theme, base, components, utilities;
+
+:root {
+color-scheme: dark;
+--font-sans: 'Inter', 'Roboto', Arial, sans-serif;
+--font-display: 'Montserrat', sans-serif;
+
+--background: #141414;
+--foreground: #F5F5F5;
+--card: #1E1E1E;
+--card-foreground: #F5F5F5;
+--popover: #1E1E1E;
+--popover-foreground: #F5F5F5;
+
+--primary: #E50914;
+--primary-foreground: #FFFFFF;
+--secondary: #2A2A2A;
+--secondary-foreground: #F5F5F5;
+
+--muted: #2A2A2A;
+--muted-foreground: #AAAAAA;
+--accent: #F61D27;
+--accent-foreground: #FFFFFF;
+--destructive: #D32F2F;
+
+--border: #3D3D3D;
+--input: #2A2A2A;
+--ring: #B90710;
+}
+
+body {
+background: var(--background);
+color: var(--foreground);
+font-family: var(--font-sans);
+}
+
+h1, h2, h3, h4, h5, h6, .brand {
+font-family: var(--font-display);
+}
+
+
+:root {
+color-scheme: light;
+
+
+
+--radius: 0.625rem;
+--background: oklch(1 0 0);
+--foreground: oklch(0.145 0 0);
+--card: oklch(1 0 0);
+--card-foreground: oklch(0.145 0 0);
+--popover: oklch(1 0 0);
+--popover-foreground: oklch(0.145 0 0);
+--primary: oklch(0.205 0 0);
+--primary-foreground: oklch(0.985 0 0);
+--secondary: oklch(0.97 0 0);
+--secondary-foreground: oklch(0.205 0 0);
+--muted: oklch(0.97 0 0);
+--muted-foreground: oklch(0.556 0 0);
+--accent: oklch(0.97 0 0);
+--accent-foreground: oklch(0.205 0 0);
+--destructive: oklch(0.577 0.245 27.325);
+--border: oklch(0.922 0 0);
+--input: oklch(0.922 0 0);
+--ring: oklch(0.708 0 0);
+--sidebar: oklch(0.985 0 0);
+--sidebar-foreground: oklch(0.145 0 0);
+--sidebar-primary: oklch(0.205 0 0);
+--sidebar-primary-foreground: oklch(0.985 0 0);
+--sidebar-accent: oklch(0.97 0 0);
+--sidebar-accent-foreground: oklch(0.205 0 0);
+--sidebar-border: oklch(0.922 0 0);
+--sidebar-ring: oklch(0.708 0 0);
+}
+
+:root.dark {
+color-scheme: dark;
+
+--background: oklch(0.145 0 0);
+--foreground: oklch(0.985 0 0);
+--card: oklch(0.205 0 0);
+--card-foreground: oklch(0.985 0 0);
+--popover: oklch(0.205 0 0);
+--popover-foreground: oklch(0.985 0 0);
+--primary: oklch(0.922 0 0);
+--primary-foreground: oklch(0.205 0 0);
+--secondary: oklch(0.269 0 0);
+--secondary-foreground: oklch(0.985 0 0);
+--muted: oklch(0.269 0 0);
+--muted-foreground: oklch(0.708 0 0);
+--accent: oklch(0.269 0 0);
+--accent-foreground: oklch(0.985 0 0);
+--destructive: oklch(0.704 0.191 22.216);
+--border: oklch(1 0 0 / 10%);
+--input: oklch(1 0 0 / 15%);
+--ring: oklch(0.556 0 0);
+--sidebar: oklch(0.205 0 0);
+--sidebar-foreground: oklch(0.985 0 0);
+--sidebar-primary: oklch(0.985 0 0);
+--sidebar-primary-foreground: oklch(0.205 0 0);
+--sidebar-accent: oklch(0.269 0 0);
+--sidebar-accent-foreground: oklch(0.985 0 0);
+--sidebar-border: oklch(1 0 0 / 10%);
+--sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+* {
+@apply border-border outline-ring/50;
+}
+body {
+@apply bg-background text-foreground;
+}
+}

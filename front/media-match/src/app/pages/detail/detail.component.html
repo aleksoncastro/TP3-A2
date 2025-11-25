@@ -1,32 +1,38 @@
-<div class="container" *ngIf="details$ | async as d">
-  <a routerLink="/">Voltar</a>
-  <div class="header">
-    <img [src]="posterUrl(d.poster_path || d.backdrop_path || null)" alt="poster" />
-    <div class="meta">
-      <h1>{{ kind === 'movie' ? d.title : d.name }}</h1>
-      <p>{{ d.overview }}</p>
-      <p class="sub">{{ kind === 'movie' ? d.release_date : d.first_air_date }}</p>
-    </div>
-  </div>
-
-  <div class="soundtrack" *ngIf="soundtrack$ | async as st">
-    <h2>Soundtrack</h2>
-    <div class="album">
+<ng-container *ngIf="details$ | async as d">
+  <section class="hero" [style.background-image]="'linear-gradient(180deg, rgba(20,20,20,0.85), rgba(20,20,20,0.85)), url(' + backdropUrl(d.backdrop_path) + ')'">
+    <div class="container hero-inner">
+      <img [src]="posterUrl(d.poster_path)" [alt]="kind==='movie' ? d.title : d.name" class="poster" />
       <div>
-        <div class="album-title">{{ st.album.name }}</div>
-        <div class="album-artists">{{ st.album.artists.join(', ') }}</div>
-        <a [href]="st.album.url" target="_blank">Abrir no Spotify</a>
+        <h1 class="title">{{ kind==='movie' ? d.title : d.name }}</h1>
+        <p class="overview" *ngIf="d.overview">{{ d.overview }}</p>
+        <div class="meta">
+          <span *ngIf="d.release_date">Lançamento: {{ d.release_date }}</span>
+          <span *ngIf="d.first_air_date">Estreia: {{ d.first_air_date }}</span>
+          <span *ngIf="d.vote_average">Nota: {{ d.vote_average | number:'1.1-1' }}</span>
+        </div>
       </div>
     </div>
-    <ul class="tracks">
-      <li *ngFor="let t of st.tracks">
-        <div class="track-title">{{ t.title }}</div>
-        <div class="track-artists">{{ t.artists.join(', ') }}</div>
-        <div class="track-actions">
-          <a [href]="t.url" target="_blank">Abrir</a>
-          <a *ngIf="t.preview_url" [href]="t.preview_url" target="_blank">Preview</a>
+  </section>
+
+  <section class="container py-4">
+    <h2 class="text-xl mb-2">Elenco</h2>
+    <div class="carousel-track">
+      <ng-container *ngIf="credits$ | async as c">
+        <div *ngFor="let cast of c.cast" class="cast-card">
+          <div class="name">{{ cast.name }}</div>
+          <div class="character" *ngIf="cast.character">como {{ cast.character }}</div>
         </div>
-      </li>
-    </ul>
-  </div>
-</div>
+      </ng-container>
+    </div>
+
+    <brn-separator class="my-6"></brn-separator>
+
+    <h2 class="text-xl mb-2">Soundtrack</h2>
+    <ng-container *ngIf="soundtrack$ | async as s">
+      <div class="mt-2">
+        <div class="text-sm">{{ s.album.name }} • {{ s.album.artists?.join(', ') }}</div>
+        <iframe *ngIf="spotifyEmbed(s.album.id) as embed" [src]="embed" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      </div>
+    </ng-container>
+  </section>
+</ng-container>

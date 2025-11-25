@@ -1,0 +1,21 @@
+<header class="site-header">
+  <nav brnNavigationMenu class="container flex items-center justify-between gap-4 py-3">
+    <ul brnNavigationMenuList class="flex items-center gap-3">
+      <li brnNavigationMenuItem>
+        <a brnNavigationMenuLink routerLink="/" class="px-3 py-2">Home</a>
+      </li>
+      <li brnNavigationMenuItem>
+        <a brnNavigationMenuLink routerLink="/movie" class="px-3 py-2">Filmes</a>
+      </li>
+      <li brnNavigationMenuItem>
+        <a brnNavigationMenuLink routerLink="/series" class="px-3 py-2">Séries</a>
+      </li>
+    </ul>
+
+    <form (submit)="onSearch()" class="flex items-center gap-2">
+      <label brnLabel for="q" class="sr-only">Buscar</label>
+      <input id="q" [(ngModel)]="q" name="q" type="text" placeholder="Buscar…" class="border rounded px-3 py-2 w-48 md:w-72" />
+      <button brnButton type="submit" class="px-3 py-2 border rounded">Buscar</button>
+    </form>
+  </nav>
+</header>

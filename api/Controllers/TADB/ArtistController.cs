@@ -1,10 +1,15 @@
-﻿using MediaMatch.Services;
+using MediaMatch.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace MediaMatch.Controllers.TADB
 {
+    /// <summary>
+    /// Endpoints de consulta a artistas na API TheAudioDB.
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
+    [Produces("application/json")]
     public class ArtistsController : ControllerBase
     {
         private readonly AudioDbApiService _audioDb;
@@ -14,7 +19,14 @@ namespace MediaMatch.Controllers.TADB
             _audioDb = audioDb;
         }
 
+        /// <summary>
+        /// Busca artistas por nome.
+        /// </summary>
+        /// <param name="name">Nome do artista.</param>
         [HttpGet("search")]
+        [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> SearchArtist([FromQuery] string name)
         {
             if (string.IsNullOrWhiteSpace(name))

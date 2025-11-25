@@ -1,10 +1,14 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { appConfig } from './app.config';
+import { routes } from './app.routes';
 import { App } from './app';
 
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
+      providers: [provideRouter(routes), ...appConfig.providers]
     }).compileComponents();
   });
 
@@ -18,6 +22,6 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, media-match');
+    expect(compiled.querySelector('app-header')).toBeTruthy();
   });
 });
