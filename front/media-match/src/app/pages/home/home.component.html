@@ -120,7 +120,7 @@
       <div class="carousel-container" #popularSeriesCarousel>
         <div class="carousel-track" *ngIf="popularSeries$ | async as series">
           <div class="carousel-item" *ngFor="let show of series">
-            <a [routerLink]="['/series', show.id]" class="media-card">
+            <a [routerLink]="['/serie', show.id]" class="media-card">
               <img [src]="getImageUrl(show.poster_path)" [alt]="show.name" class="media-poster" loading="lazy" />
               <div class="media-overlay">
                 <h3 class="media-title">{{ show.name }}</h3>
@@ -150,7 +150,7 @@
       <div class="carousel-container" #topRatedSeriesCarousel>
         <div class="carousel-track" *ngIf="topRatedSeries$ | async as series">
           <div class="carousel-item" *ngFor="let show of series">
-            <a [routerLink]="['/series', show.id]" class="media-card">
+            <a [routerLink]="['/serie', show.id]" class="media-card">
               <img [src]="getImageUrl(show.poster_path)" [alt]="show.name" class="media-poster" loading="lazy" />
               <div class="media-overlay">
                 <h3 class="media-title">{{ show.name }}</h3>
@@ -180,7 +180,7 @@
       <div class="carousel-container" #airingTodaySeriesCarousel>
         <div class="carousel-track" *ngIf="airingTodaySeries$ | async as series">
           <div class="carousel-item" *ngFor="let show of series">
-            <a [routerLink]="['/series', show.id]" class="media-card">
+            <a [routerLink]="['/serie', show.id]" class="media-card">
               <img [src]="getImageUrl(show.poster_path)" [alt]="show.name" class="media-poster" loading="lazy" />
               <div class="media-overlay">
                 <h3 class="media-title">{{ show.name }}</h3>
