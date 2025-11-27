@@ -1,0 +1,25 @@
+<div class="auth-wrap">
+  <a routerLink="/" class="brand-logo">MediaMatch</a>
+  <mat-card class="auth-card" role="form" aria-label="Formulário de Login">
+    <h2 class="section-title">Entrar</h2>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email" required aria-required="true" />
+        <mat-error *ngIf="form.controls.email.hasError('required')">Email é obrigatório</mat-error>
+        <mat-error *ngIf="form.controls.email.hasError('email')">Email inválido</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Senha</mat-label>
+        <input matInput formControlName="password" type="password" required aria-required="true" />
+        <mat-error *ngIf="form.controls.password.hasError('required')">Senha é obrigatória</mat-error>
+        <mat-error *ngIf="form.controls.password.hasError('minlength')">Mínimo de 8 caracteres</mat-error>
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Entrar</button>
+    </form>
+    <button mat-button color="accent" (click)="gotoRegister()">
+      <mat-icon>person_add</mat-icon>
+      Criar conta
+    </button>
+  </mat-card>
+</div>

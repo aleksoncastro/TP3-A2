@@ -1,0 +1,31 @@
+<div class="auth-wrap">
+  <a routerLink="/" class="brand-logo">MediaMatch</a>
+  <mat-card class="auth-card" role="form" aria-label="Formulário de Cadastro">
+    <h2 class="section-title">Criar conta</h2>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill">
+        <mat-label>Nome</mat-label>
+        <input matInput formControlName="userName" required aria-required="true" />
+        <mat-error *ngIf="form.controls.userName.hasError('required')">Nome é obrigatório</mat-error>
+        <mat-error *ngIf="form.controls.userName.hasError('minlength')">Mínimo de 3 caracteres</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email" required aria-required="true" />
+        <mat-error *ngIf="form.controls.email.hasError('required')">Email é obrigatório</mat-error>
+        <mat-error *ngIf="form.controls.email.hasError('email')">Email inválido</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Senha</mat-label>
+        <input matInput formControlName="password" type="password" required aria-required="true" />
+        <mat-error *ngIf="form.controls.password.hasError('required')">Senha é obrigatória</mat-error>
+        <mat-error *ngIf="form.controls.password.hasError('minlength')">Mínimo de 8 caracteres</mat-error>
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Cadastrar</button>
+    </form>
+    <button mat-button color="accent" (click)="gotoLogin()">
+      <mat-icon>login</mat-icon>
+      Já tenho conta
+    </button>
+  </mat-card>
+</div>

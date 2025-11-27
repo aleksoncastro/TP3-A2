@@ -50,15 +50,11 @@ namespace MediaMatch.Services
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            // 4. Atribui a Role (Ex: Membro, Admin)
-            // Nota: As Roles já devem existir no banco (Seed)
-            var roleName = string.IsNullOrEmpty(dto.Role) ? "Membro" : dto.Role;
+            var roleName = "user";
             var role = await _context.Roles.FirstOrDefaultAsync(r => r.Name == roleName);
 
             if (role == null)
             {
-                // Se a role não existe, cria uma padrão ou lança erro.
-                // Aqui vamos criar para facilitar o teste, mas em prod ideal é lançar erro.
                 role = new Role { Name = roleName };
                 _context.Roles.Add(role);
                 await _context.SaveChangesAsync();
@@ -73,7 +69,6 @@ namespace MediaMatch.Services
             _context.UserRoles.Add(userRole);
             await _context.SaveChangesAsync();
 
-            // 5. Retorna o Token
             return GenerateToken(user, role.Name);
         }
 
@@ -96,8 +91,8 @@ namespace MediaMatch.Services
                 throw new Exception("Usuário ou senha inválidos.");
             }
 
-            // 3. Pega a Role principal (assumindo 1 role por user para simplificar o login)
-            var roleName = user.UserRoles.FirstOrDefault()?.Role.Name ?? "Membro";
+            var roleName = user.UserRoles.FirstOrDefault()?.Role.Name ?? "user";
+            roleName = NormalizeRoleName(roleName);
 
             // 4. Gera Token
             return GenerateToken(user, roleName);
@@ -113,7 +108,6 @@ namespace MediaMatch.Services
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, role) // Importante para o [Authorize(Roles="Admin")]
             };
 
             var token = new JwtSecurityToken(
@@ -132,6 +126,12 @@ namespace MediaMatch.Services
                 UserName = user.UserName,
                 Role = role
             };
+        }
+
+        private string NormalizeRoleName(string name)
+        {
+            if (string.Equals(name, "Membro", StringComparison.OrdinalIgnoreCase)) return "user";
+            return name;
         }
     }
 }
