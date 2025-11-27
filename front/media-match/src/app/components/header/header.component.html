@@ -17,13 +17,14 @@
       </ul>
     </nav>
 
-    <div class="search-container" style="position: relative;">
+    <div class="search-container" #searchContainer style="position: relative;">
       <form (submit)="onSearch()" class="search-form">
-        <label brnLabel for="q" class="sr-only">Buscar</label>
         <input 
           id="q" 
           [(ngModel)]="q" 
           (keyup)="onKeyUp($event)"
+          (keydown.enter)="onEnter($event)"
+          #searchInput
           name="q" 
           type="text" 
           placeholder="Títulos, gente e gêneros" 
@@ -35,25 +36,28 @@
         </button>
       </form>
 
-      <div *ngIf="(results$ | async) as results" class="dropdown-results">
-        <ul *ngIf="results.length > 0" class="results-list">
-          <li *ngFor="let item of results">
-            <button (click)="goToDetails(item)" class="result-item">
-              <img 
-                [src]="item.poster_path ? 'https://image.tmdb.org/t/p/w92' + item.poster_path : 'assets/placeholder.png'" 
-                alt="Poster" 
-                class="result-thumb"
-              >
-              <div class="result-info">
-                <span class="result-title">{{ item.title || item.name }}</span>
-                <span class="result-meta">
-                  {{ (item.release_date || item.first_air_date) | date:'yyyy' }} • {{ item.media_type === 'tv' ? 'Série' : 'Filme' }}
-                </span>
-              </div>
-            </button>
-          </li>
-        </ul>
-      </div>
+      <ng-container *ngIf="(results$ | async) as results">
+        <div *ngIf="isDropdownOpen && results.length > 0" class="dropdown-results" #dropdownPanel>
+          <ul class="results-list">
+            <li *ngFor="let item of results">
+              <button (click)="goToDetails(item)" class="result-item">
+                <img 
+                  [src]="item.poster_path ? 'https://image.tmdb.org/t/p/w92' + item.poster_path : 'assets/placeholder.svg'" 
+                  alt="Poster" 
+                  class="result-thumb"
+                  (error)="onImgError($event)"
+                >
+                <div class="result-info">
+                  <span class="result-title">{{ item.title || item.name }}</span>
+                  <span class="result-meta">
+                    {{ (item.release_date || item.first_air_date) | date:'yyyy' }} • {{ item.media_type === 'tv' ? 'Série' : 'Filme' }}
+                  </span>
+                </div>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </ng-container>
     </div>
 
   </div>

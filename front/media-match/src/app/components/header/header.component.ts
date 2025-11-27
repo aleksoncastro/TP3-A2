@@ -1,65 +1,131 @@
-import { Component, inject } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild, inject, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { SearchService } from '../../services/search.service';
 import { BrnNavigationMenuImports } from '@spartan-ng/brain/navigation-menu';
 import { BrnButtonImports } from '@spartan-ng/brain/button';
 import { BrnLabelImports } from '@spartan-ng/brain/label';
-import { SearchService } from '../../services/search.service'; //
 import { Subject, Observable, of } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap, map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, BrnNavigationMenuImports, BrnButtonImports, BrnLabelImports],
+  imports: [
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    BrnNavigationMenuImports,
+    BrnButtonImports,
+    BrnLabelImports,
+  ],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnDestroy {
   private readonly router = inject(Router);
   private readonly searchService = inject(SearchService);
+  private readonly cdr = inject(ChangeDetectorRef); // <--- Injeção necessária para forçar atualização da tela
 
   q = '';
   private searchSubject = new Subject<string>();
   
-  // Observable que conterá os resultados da busca instantânea
+  // Referência ao container que engloba o input e o dropdown
+  @ViewChild('searchContainer') searchContainer?: ElementRef;
+  @ViewChild('dropdownPanel') dropdownPanel?: ElementRef;
+  @ViewChild('searchInput') searchInput?: ElementRef;
+  
+  isDropdownOpen = false;
+  
+  // Observable de resultados
   results$: Observable<any[]> = this.searchSubject.pipe(
-    debounceTime(300), // Espera 300ms após o usuário parar de digitar
-    distinctUntilChanged(), // Evita buscar se o texto for igual ao anterior
+    debounceTime(300),
+    distinctUntilChanged(),
     switchMap((term) => {
-      if (!term || term.length < 2) return of([]); // Não busca se tiver menos de 2 letras
-      // Usa o searchMulti para trazer filmes e séries juntos
+      if (!term || term.length < 2) {
+        this.isDropdownOpen = false;
+        return of([]);
+      }
       return this.searchService.searchMulti(term).pipe(
         map((response: any) => response.results || [])
       );
+    }),
+    tap((results) => {
+      // Abre o dropdown automaticamente se houver resultados
+      this.isDropdownOpen = results.length > 0;
+      this.cdr.markForCheck(); // Garante que o Angular detecte a abertura
     })
   );
 
-  // Chamado a cada tecla digitada no input
+  // --- LÓGICA DE FECHAR AO CLICAR FORA ---
+  
+  @HostListener('document:click', ['$event'])
+  clickout(event: Event) {
+    const target = event.target as Node;
+    const panelEl = this.dropdownPanel?.nativeElement as HTMLElement | undefined;
+    const inputEl = this.searchInput?.nativeElement as HTMLElement | undefined;
+    const insidePanel = !!(panelEl && panelEl.contains(target));
+    const insideInput = !!(inputEl && inputEl.contains(target));
+    if (!insidePanel && !insideInput) {
+      if (this.isDropdownOpen) {
+        this.isDropdownOpen = false;
+        this.cdr.markForCheck();
+      }
+    }
+  }
+
+  // Opcional: Para suportar melhor mobile (touch)
+  @HostListener('document:touchstart', ['$event'])
+  onTouch(event: TouchEvent) {
+    const target = event.target as Node;
+    const panelEl = this.dropdownPanel?.nativeElement as HTMLElement | undefined;
+    const inputEl = this.searchInput?.nativeElement as HTMLElement | undefined;
+    const insidePanel = !!(panelEl && panelEl.contains(target));
+    const insideInput = !!(inputEl && inputEl.contains(target));
+    if (!insidePanel && !insideInput) {
+      if (this.isDropdownOpen) {
+        this.isDropdownOpen = false;
+        this.cdr.markForCheck();
+      }
+    }
+  }
+
+  // ---------------------------------------
+
   onKeyUp(event: KeyboardEvent) {
     this.searchSubject.next(this.q);
   }
 
-  // Chamado ao clicar em um resultado do autocomplete
   goToDetails(item: any) {
-    this.q = ''; // Limpa a busca
-    this.searchSubject.next(''); // Limpa resultados
-
-    // Verifica se é filme ou série para navegar corretamente
-    const route = item.media_type === 'tv' ? '/serie' : '/movie';
+    this.q = ''; 
+    this.searchSubject.next(''); 
+    this.isDropdownOpen = false; 
+    const route = item.media_type === 'tv' ? '/serie' : '/movie'; 
     this.router.navigate([route, item.id]);
   }
 
-  // Chamado ao pressionar Enter (Busca completa)
   onSearch() {
-    this.searchSubject.next(''); // Fecha o autocomplete
+    this.searchSubject.next(''); 
+    this.isDropdownOpen = false; 
     
     if (this.q) {
-      // Como é uma busca global, idealmente você teria uma rota '/search'.
-      // Por enquanto, mantive sua lógica, mas enviando para '/movie' (ajuste conforme sua rota de resultados)
       const queryParams = { q: this.q, page: 1 };
-      this.router.navigate(['/movie'], { queryParams });
+      this.router.navigate(['/search'], { queryParams });
     }
+  }
+
+  onImgError(ev: Event) {
+    const img = ev.target as HTMLImageElement;
+    img.src = 'assets/placeholder.svg';
+  }
+
+  onEnter(event: Event) {
+    event.preventDefault();
+    this.searchSubject.next(this.q);
+  }
+
+  ngOnDestroy(): void {
+    // Lifecycle hook mantido para boas práticas
   }
 }

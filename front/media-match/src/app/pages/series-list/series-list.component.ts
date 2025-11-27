@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Observable, switchMap, map } from 'rxjs';
+import { Observable, switchMap, map, BehaviorSubject, scan, tap } from 'rxjs';
 
 import { SeriesService, TmdbTv } from '../../services/series.service';
 
@@ -20,56 +20,78 @@ export class SeriesListComponent implements OnInit {
 
   public series$!: Observable<TmdbTv[]>;
   public pageTitle: string = 'Séries';
+  public loadingMore = false;
+  public canLoadMore = true;
+  private page$ = new BehaviorSubject<number>(1);
+  private currentType: 'popular' | 'top_rated' | 'airing_today' | 'on_the_air' | 'default' = 'default';
 
   ngOnInit(): void {
     // Reage automaticamente à mudança de rota
     this.series$ = this.route.data.pipe(
       switchMap(data => {
-        const type = data['type']; // Configurado no app.routes.ts
-        
+        const type = (data['type'] as any) ?? 'popular';
+        this.currentType = type;
         switch (type) {
           case 'popular':
             this.pageTitle = 'Séries Populares';
-            return this.seriesService.getPopular().pipe(map(r => r.results));
-            
+            break;
           case 'top_rated':
             this.pageTitle = 'Séries Bem Avaliadas';
-            return this.seriesService.getTopRated().pipe(map(r => r.results));
-            
+            break;
           case 'airing_today':
             this.pageTitle = 'Exibidas Hoje';
-            return this.seriesService.getAiringToday().pipe(map(r => r.results));
-            
+            break;
           case 'on_the_air':
             this.pageTitle = 'No Ar Atualmente';
-            return this.seriesService.getOnTheAir().pipe(map(r => r.results));
-            
-          case 'search':
-            this.pageTitle = 'Resultados da Busca';
-            // Escuta os queryParams (?q=...)
-            return this.route.queryParams.pipe(
-              switchMap(params => {
-                const query = params['q'] || '';
-                this.pageTitle = query ? `Resultados para: "${query}"` : 'Busca de Séries';
-                // O método search espera: q, includeAdult, language, firstAirYear, page
-                return this.seriesService.search(query).pipe(map(r => r.results));
-              })
-            );
-
+            break;
           default:
             this.pageTitle = 'Séries';
-            return this.seriesService.getPopular().pipe(map(r => r.results));
+            this.currentType = 'popular';
+            break;
         }
+        this.page$.next(1);
+        return this.page$.pipe(
+          switchMap(page => {
+            switch (this.currentType) {
+              case 'popular':
+                return this.seriesService.getPopular('pt-BR', page).pipe(map(r => ({ page, batch: r.results })));
+              case 'top_rated':
+                return this.seriesService.getTopRated('pt-BR', page).pipe(map(r => ({ page, batch: r.results })));
+              case 'airing_today':
+                return this.seriesService.getAiringToday('pt-BR', page).pipe(map(r => ({ page, batch: r.results })));
+              case 'on_the_air':
+                return this.seriesService.getOnTheAir('pt-BR', page).pipe(map(r => ({ page, batch: r.results })));
+              default:
+                return this.seriesService.getPopular('pt-BR', page).pipe(map(r => ({ page, batch: r.results })));
+            }
+          }),
+          tap(({ batch }) => {
+            this.loadingMore = false;
+            this.canLoadMore = batch.length > 0;
+          }),
+          scan((acc, cur) => cur.page === 1 ? cur.batch : acc.concat(cur.batch), [] as TmdbTv[])
+        );
       })
     );
   }
 
   getImageUrl(path: string | null): string {
-    // w342: Qualidade boa e leve para grids
-    return path ? `https://image.tmdb.org/t/p/w342${path}` : 'assets/placeholder.png';
+    return path ? `https://image.tmdb.org/t/p/w342${path}` : 'assets/placeholder.svg';
   }
 
   formatRating(vote: number | undefined): string {
     return vote ? vote.toFixed(1) : 'N/A';
+  }
+
+  loadMore(): void {
+    if (this.loadingMore || !this.canLoadMore) return;
+    this.loadingMore = true;
+    const next = this.page$.getValue() + 1;
+    this.page$.next(next);
+  }
+
+  onImgError(ev: Event): void {
+    const img = ev.target as HTMLImageElement;
+    img.src = 'assets/placeholder.svg';
   }
 }

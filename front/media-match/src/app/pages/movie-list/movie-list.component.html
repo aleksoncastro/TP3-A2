@@ -11,6 +11,7 @@
             [alt]="movie.title" 
             class="media-poster" 
             loading="lazy"
+            (error)="onImgError($event)"
           >
           <div class="media-overlay">
             <h3 class="media-title">{{ movie.title }}</h3>
@@ -25,6 +26,13 @@
 
     <div *ngIf="movies.length === 0" class="no-results">
       <p>Nenhum filme encontrado.</p>
+    </div>
+
+    <div class="end-of-list">
+      <button class="load-more-btn" (click)="loadMore()" [disabled]="loadingMore || !canLoadMore" aria-label="Mostrar mais resultados">
+        <span>Mostrar mais</span>
+        <mat-spinner *ngIf="loadingMore" diameter="18" class="btn-spinner" color="accent"></mat-spinner>
+      </button>
     </div>
 
   </div>

@@ -1,31 +1,31 @@
 <div class="container list-container">
   <h1 class="page-title">{{ pageTitle }}</h1>
 
-  <div class="movie-grid" *ngIf="series$ | async as series; else loading">
+  <div class="movie-grid" *ngIf="items$ | async as items; else loading">
     
-    <div class="movie-item" *ngFor="let show of series">
-      <a [routerLink]="['/serie', show.id]" class="media-card">
+    <div class="movie-item" *ngFor="let item of items">
+      <a [routerLink]="[item.media_type === 'tv' ? '/serie' : '/movie', item.id]" class="media-card">
         <div class="poster-wrapper">
           <img 
-            [src]="getImageUrl(show.poster_path)" 
-            [alt]="show.name" 
+            [src]="getImageUrl(item.poster_path)" 
+            [alt]="item.title || item.name" 
             class="media-poster" 
             loading="lazy"
             (error)="onImgError($event)"
           >
           <div class="media-overlay">
-            <h3 class="media-title">{{ show.name }}</h3>
+            <h3 class="media-title">{{ item.title || item.name }}</h3>
             <div class="media-rating">
               <mat-icon class="rating-icon">star</mat-icon>
-              <span>{{ formatRating(show.vote_average) }}</span>
+              <span>{{ formatRating(item.vote_average) }}</span>
             </div>
           </div>
         </div>
       </a>
     </div>
 
-    <div *ngIf="series.length === 0" class="no-results">
-      <p>Nenhuma série encontrada.</p>
+    <div *ngIf="items.length === 0" class="no-results">
+      <p>Nenhum resultado encontrado.</p>
     </div>
 
     <div class="end-of-list">
