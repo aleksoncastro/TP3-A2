@@ -11,6 +11,8 @@ export const routes: Routes = [
   { path: 'movie/:id', loadComponent: () => import('./pages/detail/detail.component').then(m => m.DetailComponent), data: { kind: 'movie' } },
   { path: 'movie', loadComponent: () => import('./pages/movie-list/movie-list.component').then(m => m.MovieListComponent) },
   { path: 'series', loadComponent: () => import('./pages/series-list/series-list.component').then(m => m.SeriesListComponent) },
+  { path: 'music', loadComponent: () => import('./pages/music-list/music-list.component').then(m => m.MusicListComponent) },
+
   {
     path: 'auth',
     children: [

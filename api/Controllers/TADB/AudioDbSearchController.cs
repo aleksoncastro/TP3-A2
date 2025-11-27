@@ -15,10 +15,9 @@ namespace MediaMatch.Controllers
             _apiService = apiService;
         }
 
-        /// <summary>
-        /// Busca artistas pelo nome. Ex: GET api/music/search/artist?name=Coldplay
-        /// </summary>
-        // GET: api/music/search-artist?name=Coldplay
+        // ======================================================
+        // 1. ARTISTA (search.php?s=name)
+        // ======================================================
         [HttpGet("search-artist")]
         public async Task<IActionResult> SearchArtist([FromQuery] string name)
         {
@@ -27,7 +26,6 @@ namespace MediaMatch.Controllers
 
             var result = await _apiService.SearchArtistAsync(name);
 
-            // Verifica se o resultado é nulo ou se a lista de artistas está vazia
             if (result == null || result.artists == null || !result.artists.Any())
             {
                 return NotFound($"Artista '{name}' não encontrado no TheAudioDB.");
@@ -36,9 +34,9 @@ namespace MediaMatch.Controllers
             return Ok(result.artists);
         }
 
-        /// <summary>
-        /// Busca álbuns de um artista específico. Ex: GET api/music/search/albums-by-id?artistId=111239
-        /// </summary>
+        // ======================================================
+        // 2. TODOS OS ÁLBUNS - POR ID (album.php?i=id)
+        // ======================================================
         [HttpGet("albums-by-id")]
         public async Task<ActionResult<List<AudioDbAlbumDto>>> GetAlbumsByArtistId([FromQuery] int artistId)
         {
@@ -50,15 +48,31 @@ namespace MediaMatch.Controllers
             return Ok(response.album);
         }
 
-        /// <summary>
-        /// Busca um álbum específico pelo nome do artista e do álbum. 
-        /// Ex: GET api/music/search/album?artist=Nirvana&album=Nevermind
-        /// </summary>
+        // ======================================================
+        // NOVO: TODOS OS ÁLBUNS - POR NOME DO ARTISTA (searchalbum.php?s=name)
+        // ======================================================
+        [HttpGet("albums-by-name")]
+        public async Task<ActionResult<List<AudioDbAlbumDto>>> GetAlbumsByArtistName([FromQuery] string artistName)
+        {
+            if (string.IsNullOrWhiteSpace(artistName)) 
+                return BadRequest("Nome do artista obrigatório.");
+
+            var response = await _apiService.GetAlbumsByArtistNameAsync(artistName);
+
+            if (response == null || response.album == null || !response.album.Any())
+                return NotFound("Nenhum álbum encontrado para este artista.");
+
+            return Ok(response.album);
+        }
+
+        // ======================================================
+        // 3. ÁLBUM ÚNICO (searchalbum.php?s=artist&a=album)
+        // ======================================================
         [HttpGet("album")]
         public async Task<ActionResult<List<AudioDbAlbumDto>>> SearchAlbum([FromQuery] string artist, [FromQuery] string album)
         {
             if (string.IsNullOrWhiteSpace(artist) || string.IsNullOrWhiteSpace(album))
-                return BadRequest("O nome do artista e do álbum são obrigatórios para esta busca.");
+                return BadRequest("O nome do artista e do álbum são obrigatórios.");
 
             var response = await _apiService.SearchAlbumByNameAsync(artist, album);
 
@@ -68,11 +82,9 @@ namespace MediaMatch.Controllers
             return Ok(response.album);
         }
 
-        /// <summary>
-        /// Busca faixas pelo nome. Pode filtrar por artista opcionalmente.
-        /// Ex: GET api/music/search/track?query=Hello
-        /// Ex: GET api/music/search/track?query=Hello&artist=Adele
-        /// </summary>
+        // ======================================================
+        // 4. FAIXAS / MÚSICA (searchtrack.php)
+        // ======================================================
         [HttpGet("track")]
         public async Task<ActionResult<List<AudioDbTrackDto>>> SearchTrack([FromQuery] string query, [FromQuery] string? artist = null)
         {
@@ -83,12 +95,10 @@ namespace MediaMatch.Controllers
 
             if (!string.IsNullOrWhiteSpace(artist))
             {
-                // Busca mais precisa: Música + Artista
                 response = await _apiService.SearchTrackAsync(artist, query);
             }
             else
             {
-                // Busca genérica: Apenas nome da Música
                 response = await _apiService.SearchTrackByNameAsync(query);
             }
 
@@ -98,9 +108,6 @@ namespace MediaMatch.Controllers
             return Ok(response.track);
         }
 
-        /// <summary>
-        /// Busca todas as faixas de um álbum pelo ID. Ex: GET api/music/search/tracks-by-album?albumId=2115888
-        /// </summary>
         [HttpGet("tracks-by-album")]
         public async Task<ActionResult<List<AudioDbTrackDto>>> GetTracksByAlbumId([FromQuery] int albumId)
         {
@@ -110,6 +117,100 @@ namespace MediaMatch.Controllers
                 return NotFound("Nenhuma faixa encontrada para este álbum.");
 
             return Ok(response.track);
+        }
+
+        // ======================================================
+        // NOVO: DISCOGRAFIA POR NOME (discography.php?s=name)
+        // ======================================================
+        [HttpGet("discography")]
+        public async Task<ActionResult<List<AudioDbAlbumDto>>> GetDiscography([FromQuery] string artistName)
+        {
+            if (string.IsNullOrWhiteSpace(artistName)) 
+                return BadRequest("Nome do artista obrigatório.");
+
+            var response = await _apiService.GetDiscographyByNameAsync(artistName);
+
+            if (response == null || response.album == null || !response.album.Any())
+                return NotFound("Discografia não encontrada.");
+
+            // A discografia retorna apenas o Ano e o Nome do álbum geralmente
+            return Ok(response.album);
+        }
+
+        // ======================================================
+        // NOVO: DISCOGRAFIA POR MBID (discography-mb.php?s=mbid)
+        // ======================================================
+        [HttpGet("discography-mbid")]
+        public async Task<ActionResult<List<AudioDbAlbumDto>>> GetDiscographyByMbId([FromQuery] string mbId)
+        {
+            if (string.IsNullOrWhiteSpace(mbId)) 
+                return BadRequest("MusicBrainz ID obrigatório.");
+
+            var response = await _apiService.GetDiscographyByMbIdAsync(mbId);
+
+            if (response == null || response.album == null || !response.album.Any())
+                return NotFound("Discografia não encontrada.");
+
+            return Ok(response.album);
+        }
+
+        
+        /// <summary>
+        /// Retorna as músicas mais amadas.
+        /// URL: GET api/music/search/popular-tracks
+        /// </summary>
+        [HttpGet("popular-tracks")]
+        public async Task<IActionResult> GetPopularTracks([FromQuery] int page = 1)
+        {
+            // 1. Busca todas as 50 músicas do Service
+            var allTracks = await _apiService.GetMostLovedTracksAsync();
+
+            if (allTracks == null || !allTracks.Any())
+                return Ok(new { results = new List<AudioDbTrackDto>() });
+
+            // 2. Paginação em Memória (Simulação)
+            // O AudioDB retorna tudo de uma vez, então cortamos a lista aqui
+            int pageSize = 20;
+            var pagedTracks = allTracks
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            // 3. Retorna no formato { results: [...] } que o Angular espera
+            return Ok(new 
+            { 
+                page = page,
+                results = pagedTracks,
+                total_pages = (int)Math.Ceiling(allTracks.Count / (double)pageSize),
+                total_results = allTracks.Count
+            });
+        }
+
+        /// <summary>
+        /// Retorna os álbuns mais amados.
+        /// URL: GET api/music/search/popular-albums
+        /// </summary>
+        [HttpGet("popular-albums")]
+        public async Task<IActionResult> GetPopularAlbums([FromQuery] int page = 1)
+        {
+            var allAlbums = await _apiService.GetMostLovedAlbumsAsync();
+
+            if (allAlbums == null || !allAlbums.Any())
+                return Ok(new { results = new List<AudioDbAlbumDto>() });
+
+            int pageSize = 20;
+            var pagedAlbums = allAlbums
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            return Ok(new 
+            { 
+                page = page,
+                results = pagedAlbums,
+                total_pages = (int)Math.Ceiling(allAlbums.Count / (double)pageSize),
+                total_results = allAlbums.Count
+            });
         }
     }
 }
