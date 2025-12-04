@@ -10,7 +10,7 @@ tempbin/
 **/*.pdb
 **/*.mdb
 **/*.lock.json
-
+wwwroot/
 ## Pacotes NuGet e cache de dependências
 # Diretório de pacotes NuGet globais, geralmente ignorado
 # se você usa `dotnet restore` ou `msbuild /t:restore`.

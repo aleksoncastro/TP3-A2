@@ -14,6 +14,9 @@
         <li brnNavigationMenuItem>
           <a brnNavigationMenuLink routerLink="/series" routerLinkActive="active" class="nav-link">Séries</a>
         </li>
+        <li brnNavigationMenuItem>
+          <a brnNavigationMenuLink routerLink="/clubs" routerLinkActive="active" class="nav-link">Clubes</a>
+        </li>
       </ul>
     </nav>
 
@@ -58,6 +61,14 @@
           </ul>
         </div>
       </ng-container>
+    </div>
+
+    <div class="auth-section">
+      <app-user-menu *ngIf="authService.isAuthenticated()"></app-user-menu>
+      <div *ngIf="!authService.isAuthenticated()" class="auth-buttons">
+        <a routerLink="/login" class="btn-secondary">Entrar</a>
+        <a routerLink="/register" class="btn-primary">Cadastrar</a>
+      </div>
     </div>
 
   </div>

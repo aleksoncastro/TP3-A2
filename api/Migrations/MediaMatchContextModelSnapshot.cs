@@ -222,6 +222,10 @@ namespace MediaMatch.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(150)
@@ -256,6 +260,40 @@ namespace MediaMatch.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("ClubMembers");
+                });
+
+            modelBuilder.Entity("MediaMatch.Models.TMDB.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("MediaMatch.Models.TMDB.Credit", b =>
@@ -434,6 +472,57 @@ namespace MediaMatch.Migrations
                     b.ToTable("MediaLists");
                 });
 
+            modelBuilder.Entity("MediaMatch.Models.TMDB.MediaListComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MediaListId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SuggestedMediaId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SuggestedMediaPosterPath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SuggestedMediaTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SuggestedMediaType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("MediaListId");
+
+                    b.ToTable("MediaListComments");
+                });
+
             modelBuilder.Entity("MediaMatch.Models.TMDB.MediaListItem", b =>
                 {
                     b.Property<int>("Id")
@@ -491,6 +580,73 @@ namespace MediaMatch.Migrations
                     b.ToTable("People");
                 });
 
+            modelBuilder.Entity("MediaMatch.Models.TMDB.Post", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ClubId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("ClubId");
+
+                    b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("MediaMatch.Models.TMDB.PostImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("PostImages");
+                });
+
             modelBuilder.Entity("MediaMatch.Models.TMDB.Season", b =>
                 {
                     b.Property<int>("Id")
@@ -525,6 +681,10 @@ namespace MediaMatch.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Bio")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -536,6 +696,14 @@ namespace MediaMatch.Migrations
                     b.Property<string>("HashedPassword")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("ProfilePictureUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -650,7 +818,7 @@ namespace MediaMatch.Migrations
                         .IsRequired();
 
                     b.HasOne("MediaMatch.Models.User", "User")
-                        .WithMany()
+                        .WithMany("ClubMemberships")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -658,6 +826,25 @@ namespace MediaMatch.Migrations
                     b.Navigation("Club");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MediaMatch.Models.TMDB.Comment", b =>
+                {
+                    b.HasOne("MediaMatch.Models.User", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("MediaMatch.Models.TMDB.Post", "Post")
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("MediaMatch.Models.TMDB.Credit", b =>
@@ -717,13 +904,32 @@ namespace MediaMatch.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("MediaMatch.Models.User", "User")
-                        .WithMany()
+                        .WithMany("MediaLists")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Club");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MediaMatch.Models.TMDB.MediaListComment", b =>
+                {
+                    b.HasOne("MediaMatch.Models.User", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MediaMatch.Models.TMDB.MediaList", "MediaList")
+                        .WithMany("Comments")
+                        .HasForeignKey("MediaListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+
+                    b.Navigation("MediaList");
                 });
 
             modelBuilder.Entity("MediaMatch.Models.TMDB.MediaListItem", b =>
@@ -743,6 +949,36 @@ namespace MediaMatch.Migrations
                     b.Navigation("MediaItem");
 
                     b.Navigation("MediaList");
+                });
+
+            modelBuilder.Entity("MediaMatch.Models.TMDB.Post", b =>
+                {
+                    b.HasOne("MediaMatch.Models.User", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("MediaMatch.Models.TMDB.Club", "Club")
+                        .WithMany()
+                        .HasForeignKey("ClubId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Club");
+                });
+
+            modelBuilder.Entity("MediaMatch.Models.TMDB.PostImage", b =>
+                {
+                    b.HasOne("MediaMatch.Models.TMDB.Post", "Post")
+                        .WithMany("Images")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("MediaMatch.Models.TMDB.Season", b =>
@@ -825,12 +1061,21 @@ namespace MediaMatch.Migrations
 
             modelBuilder.Entity("MediaMatch.Models.TMDB.MediaList", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("Items");
                 });
 
             modelBuilder.Entity("MediaMatch.Models.TMDB.Person", b =>
                 {
                     b.Navigation("Credits");
+                });
+
+            modelBuilder.Entity("MediaMatch.Models.TMDB.Post", b =>
+                {
+                    b.Navigation("Comments");
+
+                    b.Navigation("Images");
                 });
 
             modelBuilder.Entity("MediaMatch.Models.TMDB.Season", b =>
@@ -840,6 +1085,10 @@ namespace MediaMatch.Migrations
 
             modelBuilder.Entity("MediaMatch.Models.User", b =>
                 {
+                    b.Navigation("ClubMemberships");
+
+                    b.Navigation("MediaLists");
+
                     b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618

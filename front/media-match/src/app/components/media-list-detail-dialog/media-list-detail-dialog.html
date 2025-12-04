@@ -1,0 +1,265 @@
+<div class="list-detail-dialog">
+  <div class="dialog-header">
+    <h2 mat-dialog-title>{{ list?.name }}</h2>
+    <button mat-icon-button (click)="onClose()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="loading-container" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div *ngIf="!loading && list">
+    <p class="list-description">{{ list.description }}</p>
+
+    <mat-tab-group>
+      <!-- Tab: Itens -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>movie</mat-icon> Itens ({{ list.items.length }})
+        </ng-template>
+        
+        <div class="tab-content">
+          <!-- Add Item Section (Admin only) -->
+          <div class="add-item-section" *ngIf="data.canManage">
+            <h3><mat-icon>add</mat-icon> Adicionar Filme/Série</h3>
+            
+            <div class="search-container" style="position: relative;">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Buscar mídia</mat-label>
+                <input 
+                  matInput 
+                  #searchInput
+                  [(ngModel)]="searchQuery" 
+                  (keyup)="onSearchInput()"
+                  placeholder="Digite o nome do filme ou série..."
+                  autocomplete="off">
+                <mat-icon matSuffix *ngIf="searching" class="searching-icon">hourglass_empty</mat-icon>
+                <mat-icon matSuffix *ngIf="!searching">search</mat-icon>
+              </mat-form-field>
+
+              <!-- Dropdown Results -->
+              <ng-container *ngIf="(searchResults$ | async) as results">
+                <div *ngIf="isSearchDropdownOpen && results.length > 0" class="search-dropdown">
+                  <div class="dropdown-item" *ngFor="let media of results" (click)="selectMediaFromDropdown(media)">
+                    <img 
+                      [src]="getPosterUrl(media.poster_path)" 
+                      [alt]="getMediaTitle(media)"
+                      class="dropdown-thumb"
+                      (error)="$any($event.target).src='assets/placeholder.svg'">
+                    <div class="dropdown-info">
+                      <span class="dropdown-title">{{ getMediaTitle(media) }}</span>
+                      <span class="dropdown-meta">
+                        <mat-icon class="small-icon">{{ media.media_type === 'movie' ? 'movie' : 'tv' }}</mat-icon>
+                        {{ media.media_type === 'movie' ? 'Filme' : 'Série' }}
+                        <span *ngIf="getMediaYear(media)"> • {{ getMediaYear(media) }}</span>
+                      </span>
+                    </div>
+                    <button mat-icon-button class="add-quick-btn" (click)="$event.stopPropagation(); selectMediaFromDropdown(media)">
+                      <mat-icon>add_circle</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+
+          <!-- Items List -->
+          <div class="items-grid" *ngIf="list.items.length > 0">
+            <div class="item-card" *ngFor="let item of list.items">
+              <img [src]="getPosterUrl(item.posterPath)" [alt]="item.title">
+              <div class="item-info">
+                <h4>{{ item.title }}</h4>
+                <div class="item-meta">
+                  <span class="rating">
+                    <mat-icon>star</mat-icon>
+                    {{ item.rating.toFixed(1) }}
+                  </span>
+                  <span class="media-type">
+                    <mat-icon>{{ item.mediaType === 'movie' ? 'movie' : 'tv' }}</mat-icon>
+                    {{ item.mediaType === 'movie' ? 'Filme' : 'Série' }}
+                  </span>
+                </div>
+                <p class="item-note" *ngIf="item.note">
+                  <mat-icon>note</mat-icon>
+                  {{ item.note }}
+                </p>
+              </div>
+              <button 
+                mat-icon-button 
+                color="warn" 
+                class="remove-btn"
+                *ngIf="data.canManage"
+                (click)="removeItem(item.id)"
+                matTooltip="Remover item">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <div class="no-items" *ngIf="list.items.length === 0">
+            <mat-icon>inbox</mat-icon>
+            <p>Nenhum item nesta lista</p>
+          </div>
+        </div>
+      </mat-tab>
+
+      <!-- Tab: Comentários -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>comment</mat-icon> Comentários ({{ list.comments.length }})
+        </ng-template>
+
+        <div class="tab-content">
+          <!-- New Comment -->
+          <div class="new-comment-section">
+            <h3>Deixe um comentário</h3>
+            
+            <div class="comment-type-selector">
+              <button 
+                mat-stroked-button 
+                [color]="commentType === 'comment' ? 'primary' : ''"
+                (click)="commentType = 'comment'; clearSuggestion()">
+                <mat-icon>comment</mat-icon>
+                Comentário
+              </button>
+              <button 
+                mat-stroked-button 
+                [color]="commentType === 'suggestion' ? 'primary' : ''"
+                (click)="commentType = 'suggestion'">
+                <mat-icon>recommend</mat-icon>
+                Sugestão
+              </button>
+            </div>
+
+            <!-- Suggestion Search -->
+            <div class="suggestion-search" *ngIf="commentType === 'suggestion' && !selectedSuggestion">
+              <div class="search-container" style="position: relative;">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Buscar filme/série para sugerir</mat-label>
+                  <input 
+                    matInput 
+                    [(ngModel)]="searchQuery" 
+                    (keyup)="onSearchInput()"
+                    placeholder="Digite o nome..."
+                    autocomplete="off">
+                  <mat-icon matSuffix *ngIf="searching" class="searching-icon">hourglass_empty</mat-icon>
+                  <mat-icon matSuffix *ngIf="!searching">search</mat-icon>
+                </mat-form-field>
+
+                <!-- Dropdown Results for Suggestions -->
+                <ng-container *ngIf="(searchResults$ | async) as results">
+                  <div *ngIf="isSearchDropdownOpen && results.length > 0" class="search-dropdown compact">
+                    <div class="dropdown-item-compact" *ngFor="let media of results" (click)="selectMediaFromDropdown(media)">
+                      <img 
+                        [src]="getPosterUrl(media.poster_path)" 
+                        [alt]="getMediaTitle(media)"
+                        class="dropdown-thumb-small"
+                        (error)="$any($event.target).src='assets/placeholder.svg'">
+                      <div class="dropdown-info-compact">
+                        <strong>{{ getMediaTitle(media) }}</strong>
+                        <span class="year-badge">{{ getMediaYear(media) }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+            <!-- Selected Suggestion -->
+            <div class="selected-suggestion" *ngIf="selectedSuggestion">
+              <mat-chip>
+                <img [src]="getPosterUrl(selectedSuggestion.poster_path)" class="chip-poster">
+                {{ getMediaTitle(selectedSuggestion) }}
+                <button matChipRemove (click)="clearSuggestion()">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip>
+            </div>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Seu comentário</mat-label>
+              <textarea 
+                matInput 
+                [(ngModel)]="newCommentContent" 
+                rows="3" 
+                maxlength="500"
+                [placeholder]="commentType === 'suggestion' ? 'Explique por que está sugerindo...' : 'Escreva seu comentário...'"></textarea>
+              <mat-hint align="end">{{ newCommentContent.length }}/500</mat-hint>
+            </mat-form-field>
+
+            <button 
+              mat-raised-button 
+              color="primary" 
+              (click)="createComment()"
+              [disabled]="!newCommentContent.trim()">
+              <mat-icon>send</mat-icon>
+              Enviar
+            </button>
+          </div>
+
+          <!-- Comments List -->
+          <div class="comments-list" *ngIf="list.comments.length > 0">
+            <div class="comment-item" *ngFor="let comment of list.comments" 
+                 [class.suggestion]="comment.type === 'suggestion'">
+              <div class="comment-header">
+                <div class="author-info">
+                  <img 
+                    *ngIf="comment.authorProfilePictureUrl" 
+                    [src]="comment.authorProfilePictureUrl" 
+                    [alt]="comment.authorName"
+                    class="author-avatar-img"
+                    (error)="$any($event.target).style.display='none'; $any($event.target).nextElementSibling.style.display='block'">
+                  <mat-icon [style.display]="comment.authorProfilePictureUrl ? 'none' : 'block'">account_circle</mat-icon>
+                  <div>
+                    <strong>{{ comment.authorName }}</strong>
+                    <span class="comment-date">{{ formatDate(comment.createdAt) }}</span>
+                  </div>
+                </div>
+                <div class="comment-actions">
+                  <mat-chip *ngIf="comment.type === 'suggestion'" class="suggestion-badge">
+                    <mat-icon>recommend</mat-icon>
+                    Sugestão
+                  </mat-chip>
+                  <button 
+                    mat-icon-button 
+                    *ngIf="comment.canDelete"
+                    (click)="deleteComment(comment.id)"
+                    matTooltip="Deletar">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Suggested Media -->
+              <div class="suggested-media" *ngIf="comment.suggestedMediaTitle">
+                <img [src]="getPosterUrl(comment.suggestedMediaPosterPath || '')" [alt]="comment.suggestedMediaTitle">
+                <div>
+                  <strong>{{ comment.suggestedMediaTitle }}</strong>
+                  <span>{{ comment.suggestedMediaType === 'movie' ? 'Filme' : 'Série' }}</span>
+                </div>
+                <button 
+                  mat-raised-button 
+                  color="primary" 
+                  size="small"
+                  *ngIf="data.canManage"
+                  (click)="addSuggestedItem(comment)">
+                  <mat-icon>add</mat-icon>
+                  Adicionar à lista
+                </button>
+              </div>
+
+              <p class="comment-content">{{ comment.content }}</p>
+            </div>
+          </div>
+
+          <div class="no-comments" *ngIf="list.comments.length === 0">
+            <mat-icon>chat_bubble_outline</mat-icon>
+            <p>Nenhum comentário ainda. Seja o primeiro!</p>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

@@ -31,5 +31,8 @@ namespace MediaMatch.Models.TMDB
 
         // Itens da lista
         public ICollection<MediaListItem> Items { get; set; } = new List<MediaListItem>();
+
+        // Comentários da lista
+        public ICollection<MediaListComment> Comments { get; set; } = new List<MediaListComment>();
     }
 }

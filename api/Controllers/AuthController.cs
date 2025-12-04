@@ -97,6 +97,81 @@ namespace MediaMatch.Controllers
             });
         }
 
+        /// <summary>
+        /// Obtém o perfil completo do usuário autenticado.
+        /// </summary>
+        [HttpGet("profile")]
+        [Authorize]
+        [ProducesResponseType(typeof(UserProfileDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult<UserProfileDto>> GetProfile()
+        {
+            var idClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(idClaim) || !int.TryParse(idClaim, out var userId))
+                return Unauthorized();
+
+            try
+            {
+                var profile = await _authService.GetUserProfileAsync(userId);
+                return Ok(profile);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Atualiza o perfil do usuário autenticado.
+        /// </summary>
+        [HttpPut("profile")]
+        [Authorize]
+        [ProducesResponseType(typeof(UserProfileDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<UserProfileDto>> UpdateProfile([FromBody] UpdateProfileDto dto)
+        {
+            var idClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(idClaim) || !int.TryParse(idClaim, out var userId))
+                return Unauthorized();
+
+            try
+            {
+                var profile = await _authService.UpdateProfileAsync(userId, dto);
+                return Ok(profile);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Atualiza a foto de perfil do usuário autenticado.
+        /// </summary>
+        [HttpPost("profile/picture")]
+        [Authorize]
+        [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> UpdateProfilePicture([FromForm] IFormFile file)
+        {
+            var idClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(idClaim) || !int.TryParse(idClaim, out var userId))
+                return Unauthorized();
+
+            if (file == null || file.Length == 0)
+                return BadRequest("Nenhum arquivo fornecido.");
+
+            try
+            {
+                var imageUrl = await _authService.UpdateProfilePictureAsync(userId, file);
+                return Ok(new { profilePictureUrl = imageUrl });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("users")]
         [Authorize(Policy = "AdminOnly")]
         [EnableRateLimiting("rolesLimiter")]

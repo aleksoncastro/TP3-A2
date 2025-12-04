@@ -28,6 +28,23 @@ export interface MeDto {
   role: string;
 }
 
+export interface UserProfileDto {
+  id: number;
+  userName: string;
+  email: string;
+  profilePictureUrl?: string;
+  phoneNumber?: string;
+  bio?: string;
+  createdAt: string;
+  role: string;
+}
+
+export interface UpdateProfileDto {
+  userName?: string;
+  email?: string;
+  phoneNumber?: string;
+  bio?: string;
+}
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -74,13 +91,40 @@ export class AuthService {
     return role === 'admin';
   }
 
+  isAuthenticated(): boolean {
+    return !!this.getToken();
+  }
+
+  getUserName(): string | null {
+    return this.storage.getItem('userName');
+  }
+
+  getProfile(): Observable<UserProfileDto> {
+    return this.http.get<UserProfileDto>(`${this.base}/Auth/profile`);
+  }
+
+  updateProfile(dto: UpdateProfileDto): Observable<UserProfileDto> {
+    return this.http.put<UserProfileDto>(`${this.base}/Auth/profile`, dto);
+  }
+
+  updateProfilePicture(file: File): Observable<{ profilePictureUrl: string }> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<{ profilePictureUrl: string }>(
+      `${this.base}/Auth/profile/picture`,
+      formData
+    );
+  }
+
   logout(): void {
     this.storage.removeItem('token');
     this.storage.removeItem('role');
+    this.storage.removeItem('userName');
   }
 
   private persist(res: AuthResponseDto): void {
     this.storage.setItem('token', res.token);
     if (res.role) this.storage.setItem('role', res.role);
+    if (res.userName) this.storage.setItem('userName', res.userName);
   }
 }

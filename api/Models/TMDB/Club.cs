@@ -15,6 +15,9 @@ namespace MediaMatch.Models.TMDB
         [MaxLength(500)]
         public string Description { get; set; }
 
+        [MaxLength(500)]
+        public string? ImageUrl { get; set; }
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         // O Dono/Criador do clube

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MediaMatch.Models.TMDB;
+using System.ComponentModel.DataAnnotations;
 
 namespace MediaMatch.Models
 
@@ -22,8 +23,19 @@ namespace MediaMatch.Models
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        // Propriedade de Navegação
+        [MaxLength(500)]
+        public string? ProfilePictureUrl { get; set; }
+
+        [MaxLength(20)]
+        public string? PhoneNumber { get; set; }
+
+        [MaxLength(500)]
+        public string? Bio { get; set; }
+
+        // Propriedades de Navegação
         public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
+        public ICollection<ClubMember> ClubMemberships { get; set; } = new List<ClubMember>();
+        public ICollection<MediaList> MediaLists { get; set; } = new List<MediaList>();
     }
 }
 

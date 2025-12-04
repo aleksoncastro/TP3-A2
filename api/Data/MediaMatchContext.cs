@@ -31,8 +31,12 @@ namespace MediaMatch.Data
         public DbSet<Episode> Episodes { get; set; }
         public DbSet<Club> Clubs { get; set; }
         public DbSet<ClubMember> ClubMembers { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<PostImage> PostImages { get; set; }
+        public DbSet<Comment> Comments { get; set; }
         public DbSet<MediaList> MediaLists { get; set; }
         public DbSet<MediaListItem> MediaListItems { get; set; }
+        public DbSet<MediaListComment> MediaListComments { get; set; }
 
         // --- TADB (Música) ---
         public DbSet<Artist> Artists { get; set; }
@@ -173,7 +177,7 @@ namespace MediaMatch.Data
 
             modelBuilder.Entity<ClubMember>()
                 .HasOne(cm => cm.User)
-                .WithMany() // Adicione ICollection<ClubMember> em User se quiser navegar User -> Clubes
+                .WithMany(u => u.ClubMemberships) // Navegação reversa User -> Clubes
                 .HasForeignKey(cm => cm.UserId)
                 .OnDelete(DeleteBehavior.Restrict); // Evita apagar User e levar o clube junto incorretamente
 
@@ -185,13 +189,45 @@ namespace MediaMatch.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             // ============================================================
+            // CONFIGURAÇÃO DE POSTS E COMENTÁRIOS
+            // ============================================================
+
+            // Post pertence a um Clube
+            modelBuilder.Entity<Post>()
+                .HasOne(p => p.Club)
+                .WithMany()
+                .HasForeignKey(p => p.ClubId)
+                .OnDelete(DeleteBehavior.Cascade); // Apagar clube apaga os posts
+
+            // Post pertence a um Autor (User)
+            modelBuilder.Entity<Post>()
+                .HasOne(p => p.Author)
+                .WithMany()
+                .HasForeignKey(p => p.AuthorId)
+                .OnDelete(DeleteBehavior.Restrict); // Não apagar user ao apagar post
+
+            // Comment pertence a um Post
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.Post)
+                .WithMany(p => p.Comments)
+                .HasForeignKey(c => c.PostId)
+                .OnDelete(DeleteBehavior.Cascade); // Apagar post apaga os comentários
+
+            // Comment pertence a um Autor (User)
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.Author)
+                .WithMany()
+                .HasForeignKey(c => c.AuthorId)
+                .OnDelete(DeleteBehavior.Restrict); // Não apagar user ao apagar comentário
+
+            // ============================================================
             // CONFIGURAÇÃO DE LISTAS (MediaList)
             // ============================================================
 
             // Lista pertencente a Usuário
             modelBuilder.Entity<MediaList>()
                 .HasOne(ml => ml.User)
-                .WithMany() // Adicione ICollection<MediaList> em User se quiser
+                .WithMany(u => u.MediaLists) // Navegação reversa User -> MediaLists
                 .HasForeignKey(ml => ml.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 

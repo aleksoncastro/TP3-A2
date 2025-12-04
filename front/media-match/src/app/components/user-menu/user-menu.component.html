@@ -1,0 +1,56 @@
+<div class="user-menu">
+  <button mat-button [matMenuTriggerFor]="menu" class="user-menu-button">
+    <span class="user-avatar">
+      <img 
+        *ngIf="userProfile?.profilePictureUrl" 
+        [src]="getImageUrl(userProfile?.profilePictureUrl)" 
+        alt="Avatar"
+        class="avatar-image"
+      />
+      <span *ngIf="!userProfile?.profilePictureUrl" class="avatar-placeholder">
+        {{ getUserInitials() }}
+      </span>
+    </span>
+    <span class="user-name">{{ userProfile?.userName || 'Usuário' }}</span>
+    <mat-icon>keyboard_arrow_down</mat-icon>
+  </button>
+
+  <mat-menu #menu="matMenu" class="user-dropdown-menu">
+    <div class="menu-header">
+      <div class="user-avatar-large">
+        <img 
+          *ngIf="userProfile?.profilePictureUrl" 
+          [src]="getImageUrl(userProfile?.profilePictureUrl)" 
+          alt="Avatar"
+          class="avatar-image"
+        />
+        <div *ngIf="!userProfile?.profilePictureUrl" class="avatar-placeholder">
+          {{ getUserInitials() }}
+        </div>
+      </div>
+      <div class="user-info">
+        <div class="user-name-large">{{ userProfile?.userName }}</div>
+        <div class="user-email">{{ userProfile?.email }}</div>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <button mat-menu-item routerLink="/perfil">
+      <mat-icon>person</mat-icon>
+      <span>Ver Perfil</span>
+    </button>
+
+    <button mat-menu-item *ngIf="isAdmin" routerLink="/admin/dashboard">
+      <mat-icon>admin_panel_settings</mat-icon>
+      <span>Painel Admin</span>
+    </button>
+
+    <mat-divider></mat-divider>
+
+    <button mat-menu-item (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      <span>Sair</span>
+    </button>
+  </mat-menu>
+</div>

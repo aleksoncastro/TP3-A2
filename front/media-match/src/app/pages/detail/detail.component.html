@@ -33,15 +33,27 @@
     <brn-separator class="my-6 separator-line"></brn-separator>
 
     <h2 class="section-heading">Trilha Sonora Oficial</h2>
-    <ng-container *ngIf="soundtrack$ | async as s">
-      <div class="spotify-container">
-        <div class="album-info" *ngIf="s.album">
-           <h3>{{ s.album.name }}</h3>
-           <p>{{ s.album.artists ? s.album.artists.join(', ') : '' }}</p>
+    <ng-container *ngIf="soundtrack$ | async as state">
+      <!-- Loading State -->
+      <div *ngIf="state.loading" class="soundtrack-loading">
+        <div class="spinner"></div>
+        <p class="loading-text">Buscando trilha sonora no Spotify...</p>
+      </div>
+
+      <!-- Error State -->
+      <div *ngIf="state.error && !state.loading" class="soundtrack-error">
+        <p>❌ Não foi possível carregar a trilha sonora.</p>
+      </div>
+
+      <!-- Success State -->
+      <div *ngIf="state.data && !state.loading && !state.error" class="spotify-container">
+        <div class="album-info" *ngIf="state.data.album">
+           <h3>{{ state.data.album.name }}</h3>
+           <p>{{ state.data.album.artists ? state.data.album.artists.join(', ') : '' }}</p>
         </div>
         
         <iframe 
-          *ngIf="spotifyEmbed(s.album.id) as embedUrl" 
+          *ngIf="spotifyEmbed(state.data.album.id) as embedUrl" 
           [src]="embedUrl" 
           width="100%" 
           height="152" 
@@ -52,9 +64,11 @@
           style="border-radius: 12px;">
         </iframe>
       </div>
+
+      <!-- No Soundtrack Found -->
+      <div *ngIf="!state.data && !state.loading && !state.error" class="soundtrack-not-found">
+        <p>🎵 Trilha sonora não encontrada no Spotify.</p>
+      </div>
     </ng-container>
-    
-    <ng-template #noSoundtrack>
-       </ng-template>
   </section>
 </ng-container>

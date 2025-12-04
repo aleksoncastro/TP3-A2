@@ -1,5 +1,98 @@
-.container { padding: 16px; }
-.filters { display: flex; gap: 12px; align-items: center; margin-bottom: 12px; }
-table { width: 100%; }
-mat-form-field { width: 200px; }
+.container { 
+  padding: 24px; 
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+h2 {
+  color: #E50914;
+  font-size: 2rem;
+  margin-bottom: 24px;
+  font-weight: 700;
+}
+
+.filters { 
+  display: flex; 
+  gap: 16px; 
+  align-items: center; 
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+table { 
+  width: 100%;
+  background: #1E1E1E;
+}
+
+mat-form-field { 
+  width: 200px;
+}
+
+/* Material Theme Overrides for Dark Theme */
+::ng-deep .admin-users-component .mat-mdc-text-field-wrapper {
+  background-color: #1E1E1E !important;
+}
+
+::ng-deep .admin-users-component .mat-mdc-form-field .mat-mdc-input-element {
+  color: #F5F5F5 !important;
+}
+
+::ng-deep .admin-users-component .mat-mdc-form-field .mat-mdc-floating-label {
+  color: #B3B3B3 !important;
+}
+
+::ng-deep .admin-users-component .mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
+  color: #E50914 !important;
+}
+
+::ng-deep .admin-users-component .mat-mdc-select {
+  color: #F5F5F5 !important;
+}
+
+::ng-deep .admin-users-component .mat-mdc-select-value {
+  color: #F5F5F5 !important;
+}
+
+::ng-deep .admin-users-component .mat-mdc-table {
+  background: #1E1E1E !important;
+}
+
+::ng-deep .admin-users-component .mat-mdc-header-cell {
+  color: #E50914 !important;
+  font-weight: 600 !important;
+  background: #141414 !important;
+}
+
+::ng-deep .admin-users-component .mat-mdc-cell {
+  color: #F5F5F5 !important;
+  border-bottom-color: #333 !important;
+}
+
+::ng-deep .admin-users-component .mat-mdc-row:hover {
+  background: #2A2A2A !important;
+}
+
+::ng-deep .admin-users-component .mat-mdc-paginator {
+  background: #1E1E1E !important;
+  color: #F5F5F5 !important;
+}
+
+::ng-deep .admin-users-component .mat-mdc-button.mat-primary {
+  background-color: #E50914 !important;
+  color: white !important;
+}
+
+::ng-deep .admin-users-component .mat-mdc-outlined-button.mat-primary {
+  border-color: #E50914 !important;
+  color: #E50914 !important;
+}
+
+::ng-deep .admin-users-component .mat-mdc-outlined-button.mat-warn {
+  border-color: #B3B3B3 !important;
+  color: #B3B3B3 !important;
+}
+
+::ng-deep .admin-users-component .mat-mdc-outlined-button:hover {
+  background-color: rgba(229, 9, 20, 0.1) !important;
+}
 

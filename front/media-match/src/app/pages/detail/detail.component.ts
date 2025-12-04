@@ -2,7 +2,13 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl, Title } from '@angular/platform-browser'; // Importações adicionadas
-import { Observable, switchMap, map, shareReplay } from 'rxjs';
+import { Observable, switchMap, map, shareReplay, startWith, catchError, of } from 'rxjs';
+
+interface SoundtrackState {
+  loading: boolean;
+  data?: SoundtrackDto;
+  error?: boolean;
+}
 
 // Seus imports de serviço
 import { MoviesService } from '../../services/movies.service';
@@ -32,7 +38,7 @@ export class DetailComponent implements OnInit {
 
   details$!: Observable<any>;
   credits$!: Observable<any>;
-  soundtrack$!: Observable<SoundtrackDto>;
+  soundtrack$!: Observable<SoundtrackState>;
 
  ngOnInit(): void {
   this.details$ = this.route.data.pipe(
@@ -94,8 +100,15 @@ export class DetailComponent implements OnInit {
       return this.route.paramMap.pipe(
         switchMap((p) => {
           const id = Number(p.get('id'));
-          if (kind === 'movie') return this.soundtrack.getMovieSoundtrack(id);
-          return this.soundtrack.getTvSoundtrack(id);
+          const request$ = kind === 'movie' 
+            ? this.soundtrack.getMovieSoundtrack(id)
+            : this.soundtrack.getTvSoundtrack(id);
+          
+          return request$.pipe(
+            map(data => ({ loading: false, data })),
+            catchError(() => of({ loading: false, error: true })),
+            startWith({ loading: true })
+          );
         })
       );
     })

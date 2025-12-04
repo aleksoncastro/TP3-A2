@@ -1,0 +1,58 @@
+<div class="admin-dashboard">
+  <div class="dashboard-header">
+    <h1>
+      <mat-icon>admin_panel_settings</mat-icon>
+      Painel de Administração
+    </h1>
+    <p>Gerencie usuários, clubes e conteúdo da plataforma</p>
+  </div>
+
+  <div class="dashboard-grid">
+    <mat-card 
+      *ngFor="let card of adminCards" 
+      class="admin-card"
+    >
+      <mat-card-header>
+        <div class="card-icon">
+          <mat-icon>{{ card.icon }}</mat-icon>
+        </div>
+        <mat-card-title>{{ card.title }}</mat-card-title>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <p>{{ card.description }}</p>
+      </mat-card-content>
+      
+      <mat-card-actions>
+        <a mat-raised-button color="primary" [routerLink]="card.route">
+          Acessar
+          <mat-icon>arrow_forward</mat-icon>
+        </a>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <div class="dashboard-info">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Informações Importantes</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ul>
+          <li>
+            <mat-icon>check_circle</mat-icon>
+            Como administrador do sistema, você pode deletar posts e comentários de qualquer clube
+          </li>
+          <li>
+            <mat-icon>check_circle</mat-icon>
+            As permissões de administrador são diferentes das permissões de dono/moderador de clube
+          </li>
+          <li>
+            <mat-icon>check_circle</mat-icon>
+            Use suas permissões com responsabilidade para manter a comunidade saudável
+          </li>
+        </ul>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

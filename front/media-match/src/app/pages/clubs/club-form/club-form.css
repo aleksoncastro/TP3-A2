@@ -1,0 +1,257 @@
+:host {
+  --background: #141414;
+  --foreground: #F5F5F5;
+  --card: #1E1E1E;
+  --card-hover: #2A2A2A;
+  --primary: #E50914;
+  --border: #333333;
+  --text-secondary: #B0B0B0;
+}
+
+.club-form-container {
+  min-height: 100vh;
+  background: var(--background);
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.form-card {
+  max-width: 600px;
+  width: 100%;
+  background: var(--card) !important;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-top: 2rem;
+}
+
+.form-card h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin: 0;
+}
+
+mat-card-header {
+  padding: 1.5rem 1.5rem 0;
+}
+
+mat-card-content {
+  padding: 1.5rem;
+}
+
+/* Image Section */
+.image-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  border: 2px dashed var(--border);
+  transition: border-color 0.3s ease;
+}
+
+.image-section:hover {
+  border-color: var(--primary);
+}
+
+.image-preview {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.image-preview img {
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: cover;
+  display: block;
+}
+
+.remove-image-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.8) !important;
+  color: white !important;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.remove-image-btn:hover {
+  background: var(--primary) !important;
+  transform: scale(1.1);
+}
+
+.image-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 3rem 2rem;
+  color: var(--text-secondary);
+  min-height: 200px;
+}
+
+.image-placeholder mat-icon {
+  font-size: 72px;
+  width: 72px;
+  height: 72px;
+  opacity: 0.4;
+  color: var(--primary);
+}
+
+.image-placeholder p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* Form Fields */
+.full-width {
+  width: 100%;
+}
+
+::ng-deep .club-form-container .mat-mdc-form-field {
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+::ng-deep .club-form-container .mat-mdc-text-field-wrapper {
+  background: var(--card-hover) !important;
+  border-radius: 8px;
+}
+
+::ng-deep .club-form-container .mat-mdc-form-field-focus-overlay {
+  background: transparent !important;
+}
+
+::ng-deep .club-form-container .mdc-text-field--outlined .mdc-notched-outline__leading,
+::ng-deep .club-form-container .mdc-text-field--outlined .mdc-notched-outline__notch,
+::ng-deep .club-form-container .mdc-text-field--outlined .mdc-notched-outline__trailing {
+  border-color: var(--border) !important;
+  border-width: 1px;
+}
+
+::ng-deep .club-form-container .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+::ng-deep .club-form-container .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+::ng-deep .club-form-container .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+  border-color: var(--primary) !important;
+  border-width: 2px;
+}
+
+::ng-deep .club-form-container .mat-mdc-input-element,
+::ng-deep .club-form-container .mat-mdc-form-field textarea {
+  color: var(--foreground) !important;
+  caret-color: var(--primary);
+}
+
+::ng-deep .club-form-container .mat-mdc-form-field-label,
+::ng-deep .club-form-container .mat-mdc-floating-label {
+  color: var(--text-secondary) !important;
+}
+
+::ng-deep .club-form-container .mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
+  color: var(--primary) !important;
+}
+
+::ng-deep .club-form-container .mat-mdc-form-field-hint {
+  color: var(--text-secondary) !important;
+}
+
+::ng-deep .club-form-container .mat-mdc-form-field-error {
+  color: var(--primary) !important;
+  font-size: 0.85rem;
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.form-actions button {
+  min-width: 120px;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+  padding: 0.5rem 1.5rem;
+}
+
+::ng-deep .club-form-container .mat-mdc-raised-button.mat-primary {
+  background-color: var(--primary) !important;
+  color: white !important;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+::ng-deep .club-form-container .mat-mdc-raised-button.mat-primary:hover:not([disabled]) {
+  background-color: #C40812 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(229, 9, 20, 0.4);
+}
+
+::ng-deep .club-form-container .mat-mdc-raised-button.mat-primary[disabled] {
+  background-color: rgba(229, 9, 20, 0.3) !important;
+  color: rgba(255, 255, 255, 0.5) !important;
+  cursor: not-allowed;
+}
+
+::ng-deep .club-form-container .mat-mdc-button {
+  color: var(--foreground) !important;
+  transition: background-color 0.3s ease;
+}
+
+::ng-deep .club-form-container .mat-mdc-button:hover:not([disabled]) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+::ng-deep .club-form-container .mat-mdc-button[disabled] {
+  color: var(--text-secondary) !important;
+  cursor: not-allowed;
+}
+
+/* Loading Spinner */
+::ng-deep .club-form-container .mat-mdc-raised-button mat-spinner {
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+::ng-deep .club-form-container mat-spinner circle {
+  stroke: white !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .club-form-container {
+    padding: 1rem;
+  }
+
+  .form-card {
+    margin-top: 1rem;
+  }
+
+  .form-card h1 {
+    font-size: 1.5rem;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+}

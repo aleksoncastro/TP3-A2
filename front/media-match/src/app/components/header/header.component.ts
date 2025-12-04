@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { SearchService } from '../../services/search.service';
+import { AuthService } from '../../services/auth.service';
+import { UserMenuComponent } from '../user-menu/user-menu.component';
 import { BrnNavigationMenuImports } from '@spartan-ng/brain/navigation-menu';
 import { BrnButtonImports } from '@spartan-ng/brain/button';
 import { BrnLabelImports } from '@spartan-ng/brain/label';
@@ -16,6 +18,7 @@ import { debounceTime, distinctUntilChanged, switchMap, map, tap } from 'rxjs/op
     CommonModule,
     RouterModule,
     FormsModule,
+    UserMenuComponent,
     BrnNavigationMenuImports,
     BrnButtonImports,
     BrnLabelImports,
@@ -26,7 +29,8 @@ import { debounceTime, distinctUntilChanged, switchMap, map, tap } from 'rxjs/op
 export class HeaderComponent implements OnDestroy {
   private readonly router = inject(Router);
   private readonly searchService = inject(SearchService);
-  private readonly cdr = inject(ChangeDetectorRef); // <--- Injeção necessária para forçar atualização da tela
+  private readonly cdr = inject(ChangeDetectorRef);
+  readonly authService = inject(AuthService);
 
   q = '';
   private searchSubject = new Subject<string>();

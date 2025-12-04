@@ -1,0 +1,391 @@
+.profile-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.profile-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* =========================================
+   HEADER DO PERFIL
+   ========================================= */
+.profile-header-card {
+  padding: 2rem;
+  background-color: var(--card) !important;
+  color: var(--card-foreground) !important;
+}
+
+.profile-header {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.avatar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatar-large {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-weight: 700;
+  font-size: 36px;
+}
+
+.avatar-upload button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.profile-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.profile-name {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: var(--foreground);
+}
+
+.profile-email {
+  font-size: 1rem;
+  color: var(--muted-foreground);
+  margin: 0 0 1rem 0;
+}
+
+.profile-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.profile-role {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--muted);
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.profile-role.admin {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.profile-role mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.profile-joined {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+}
+
+.header-actions {
+  display: flex;
+  align-items: flex-start;
+}
+
+.header-actions button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* =========================================
+   FORMULÁRIO
+   ========================================= */
+.profile-form-card {
+  padding: 2rem;
+  background-color: var(--card) !important;
+  color: var(--card-foreground) !important;
+}
+
+.profile-form-card h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 1.5rem 0;
+  color: var(--foreground);
+}
+
+.form-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.bio-field textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* Inputs customizados (igual search/club-list) */
+.profile-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.profile-input-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--input);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.profile-input-inner:focus-within {
+  border-color: var(--ring);
+  background-color: var(--card);
+}
+
+.profile-input-icon {
+  color: var(--muted-foreground);
+}
+
+.profile-input-inner input,
+.profile-input-inner textarea {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+}
+
+.profile-input-inner input::placeholder,
+.profile-input-inner textarea::placeholder {
+  color: var(--muted-foreground);
+}
+
+.profile-input-error span {
+  display: block;
+  font-size: 0.8rem;
+  color: #f87171; /* vermelho suave */
+}
+
+.profile-input-hint {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  text-align: right;
+}
+
+.profile-textarea-inner textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.profile-input-wrapper.readonly .profile-input-inner {
+  opacity: 0.7;
+  cursor: default;
+}
+::ng-deep .profile-form-card .mat-mdc-form-field:has([readonly]).mat-focused .mdc-notched-outline__leading,
+::ng-deep .profile-form-card .mat-mdc-form-field:has([readonly]).mat-focused .mdc-notched-outline__notch,
+::ng-deep .profile-form-card .mat-mdc-form-field:has([readonly]).mat-focused .mdc-notched-outline__trailing {
+  border-color: var(--border) !important;
+}
+
+/* Focus - igual ao header (muda para --card e borda --ring) */
+::ng-deep .profile-form-card .mat-mdc-form-field.mat-focused .mat-mdc-text-field-wrapper {
+  background-color: var(--card) !important;
+}
+
+::ng-deep .profile-form-card .mat-mdc-form-field.mat-focused .mat-mdc-form-field-flex {
+  background-color: var(--card) !important;
+}
+
+::ng-deep .profile-form-card .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+::ng-deep .profile-form-card .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+::ng-deep .profile-form-card .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+  border-color: var(--ring) !important;
+}
+
+/* Input - igual ao header */
+::ng-deep .profile-form-card .mat-mdc-input-element {
+  color: var(--foreground) !important;
+  caret-color: var(--primary) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 0.9rem !important;
+}
+
+::ng-deep .profile-form-card .mat-mdc-input-element::placeholder {
+  color: var(--muted-foreground) !important;
+}
+
+::ng-deep .profile-form-card textarea.mat-mdc-input-element {
+  line-height: 1.5;
+}
+
+/* Labels */
+::ng-deep .profile-form-card .mat-mdc-form-field-label,
+::ng-deep .profile-form-card .mdc-floating-label {
+  color: var(--muted-foreground) !important;
+}
+
+::ng-deep .profile-form-card .mat-mdc-form-field.mat-focused .mat-mdc-form-field-label,
+::ng-deep .profile-form-card .mat-mdc-form-field.mat-focused .mdc-floating-label {
+  color: var(--primary) !important;
+}
+
+/* Ícones */
+::ng-deep .profile-form-card .mat-icon[matIconPrefix],
+::ng-deep .profile-form-card .mat-icon[matIconSuffix] {
+  color: var(--muted-foreground) !important;
+  font-size: 20px !important;
+  width: 20px !important;
+  height: 20px !important;
+}
+
+::ng-deep .profile-form-card .mat-mdc-form-field.mat-focused .mat-icon[matIconPrefix],
+::ng-deep .profile-form-card .mat-mdc-form-field.mat-focused .mat-icon[matIconSuffix] {
+  color: var(--primary) !important;
+}
+
+/* Estado readonly */
+::ng-deep .profile-form-card .mat-mdc-input-element[readonly],
+::ng-deep .profile-form-card textarea[readonly] {
+  color: var(--foreground) !important;
+  opacity: 0.7;
+  cursor: default;
+}
+
+::ng-deep .profile-form-card .mat-mdc-form-field:has(input[readonly]) .mdc-notched-outline__leading,
+::ng-deep .profile-form-card .mat-mdc-form-field:has(input[readonly]) .mdc-notched-outline__notch,
+::ng-deep .profile-form-card .mat-mdc-form-field:has(input[readonly]) .mdc-notched-outline__trailing,
+::ng-deep .profile-form-card .mat-mdc-form-field:has(textarea[readonly]) .mdc-notched-outline__leading,
+::ng-deep .profile-form-card .mat-mdc-form-field:has(textarea[readonly]) .mdc-notched-outline__notch,
+::ng-deep .profile-form-card .mat-mdc-form-field:has(textarea[readonly]) .mdc-notched-outline__trailing {
+  border-color: var(--border) !important;
+  opacity: 0.5;
+}
+
+/* Hints e Erros */
+::ng-deep .profile-form-card .mat-mdc-form-field-hint {
+  color: var(--muted-foreground) !important;
+  font-size: 12px;
+}
+
+::ng-deep .profile-form-card .mat-mdc-form-field-error {
+  color: var(--destructive) !important;
+  font-size: 12px;
+}
+
+::ng-deep .profile-form-card .mat-mdc-form-field.mat-focused .mat-mdc-form-field-hint {
+  color: var(--primary) !important;
+}
+
+.form-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.form-actions button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+}
+
+/* =========================================
+   LOADING STATE
+   ========================================= */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  gap: 1rem;
+}
+
+.loading-container p {
+  font-size: 1rem;
+  color: var(--muted-foreground);
+}
+
+/* =========================================
+   RESPONSIVIDADE
+   ========================================= */
+@media (max-width: 768px) {
+  .profile-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .profile-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profile-meta {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .header-actions {
+    width: 100%;
+  }
+
+  .header-actions button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .form-actions {
+    justify-content: stretch;
+  }
+
+  .form-actions button {
+    width: 100%;
+    justify-content: center;
+  }
+}

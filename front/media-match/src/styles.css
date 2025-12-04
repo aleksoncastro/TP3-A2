@@ -122,5 +122,28 @@ body {
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* Dark Dialog Styles */
+.dark-dialog .mat-mdc-dialog-container {
+  background-color: #1E1E1E !important;
+  color: #F5F5F5 !important;
+}
+
+.dark-dialog .mat-mdc-dialog-container .mdc-dialog__surface {
+  background-color: #1E1E1E !important;
+}
+
+.dark-dialog .mat-mdc-button:not(.mat-mdc-raised-button) {
+  color: #B3B3B3 !important;
+}
+
+.dark-dialog .mat-mdc-button:not(.mat-mdc-raised-button):hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.dark-dialog h2 {
+  color: #F5F5F5 !important;
+}
+
+.dark-dialog p {
+  color: #E0E0E0 !important;
+}

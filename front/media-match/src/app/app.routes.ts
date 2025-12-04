@@ -22,5 +22,20 @@ export const routes: Routes = [
       { path: 'register', loadComponent: () => import('./auth/components/register/register.component').then(m => m.RegisterComponent) },
     ],
   },
+  // Profile route
+  { path: 'perfil', loadComponent: () => import('./pages/profile/profile.component').then(m => m.ProfileComponent) },
+  
+  // Admin routes
   { path: 'admin', loadComponent: () => import('./pages/admin-users/admin-users.component').then(m => m.AdminUsersComponent), canMatch: [AdminGuard] },
+  { path: 'admin/dashboard', loadComponent: () => import('./pages/admin-dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent), canMatch: [AdminGuard] },
+  
+  // Club routes
+  { path: 'clubs', loadComponent: () => import('./pages/clubs/club-list/club-list.component').then(m => m.ClubListComponent) },
+  { path: 'clubs/new', loadComponent: () => import('./pages/clubs/club-form/club-form').then(m => m.ClubFormComponent) },
+  { path: 'clubs/:id', loadComponent: () => import('./pages/clubs/club-detail/club-detail').then(m => m.ClubDetailComponent) },
+  { path: 'clubs/:id/edit', loadComponent: () => import('./pages/clubs/club-form/club-form').then(m => m.ClubFormComponent) },
+  
+  // Redirects
+  { path: 'login', redirectTo: 'auth/login' },
+  { path: 'register', redirectTo: 'auth/register' },
 ];

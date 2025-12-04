@@ -14,17 +14,22 @@ namespace MediaMatch.Services
     {
         Task<AuthResponseDto> RegisterAsync(RegisterDto dto);
         Task<AuthResponseDto> LoginAsync(LoginDto dto);
+        Task<UserProfileDto> GetUserProfileAsync(int userId);
+        Task<UserProfileDto> UpdateProfileAsync(int userId, UpdateProfileDto dto);
+        Task<string> UpdateProfilePictureAsync(int userId, IFormFile file);
     }
 
     public class AuthService : IAuthService
     {
         private readonly MediaMatchContext _context;
         private readonly IConfiguration _configuration;
+        private readonly FileUploadService _fileUploadService;
 
-        public AuthService(MediaMatchContext context, IConfiguration configuration)
+        public AuthService(MediaMatchContext context, IConfiguration configuration, FileUploadService fileUploadService)
         {
             _context = context;
             _configuration = configuration;
+            _fileUploadService = fileUploadService;
         }
 
         public async Task<AuthResponseDto> RegisterAsync(RegisterDto dto)
@@ -132,6 +137,82 @@ namespace MediaMatch.Services
         {
             if (string.Equals(name, "Membro", StringComparison.OrdinalIgnoreCase)) return "user";
             return name;
+        }
+
+        public async Task<UserProfileDto> GetUserProfileAsync(int userId)
+        {
+            var user = await _context.Users
+                .Include(u => u.UserRoles)
+                .ThenInclude(ur => ur.Role)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+                throw new Exception("Usuário não encontrado.");
+
+            var roleName = user.UserRoles.FirstOrDefault()?.Role.Name ?? "user";
+            roleName = NormalizeRoleName(roleName);
+
+            return new UserProfileDto
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                ProfilePictureUrl = user.ProfilePictureUrl,
+                PhoneNumber = user.PhoneNumber,
+                Bio = user.Bio,
+                CreatedAt = user.CreatedAt,
+                Role = roleName
+            };
+        }
+
+        public async Task<UserProfileDto> UpdateProfileAsync(int userId, UpdateProfileDto dto)
+        {
+            var user = await _context.Users
+                .Include(u => u.UserRoles)
+                .ThenInclude(ur => ur.Role)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+                throw new Exception("Usuário não encontrado.");
+
+            // Atualiza apenas campos fornecidos
+            if (!string.IsNullOrWhiteSpace(dto.UserName))
+                user.UserName = dto.UserName;
+
+            if (!string.IsNullOrWhiteSpace(dto.Email))
+            {
+                // Verifica se email já está em uso
+                var emailExists = await _context.Users.AnyAsync(u => u.Email == dto.Email && u.Id != userId);
+                if (emailExists)
+                    throw new Exception("Email já cadastrado.");
+                
+                user.Email = dto.Email;
+            }
+
+            if (dto.PhoneNumber != null)
+                user.PhoneNumber = dto.PhoneNumber;
+
+            if (dto.Bio != null)
+                user.Bio = dto.Bio;
+
+            await _context.SaveChangesAsync();
+
+            return await GetUserProfileAsync(userId);
+        }
+
+        public async Task<string> UpdateProfilePictureAsync(int userId, IFormFile file)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+                throw new Exception("Usuário não encontrado.");
+
+            // Remove imagem antiga se existir e faz upload da nova
+            var imageUrl = await _fileUploadService.UploadImageAsync(file, "avatars", user.ProfilePictureUrl);
+            user.ProfilePictureUrl = imageUrl;
+
+            await _context.SaveChangesAsync();
+
+            return imageUrl;
         }
     }
 }

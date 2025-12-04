@@ -1,0 +1,181 @@
+.admin-dashboard {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.dashboard-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.dashboard-header h1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  color: #E50914;
+}
+
+.dashboard-header h1 mat-icon {
+  font-size: 3rem;
+  width: 3rem;
+  height: 3rem;
+  color: #E50914;
+}
+
+.dashboard-header p {
+  font-size: 1.125rem;
+  color: #B3B3B3;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.admin-card {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.admin-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: #E50914;
+}
+
+.admin-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.admin-card mat-card-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.5rem;
+}
+
+.card-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  background: #E50914;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-icon mat-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+  color: white;
+}
+
+::ng-deep .admin-card .mat-mdc-card-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  color: #F5F5F5;
+}
+
+.admin-card mat-card-content {
+  padding: 0 1.5rem 1.5rem 1.5rem;
+}
+
+.admin-card mat-card-content p {
+  color: #B3B3B3;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.admin-card mat-card-actions {
+  padding: 1.5rem;
+  border-top: 1px solid #333;
+}
+
+.admin-card mat-card-actions a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  justify-content: center;
+}
+
+::ng-deep .admin-dashboard .mat-mdc-card {
+  background: #1E1E1E !important;
+  border: 1px solid #333 !important;
+}
+
+::ng-deep .admin-dashboard .mat-mdc-button.mat-primary {
+  background-color: #E50914 !important;
+  color: white !important;
+}
+
+.dashboard-info {
+  margin-top: 3rem;
+}
+
+.dashboard-info mat-card {
+  background: #1E1E1E !important;
+  border: 1px solid #E50914 !important;
+}
+
+.dashboard-info mat-card-header {
+  padding: 1.5rem 1.5rem 0 1.5rem;
+}
+
+::ng-deep .dashboard-info .mat-mdc-card-title {
+  color: #E50914;
+}
+
+.dashboard-info mat-card-content {
+  padding: 1.5rem;
+}
+
+.dashboard-info ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.dashboard-info li {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  color: #F5F5F5;
+}
+
+.dashboard-info li mat-icon {
+  color: #E50914;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+@media (max-width: 768px) {
+  .dashboard-header h1 {
+    font-size: 2rem;
+    flex-direction: column;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}

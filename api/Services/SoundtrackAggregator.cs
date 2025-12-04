@@ -31,24 +31,26 @@ namespace MediaMatch.Services
             var cacheKey = $"movie|{title}|{year}|{composer}";
             if (!AlbumCache.TryGetValue(cacheKey, out var album) || album == null)
             {
-                var albumTasks = new List<Task<SpotifyService.SpotifyAlbum?>>
-                {
-                    _spotify.SearchAlbumAsync(title, year, composer),
-                    _spotify.SearchAlbumAsync(title, year, null),
-                    _spotify.SearchAlbumBasicAsync(title, year),
-                    _spotify.SearchAlbumLooseAsync($"{title} soundtrack")
-                };
-                while (albumTasks.Count > 0)
-                {
-                    var done = await Task.WhenAny(albumTasks);
-                    var candidate = await done;
-                    if (candidate != null)
-                    {
-                        album = candidate;
-                        break;
-                    }
-                    albumTasks.Remove(done);
-                }
+                // Tenta múltiplas estratégias de busca em ordem de prioridade
+                // Para no primeiro resultado que passar na validação
+                album = await _spotify.SearchAlbumAsync(title, year, composer);
+                
+                if (album == null)
+                    album = await _spotify.SearchAlbumAsync(title, year, null);
+                    
+                if (album == null)
+                    album = await _spotify.SearchAlbumBasicAsync(title, year);
+                    
+                // Apenas tenta buscas mais genéricas se as anteriores falharam
+                if (album == null)
+                    album = await _spotify.SearchAlbumLooseAsync($"{title} soundtrack");
+                    
+                if (album == null)
+                    album = await _spotify.SearchAlbumLooseAsync($"{title} OST");
+                    
+                if (album == null)
+                    album = await _spotify.SearchAlbumLooseAsync($"{title} original score");
+                
                 AlbumCache[cacheKey] = album;
             }
             if (album == null) return null;
@@ -153,24 +155,29 @@ namespace MediaMatch.Services
             var cacheKey = $"tv|{title}|{year}|{composer}";
             if (!AlbumCache.TryGetValue(cacheKey, out var album) || album == null)
             {
-                var albumTasks = new List<Task<SpotifyService.SpotifyAlbum?>>
-                {
-                    _spotify.SearchAlbumAsync(title, year, composer),
-                    _spotify.SearchAlbumAsync(title, year, null),
-                    _spotify.SearchAlbumBasicAsync(title, year),
-                    _spotify.SearchAlbumLooseAsync($"{title} soundtrack")
-                };
-                while (albumTasks.Count > 0)
-                {
-                    var done = await Task.WhenAny(albumTasks);
-                    var candidate = await done;
-                    if (candidate != null)
-                    {
-                        album = candidate;
-                        break;
-                    }
-                    albumTasks.Remove(done);
-                }
+                // Tenta múltiplas estratégias de busca em ordem de prioridade
+                // Para no primeiro resultado que passar na validação
+                album = await _spotify.SearchAlbumAsync(title, year, composer);
+                
+                if (album == null)
+                    album = await _spotify.SearchAlbumAsync(title, year, null);
+                    
+                if (album == null)
+                    album = await _spotify.SearchAlbumBasicAsync(title, year);
+                    
+                // Apenas tenta buscas mais genéricas se as anteriores falharam
+                if (album == null)
+                    album = await _spotify.SearchAlbumLooseAsync($"{title} soundtrack");
+                    
+                if (album == null)
+                    album = await _spotify.SearchAlbumLooseAsync($"{title} OST");
+                    
+                if (album == null)
+                    album = await _spotify.SearchAlbumLooseAsync($"{title} television soundtrack");
+                    
+                if (album == null)
+                    album = await _spotify.SearchAlbumLooseAsync($"{title} original score");
+                
                 AlbumCache[cacheKey] = album;
             }
             if (album == null) return null;

@@ -1,4 +1,5 @@
 using MediaMatch.Data; 
+using MediaMatch.Middleware;
 using MediaMatch.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -9,6 +10,7 @@ using System.Threading.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using MediaMatch.Security;
+using System.Security.Claims;
 
 LoadEnv(Path.Combine(Directory.GetCurrentDirectory(), ".env"));
 var builder = WebApplication.CreateBuilder(args);
@@ -19,7 +21,13 @@ builder.Services.AddDbContext<MediaMatchContext>(options =>
     options.UseSqlServer(connectionString));
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        // Configurar serialização JSON para evitar referências circulares
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+        options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+    });
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -67,10 +75,13 @@ builder.Services.AddCors(options =>
 builder.Services.AddHttpClient<TmdbService>();
 builder.Services.AddHttpClient<SpotifyService>();
 builder.Services.AddScoped<ClubService>();
+builder.Services.AddScoped<PostService>();
+builder.Services.AddScoped<CommentService>();
 builder.Services.AddScoped<MediaListService>();
 builder.Services.AddScoped<MediaListItemService>();
 builder.Services.AddScoped<SoundtrackAggregator>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<FileUploadService>();
 
 builder.Services.AddRateLimiter(options =>
 {
@@ -94,7 +105,25 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+            NameClaimType = ClaimTypes.NameIdentifier,
+            RoleClaimType = ClaimTypes.Role
+        };
+        
+        options.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = context =>
+            {
+                var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
+                logger.LogError("Authentication failed: {Error}", context.Exception.Message);
+                return Task.CompletedTask;
+            },
+            OnTokenValidated = context =>
+            {
+                var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
+                logger.LogInformation("Token validated for user: {User}", context.Principal?.Identity?.Name ?? "Unknown");
+                return Task.CompletedTask;
+            }
         };
     });
 
@@ -119,7 +148,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Middleware de tratamento global de exceções (DEVE VIR ANTES de outros middlewares)
+app.UseMiddleware<ExceptionHandlerMiddleware>();
+
 app.UseHttpsRedirection();
+
+// Servir arquivos estáticos (imagens de upload)
+app.UseStaticFiles();
 
 app.UseCors("AllowAngularDev");
 
