@@ -20,6 +20,8 @@ export const routes: Routes = [
       { path: '', pathMatch: 'full', redirectTo: 'login' },
       { path: 'login', loadComponent: () => import('./auth/components/login/login.component').then(m => m.LoginComponent) },
       { path: 'register', loadComponent: () => import('./auth/components/register/register.component').then(m => m.RegisterComponent) },
+      { path: 'forgot-password', loadComponent: () => import('./auth/components/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent) },
+      { path: 'reset-password', loadComponent: () => import('./auth/components/reset-password/reset-password.component').then(m => m.ResetPasswordComponent) },
     ],
   },
   // Profile route
@@ -38,4 +40,6 @@ export const routes: Routes = [
   // Redirects
   { path: 'login', redirectTo: 'auth/login' },
   { path: 'register', redirectTo: 'auth/register' },
+  { path: 'forgot-password', redirectTo: 'auth/forgot-password' },
+  { path: 'reset-password', redirectTo: 'auth/reset-password' },
 ];

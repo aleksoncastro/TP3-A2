@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using MediaMatch.Security;
 using System.Security.Claims;
+using MediaMatch.Models;
 
 LoadEnv(Path.Combine(Directory.GetCurrentDirectory(), ".env"));
 var builder = WebApplication.CreateBuilder(args);
@@ -82,6 +83,7 @@ builder.Services.AddScoped<MediaListItemService>();
 builder.Services.AddScoped<SoundtrackAggregator>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<FileUploadService>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 builder.Services.AddRateLimiter(options =>
 {
@@ -164,6 +166,8 @@ app.UseRateLimiter();
 
 app.MapControllers();
 
+await EnsureSeedDataAsync(app.Services);
+
 app.Run();
 // temporario, uso de ENV para configurar as chaves da API do spotiy 
 // - lembrar de colocar aquelas das outras api aqui tb
@@ -184,5 +188,82 @@ static void LoadEnv(string path)
             value = value.Substring(1, value.Length - 2);
         }
         Environment.SetEnvironmentVariable(key, value);
+    }
+}
+
+static async Task EnsureSeedDataAsync(IServiceProvider services)
+{
+    using var scope = services.CreateScope();
+    var context = scope.ServiceProvider.GetRequiredService<MediaMatchContext>();
+    var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+    var loggerFactory = scope.ServiceProvider.GetRequiredService<ILoggerFactory>();
+    var logger = loggerFactory.CreateLogger("DatabaseSeeder");
+
+    try
+    {
+        await context.Database.MigrateAsync();
+
+        var roleNames = new[] { "admin", "user" };
+        var rolesCreated = false;
+
+        foreach (var roleName in roleNames)
+        {
+            var normalized = roleName.ToLower();
+            if (!await context.Roles.AnyAsync(r => r.Name.ToLower() == normalized))
+            {
+                context.Roles.Add(new Role { Name = normalized });
+                rolesCreated = true;
+            }
+        }
+
+        if (rolesCreated)
+        {
+            await context.SaveChangesAsync();
+            logger.LogInformation("Default roles ensured.");
+        }
+
+        var adminEmail = configuration["SeedAdmin:Email"] ?? Environment.GetEnvironmentVariable("SEED_ADMIN_EMAIL");
+        var adminPassword = configuration["SeedAdmin:Password"] ?? Environment.GetEnvironmentVariable("SEED_ADMIN_PASSWORD");
+        var adminUserName = configuration["SeedAdmin:UserName"] ?? Environment.GetEnvironmentVariable("SEED_ADMIN_USERNAME") ?? "admin";
+
+        if (string.IsNullOrWhiteSpace(adminEmail) || string.IsNullOrWhiteSpace(adminPassword))
+        {
+            logger.LogWarning("Seed admin credentials missing. Skipping admin user creation.");
+            return;
+        }
+
+        var adminRole = await context.Roles.FirstAsync(r => r.Name.ToLower() == "admin");
+
+        var adminUser = await context.Users
+            .Include(u => u.UserRoles)
+            .ThenInclude(ur => ur.Role)
+            .FirstOrDefaultAsync(u => u.Email == adminEmail);
+
+        if (adminUser == null)
+        {
+            adminUser = new User
+            {
+                UserName = adminUserName,
+                Email = adminEmail,
+                HashedPassword = BCrypt.Net.BCrypt.HashPassword(adminPassword),
+                CreatedAt = DateTime.UtcNow
+            };
+
+            context.Users.Add(adminUser);
+            await context.SaveChangesAsync();
+            logger.LogInformation("Seed admin user created with email {Email}.", adminEmail);
+        }
+
+        var hasAdminRole = adminUser.UserRoles.Any(ur => ur.RoleId == adminRole.Id);
+        if (!hasAdminRole)
+        {
+            context.UserRoles.Add(new UserRole { UserId = adminUser.Id, RoleId = adminRole.Id });
+            await context.SaveChangesAsync();
+            logger.LogInformation("Seed admin role ensured for {Email}.", adminEmail);
+        }
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "Error while seeding database.");
     }
 }

@@ -25,6 +25,9 @@
     <button mat-raised-button color="accent" *ngIf="club.isOwner" [routerLink]="['/clubs', clubId, 'edit']">
       <mat-icon>settings</mat-icon> Configurações do Clube
     </button>
+    <button mat-raised-button color="warn" class="delete-club-button" *ngIf="canDeleteClub()" (click)="deleteClub()">
+      <mat-icon>delete</mat-icon> Excluir Clube
+    </button>
   </div>
 
   <div class="auth-required-banner" *ngIf="!isAuthenticated">
@@ -42,7 +45,7 @@
   </app-media-lists>
 
   <!-- Create Post Section -->
-  <mat-card class="create-post-card" *ngIf="club.isMember">
+  <mat-card class="create-post-card" *ngIf="canCreatePosts()">
     <h3>Criar Post</h3>
     <div class="post-input-wrapper">
       <label class="post-input-label" for="clubPostInput">O que você está pensando?</label>
@@ -105,7 +108,7 @@
         <div class="author-info">
           <img 
             *ngIf="post.authorProfilePictureUrl" 
-            [src]="post.authorProfilePictureUrl" 
+            [src]="resolveAvatarSrc(post.authorProfilePictureUrl)" 
             [alt]="post.authorName"
             class="author-avatar-img"
             (error)="$any($event.target).style.display='none'; $any($event.target).nextElementSibling.style.display='block'">
@@ -183,15 +186,20 @@
         <mat-divider></mat-divider>
         
         <!-- New Comment -->
-        <div class="new-comment" *ngIf="club.isMember">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Adicionar comentário</mat-label>
-            <input 
-              matInput 
-              [(ngModel)]="newCommentContent[post.id]" 
-              placeholder="Escreva seu comentário..."
-              (keyup.enter)="createComment(post.id)">
-          </mat-form-field>
+        <div class="new-comment" *ngIf="canCreatePosts()">
+          <div class="app-input-wrapper comment-input-wrapper">
+            <label class="app-input-label" [attr.for]="'comment-' + post.id">Adicionar comentário</label>
+            <div class="app-input-inner">
+              <mat-icon class="app-input-icon">chat</mat-icon>
+              <input
+                [id]="'comment-' + post.id"
+                type="text"
+                [value]="newCommentContent[post.id] || ''"
+                (input)="handleCommentInput(post.id, $any($event.target).value)"
+                placeholder="Escreva seu comentário..."
+                (keyup.enter)="createComment(post.id)">
+            </div>
+          </div>
           <button 
             mat-icon-button 
             color="primary" 
@@ -207,7 +215,7 @@
             <div class="comment-header">
               <img 
                 *ngIf="comment.authorProfilePictureUrl" 
-                [src]="comment.authorProfilePictureUrl" 
+                [src]="resolveAvatarSrc(comment.authorProfilePictureUrl)" 
                 [alt]="comment.authorName"
                 class="comment-avatar-img"
                 (error)="$any($event.target).style.display='none'; $any($event.target).nextElementSibling.style.display='block'">

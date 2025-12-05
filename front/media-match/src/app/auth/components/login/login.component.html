@@ -15,8 +15,13 @@
         <mat-error *ngIf="form.controls.password.hasError('required')">Senha é obrigatória</mat-error>
         <mat-error *ngIf="form.controls.password.hasError('minlength')">Mínimo de 8 caracteres</mat-error>
       </mat-form-field>
-      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Entrar</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || loading">
+        {{ loading ? 'Entrando...' : 'Entrar' }}
+      </button>
     </form>
+    <button mat-button type="button" (click)="gotoForgotPassword()">
+      Esqueceu a senha?
+    </button>
     <button mat-button color="accent" (click)="gotoRegister()">
       <mat-icon>person_add</mat-icon>
       Criar conta

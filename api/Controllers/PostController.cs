@@ -43,9 +43,12 @@ namespace MediaMatch.Controllers
             [FromForm] CreatePostDto dto,
             List<IFormFile>? images)
         {
-            var userId = TryGetCurrentUserId() ?? 0;
-            var post = await _service.CreatePostAsync(clubId, dto, userId, images ?? new List<IFormFile>());
-            var postDto = post.ToDto(userId);
+            var userId = TryGetCurrentUserId();
+            if (!userId.HasValue)
+                return Unauthorized(new { message = "Token inválido ou ausente" });
+
+            var post = await _service.CreatePostAsync(clubId, dto, userId.Value, images ?? new List<IFormFile>());
+            var postDto = post.ToDto(userId.Value);
             return CreatedAtAction(nameof(GetPostById), new { clubId, postId = post.Id }, postDto);
         }
 
@@ -98,9 +101,12 @@ namespace MediaMatch.Controllers
             [FromForm] UpdatePostDto dto,
             List<IFormFile>? images)
         {
-            var userId = TryGetCurrentUserId() ?? 0;
-            var post = await _service.UpdatePostAsync(postId, dto, userId, images);
-            var postDto = post.ToDto(userId);
+            var userId = TryGetCurrentUserId();
+            if (!userId.HasValue)
+                return Unauthorized(new { message = "Token inválido ou ausente" });
+
+            var post = await _service.UpdatePostAsync(postId, dto, userId.Value, images);
+            var postDto = post.ToDto(userId.Value);
             return Ok(postDto);
         }
 
@@ -114,8 +120,11 @@ namespace MediaMatch.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeletePost([FromRoute] int clubId, [FromRoute] int postId)
         {
-            var userId = TryGetCurrentUserId() ?? 0;
-            await _service.DeletePostAsync(postId, userId);
+            var userId = TryGetCurrentUserId();
+            if (!userId.HasValue)
+                return Unauthorized(new { message = "Token inválido ou ausente" });
+
+            await _service.DeletePostAsync(postId, userId.Value);
             return NoContent();
         }
     }

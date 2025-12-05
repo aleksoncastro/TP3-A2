@@ -24,17 +24,26 @@ namespace MediaMatch.Services
         {
             try
             {
-                // Verificar se o clube existe
-                var club = await _context.Clubs.FindAsync(clubId);
-                if (club == null)
+                if (authorId <= 0)
+                    throw new ForbiddenException("Usuário não autenticado");
+
+                // Verificar se o clube existe e obter o ID do dono
+                var clubInfo = await _context.Clubs
+                    .Where(c => c.Id == clubId)
+                    .Select(c => new { c.Id, c.OwnerId })
+                    .FirstOrDefaultAsync();
+
+                if (clubInfo == null)
                     throw new NotFoundException($"Clube com ID {clubId} não encontrado");
 
-                // Verificar se o usuário é membro do clube
+                // Verificar se o usuário pode postar: membro, dono do clube ou admin do sistema
                 var isMember = await _context.ClubMembers
                     .AnyAsync(cm => cm.ClubId == clubId && cm.UserId == authorId);
+                var isClubOwner = clubInfo.OwnerId == authorId;
+                var isSystemAdmin = await IsSystemAdminAsync(authorId);
 
-                if (!isMember)
-                    throw new ForbiddenException("Apenas membros podem criar posts no clube");
+                if (!isMember && !isClubOwner && !isSystemAdmin)
+                    throw new ForbiddenException("Apenas membros, donos do clube ou administradores podem criar posts");
 
                 var post = new Post
                 {

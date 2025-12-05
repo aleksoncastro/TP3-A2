@@ -22,20 +22,25 @@ namespace MediaMatch.Services
         {
             try
             {
-                // Verificar se o post existe
-                var post = await _context.Posts
-                    .Include(p => p.Club)
-                    .FirstOrDefaultAsync(p => p.Id == postId);
+                if (authorId <= 0)
+                    throw new ForbiddenException("Usuário não autenticado");
 
-                if (post == null)
+                // Verificar se o post existe
+                var postInfo = await _context.Posts
+                    .Where(p => p.Id == postId)
+                    .Select(p => new { p.Id, p.ClubId, ClubOwnerId = p.Club.OwnerId })
+                    .FirstOrDefaultAsync();
+
+                if (postInfo == null)
                     throw new NotFoundException($"Post com ID {postId} não encontrado");
 
-                // Verificar se o usuário é membro do clube
                 var isMember = await _context.ClubMembers
-                    .AnyAsync(cm => cm.ClubId == post.ClubId && cm.UserId == authorId);
+                    .AnyAsync(cm => cm.ClubId == postInfo.ClubId && cm.UserId == authorId);
+                var isClubOwner = postInfo.ClubOwnerId == authorId;
+                var isSystemAdmin = await IsSystemAdminAsync(authorId);
 
-                if (!isMember)
-                    throw new ForbiddenException("Apenas membros podem comentar no clube");
+                if (!isMember && !isClubOwner && !isSystemAdmin)
+                    throw new ForbiddenException("Apenas membros, donos do clube ou administradores podem comentar");
 
                 var comment = new Comment
                 {
@@ -54,6 +59,9 @@ namespace MediaMatch.Services
                     .LoadAsync();
                 await _context.Entry(comment)
                     .Reference(c => c.Post)
+                    .LoadAsync();
+                await _context.Entry(comment.Post)
+                    .Reference(p => p.Club)
                     .LoadAsync();
 
                 return comment;

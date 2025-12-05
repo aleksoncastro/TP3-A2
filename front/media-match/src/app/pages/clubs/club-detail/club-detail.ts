@@ -5,8 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatMenuModule } from '@angular/material/menu';
@@ -14,6 +12,7 @@ import { ClubService } from '../../../services/club.service';
 import { ClubDetail, Post, CreatePostDto, CreateCommentDto } from '../../../models/club.model';
 import { MediaListsComponent } from '../../../components/media-lists/media-lists';
 import { AuthService } from '../../../services/auth.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-club-detail',
@@ -25,8 +24,6 @@ import { AuthService } from '../../../services/auth.service';
     MatCardModule,
     MatButtonModule,
     MatIconModule,
-    MatInputModule,
-    MatFormFieldModule,
     MatDividerModule,
     MatProgressSpinnerModule,
     MatMenuModule,
@@ -47,6 +44,8 @@ export class ClubDetailComponent implements OnInit {
   expandedPosts: Set<number> = new Set();
   currentImageIndexes: { [postId: number]: number } = {};
   isAuthenticated = false;
+  isAdmin = false;
+  private readonly assetBaseUrl = environment.apiBase.replace(/\/api\/?$/, '');
 
   constructor(
     @Inject(ActivatedRoute) private route: ActivatedRoute,
@@ -58,6 +57,7 @@ export class ClubDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.isAuthenticated = this.authService.isAuthenticated();
+    this.isAdmin = this.authService.isAdmin();
     this.route.params.subscribe(params => {
       this.clubId = +params['id'];
       this.loadClub();
@@ -219,9 +219,55 @@ export class ClubDetailComponent implements OnInit {
     }
   }
 
+  deleteClub(): void {
+    if (!this.canDeleteClub()) {
+      return;
+    }
+
+    const message = this.isAdmin && !(this.club?.isOwner)
+      ? 'Como administrador, você realmente deseja excluir este clube? Esta ação é irreversível.'
+      : 'Deseja realmente excluir este clube? Esta ação é irreversível.';
+
+    if (!confirm(message)) {
+      return;
+    }
+
+    this.clubService.deleteClub(this.clubId).subscribe({
+      next: () => this.router.navigate(['/clubs']),
+      error: (error) => console.error('Erro ao excluir clube:', error)
+    });
+  }
+
+  handleCommentInput(postId: number, value: string): void {
+    this.newCommentContent[postId] = value;
+  }
+
+  canCreatePosts(): boolean {
+    if (!this.club || !this.isAuthenticated) {
+      return false;
+    }
+
+    if (this.authService.isAdmin()) {
+      return true;
+    }
+
+    if (this.club.isOwner) {
+      return true;
+    }
+
+    if (this.isCurrentUserModerator()) {
+      return true;
+    }
+
+    return this.club.isMember;
+  }
+
   getImageUrl(url?: string): string {
     if (!url) return 'assets/images/club-placeholder.jpg';
-    return `http://localhost:5042${url}`;
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return url;
+    }
+    return `${this.assetBaseUrl}${url}`;
   }
 
   formatDate(date: Date): string {
@@ -257,6 +303,23 @@ export class ClubDetailComponent implements OnInit {
     if (!this.club) return false;
     const currentUserId = this.getCurrentUserId();
     return this.club.members?.some(m => m.userId === currentUserId && m.isModerator) || false;
+  }
+
+  canDeleteClub(): boolean {
+    if (!this.club) {
+      return false;
+    }
+    return this.club.isOwner || this.isAdmin;
+  }
+
+  resolveAvatarSrc(url?: string | null): string | undefined {
+    if (!url) {
+      return undefined;
+    }
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return url;
+    }
+    return `${this.assetBaseUrl}${url}`;
   }
 
   private getCurrentUserId(): number {
