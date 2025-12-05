@@ -44,16 +44,19 @@
   <!-- Create Post Section -->
   <mat-card class="create-post-card" *ngIf="club.isMember">
     <h3>Criar Post</h3>
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>O que você está pensando?</mat-label>
-      <textarea 
-        matInput 
-        [(ngModel)]="newPostContent" 
-        rows="3" 
-        maxlength="500"
-        placeholder="Compartilhe algo com o clube..."></textarea>
-      <mat-hint align="end">{{ newPostContent.length }}/500</mat-hint>
-    </mat-form-field>
+    <div class="post-input-wrapper">
+      <label class="post-input-label" for="clubPostInput">O que você está pensando?</label>
+      <div class="post-input-inner">
+        <mat-icon>edit_note</mat-icon>
+        <textarea
+          id="clubPostInput"
+          [(ngModel)]="newPostContent"
+          rows="4"
+          maxlength="500"
+          placeholder="Compartilhe algo com o clube..."></textarea>
+      </div>
+      <div class="post-input-hint">{{ newPostContent.length }}/500</div>
+    </div>
     
     <!-- Image Previews -->
     <div class="image-previews" *ngIf="imagePreviews.length > 0">

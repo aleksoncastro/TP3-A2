@@ -140,6 +140,72 @@
   width: 100%;
 }
 
+.post-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: rgba(26, 26, 26, 0.75);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 16px;
+  padding: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.post-input-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: rgba(226, 232, 240, 0.85);
+  letter-spacing: 0.01em;
+}
+
+.post-input-inner {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  background: rgba(15, 23, 42, 0.85);
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  padding: 0.75rem 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.post-input-inner:focus-within {
+  border-color: rgba(56, 189, 248, 0.6);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+}
+
+.post-input-inner mat-icon {
+  color: rgba(148, 163, 184, 0.65);
+  margin-top: 4px;
+}
+
+.post-input-inner textarea {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--foreground);
+  resize: vertical;
+  min-height: 110px;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.post-input-inner textarea::placeholder {
+  color: rgba(148, 163, 184, 0.6);
+}
+
+.post-input-inner textarea:focus {
+  outline: none;
+}
+
+.post-input-hint {
+  text-align: right;
+  font-size: 0.8rem;
+  color: rgba(148, 163, 184, 0.7);
+  letter-spacing: 0.03em;
+}
+
 /* Image Previews */
 .image-previews {
   display: grid;
