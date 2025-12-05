@@ -14,6 +14,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MediaListService } from '../../services/media-list.service';
 import { SearchService } from '../../services/search.service';
 import { MediaListDetail, CreateMediaListCommentDto } from '../../models/media-list.model';
+import { environment } from '../../../environments/environment';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog';
 
 @Component({
@@ -43,6 +44,7 @@ export class MediaListDetailDialogComponent implements OnInit, OnDestroy {
   private readonly snackBar = inject(MatSnackBar);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly dialog = inject(MatDialog);
+  private readonly assetBaseUrl = environment.apiBase.replace(/\/api\/?$/, '');
   list?: MediaListDetail;
   loading = true;
   
@@ -140,6 +142,16 @@ export class MediaListDetailDialogComponent implements OnInit, OnDestroy {
 
   getPosterUrl(path: string): string {
     return path ? `https://image.tmdb.org/t/p/w500${path}` : 'assets/no-poster.png';
+  }
+
+  resolveAvatarSrc(url?: string | null): string | undefined {
+    if (!url) {
+      return undefined;
+    }
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return url;
+    }
+    return `${this.assetBaseUrl}${url}`;
   }
 
   addItemToList(media: any) {

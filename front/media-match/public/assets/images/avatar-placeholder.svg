@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="270" viewBox="0 0 180 270" role="img" aria-label="Avatar indisponivel">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#202020" />
+      <stop offset="100%" stop-color="#111" />
+    </linearGradient>
+  </defs>
+  <rect width="180" height="270" fill="url(#bg)" />
+  <g fill="#2f2f2f" transform="translate(45 60)">
+    <circle cx="45" cy="30" r="30" fill="#3a3a3a" />
+    <path d="M0 150c8-34 28-54 60-54s52 20 60 54z" />
+  </g>
+  <text x="90" y="230" fill="#555" font-family="Arial, sans-serif" font-size="14" text-anchor="middle">Imagem indisponivel</text>
+</svg>

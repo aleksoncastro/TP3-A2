@@ -32,6 +32,7 @@ export class DetailComponent implements OnInit {
   private readonly soundtrack = inject(SoundtrackService);
   private readonly titleSvc = inject(Title);
   private readonly sanitizer = inject(DomSanitizer); // Injeção do Sanitizer
+  private readonly defaultCastImage = 'assets/images/avatar-placeholder.svg';
 
   kind!: Kind;
   id!: number;
@@ -129,11 +130,18 @@ export class DetailComponent implements OnInit {
   // Nova função para imagem dos atores
   getProfileUrl(path: string | null | undefined): string {
     // w185 é um tamanho bom para avatares
-    return path ? `https://image.tmdb.org/t/p/w185${path}` : 'assets/avatar-placeholder.png'; 
-    // Dica: Crie uma imagem avatar-placeholder.png em src/assets ou use uma URL externa temporária
+    return path ? `https://image.tmdb.org/t/p/w185${path}` : this.defaultCastImage; 
+    // Se o TMDB não tiver imagem cadastrada, usamos o fallback local
   }
 
  
+
+  onCastImageError(event: Event): void {
+    const img = event.target as HTMLImageElement | null;
+    if (!img) return;
+    img.src = this.defaultCastImage;
+    img.onerror = null;
+  }
 
   spotifyEmbed(albumId?: string): SafeResourceUrl | null {
     if (!albumId) return null;

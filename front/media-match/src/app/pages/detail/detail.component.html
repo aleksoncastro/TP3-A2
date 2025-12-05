@@ -20,7 +20,7 @@
       <ng-container *ngIf="credits$ | async as c">
         <div *ngFor="let cast of c.cast" class="cast-card">
           <div class="cast-photo-wrapper">
-             <img [src]="getProfileUrl(cast.profile_path)" [alt]="cast.name" class="cast-photo" loading="lazy">
+             <img [src]="getProfileUrl(cast.profile_path)" [alt]="cast.name" class="cast-photo" loading="lazy" (error)="onCastImageError($event)">
           </div>
           <div class="cast-info">
             <div class="name">{{ cast.name }}</div>
