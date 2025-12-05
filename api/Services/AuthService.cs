@@ -3,10 +3,10 @@ using MediaMatch.DTO.Auth;
 using MediaMatch.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Collections.Generic;
 
 namespace MediaMatch.Services
 {
@@ -19,6 +19,8 @@ namespace MediaMatch.Services
         Task<UserProfileDto> UpdateProfileAsync(int userId, UpdateProfileDto dto);
         Task<string> UpdateProfilePictureAsync(int userId, IFormFile file);
         Task DeleteUserAsync(int userId, int requesterId);
+        Task RequestPasswordResetAsync(ForgotPasswordRequestDto dto);
+        Task ResetPasswordAsync(ResetPasswordRequestDto dto);
     }
 
     public class AuthService : IAuthService
@@ -26,12 +28,14 @@ namespace MediaMatch.Services
         private readonly MediaMatchContext _context;
         private readonly IConfiguration _configuration;
         private readonly FileUploadService _fileUploadService;
+        private readonly IEmailSender _emailSender;
 
-        public AuthService(MediaMatchContext context, IConfiguration configuration, FileUploadService fileUploadService)
+        public AuthService(MediaMatchContext context, IConfiguration configuration, FileUploadService fileUploadService, IEmailSender emailSender)
         {
             _context = context;
             _configuration = configuration;
             _fileUploadService = fileUploadService;
+            _emailSender = emailSender;
         }
 
         public async Task<AuthResponseDto> RegisterAsync(RegisterDto dto)
@@ -266,6 +270,61 @@ namespace MediaMatch.Services
 
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task RequestPasswordResetAsync(ForgotPasswordRequestDto dto)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
+            if (user == null)
+            {
+                return;
+            }
+
+            var code = GenerateNumericCode(6);
+            user.PasswordResetCodeHash = BCrypt.Net.BCrypt.HashPassword(code);
+            user.PasswordResetCodeExpiresAt = DateTime.UtcNow.AddMinutes(15);
+            await _context.SaveChangesAsync();
+
+            await _emailSender.SendPasswordResetCodeAsync(user.Email, user.UserName, code);
+        }
+
+        public async Task ResetPasswordAsync(ResetPasswordRequestDto dto)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
+            if (user == null)
+            {
+                throw new Exception("Usuário não encontrado.");
+            }
+
+            if (user.PasswordResetCodeHash == null || user.PasswordResetCodeExpiresAt == null)
+            {
+                throw new Exception("Nenhum pedido de redefinição ativo.");
+            }
+
+            if (user.PasswordResetCodeExpiresAt < DateTime.UtcNow)
+            {
+                throw new Exception("Código expirado.");
+            }
+
+            if (!BCrypt.Net.BCrypt.Verify(dto.Code, user.PasswordResetCodeHash))
+            {
+                throw new Exception("Código inválido.");
+            }
+
+            user.HashedPassword = BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
+            user.PasswordResetCodeHash = null;
+            user.PasswordResetCodeExpiresAt = null;
+            await _context.SaveChangesAsync();
+        }
+
+        private static string GenerateNumericCode(int length)
+        {
+            var chars = new char[length];
+            for (int i = 0; i < length; i++)
+            {
+                chars[i] = (char)('0' + Random.Shared.Next(0, 10));
+            }
+            return new string(chars);
         }
     }
 }

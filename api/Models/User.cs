@@ -32,6 +32,11 @@ namespace MediaMatch.Models
         [MaxLength(500)]
         public string? Bio { get; set; }
 
+        [MaxLength(200)]
+        public string? PasswordResetCodeHash { get; set; }
+
+        public DateTime? PasswordResetCodeExpiresAt { get; set; }
+
         // Propriedades de Navegação
         public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
         public ICollection<ClubMember> ClubMemberships { get; set; } = new List<ClubMember>();

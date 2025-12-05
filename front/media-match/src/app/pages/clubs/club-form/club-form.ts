@@ -5,8 +5,6 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ClubService } from '../../../services/club.service';
 import { CreateClubDto, UpdateClubDto } from '../../../models/club.model';
@@ -21,8 +19,6 @@ import { CreateClubDto, UpdateClubDto } from '../../../models/club.model';
     MatCardModule,
     MatButtonModule,
     MatIconModule,
-    MatInputModule,
-    MatFormFieldModule,
     MatProgressSpinnerModule
   ],
   templateUrl: './club-form.html',
@@ -96,10 +92,15 @@ export class ClubFormComponent implements OnInit {
   removeImage(): void {
     this.selectedFile = undefined;
     this.imagePreview = undefined;
+    this.existingImageUrl = undefined;
   }
 
   onSubmit(): void {
-    if (this.clubForm.invalid) return;
+    if (this.loading) return;
+    if (this.clubForm.invalid) {
+      this.clubForm.markAllAsTouched();
+      return;
+    }
 
     this.loading = true;
 

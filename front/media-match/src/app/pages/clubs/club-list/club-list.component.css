@@ -475,8 +475,9 @@
   color: var(--ring);
 }
 
-::ng-deep .sort-field-styled:hover .mat-mdc-form-field-outline {
-  color: var(--ring);
+::ng-deep .sort-field-styled:hover .mat-mdc-form-field-outline,
+::ng-deep .sort-field-styled:hover .mat-mdc-form-field-outline-thick {
+  color: transparent;
 }
 
 ::ng-deep .sort-field-styled .mat-mdc-select-arrow {

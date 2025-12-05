@@ -15,9 +15,12 @@ namespace MediaMatch.Services
         {
             _environment = environment;
             _logger = logger;
-            _uploadsFolder = Path.Combine(_environment.WebRootPath, "uploads", "clubs");
 
-            // Criar diretório se não existir
+            // Ensure WebRootPath is not null
+            var webRootPath = _environment.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+            _uploadsFolder = Path.Combine(webRootPath, "uploads", "clubs");
+
+            // Create directory if it doesn't exist
             if (!Directory.Exists(_uploadsFolder))
             {
                 Directory.CreateDirectory(_uploadsFolder);

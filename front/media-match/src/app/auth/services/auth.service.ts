@@ -20,6 +20,16 @@ export interface LoginDto {
   password: string;
 }
 
+export interface ForgotPasswordRequestDto {
+  email: string;
+}
+
+export interface ResetPasswordRequestDto {
+  email: string;
+  code: string;
+  newPassword: string;
+}
+
 export interface MeDto {
   id: number;
   userName: string;
@@ -74,6 +84,14 @@ export class AuthService {
   logout(): void {
     this.storage.removeItem('token');
     this.storage.removeItem('role');
+  }
+
+  requestPasswordReset(dto: ForgotPasswordRequestDto): Observable<void> {
+    return this.http.post<void>(`${this.base}/Auth/forgot-password`, dto);
+  }
+
+  resetPassword(dto: ResetPasswordRequestDto): Observable<void> {
+    return this.http.post<void>(`${this.base}/Auth/reset-password`, dto);
   }
 
   private persist(res: AuthResponseDto): void {

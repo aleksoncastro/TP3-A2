@@ -23,7 +23,6 @@
         <div class="tab-content">
           <!-- Add Item Section (Admin only) -->
           <div class="add-item-section" *ngIf="data.canManage">
-            <h3><mat-icon>add</mat-icon> Adicionar Filme/Série</h3>
             
             <div class="search-container">
               <div class="app-input-wrapper search-input">
@@ -230,7 +229,7 @@
                 <div class="author-info">
                   <img 
                     *ngIf="comment.authorProfilePictureUrl" 
-                    [src]="comment.authorProfilePictureUrl" 
+                    [src]="resolveAvatarSrc(comment.authorProfilePictureUrl)" 
                     [alt]="comment.authorName"
                     class="author-avatar-img"
                     (error)="$any($event.target).style.display='none'; $any($event.target).nextElementSibling.style.display='block'">
@@ -241,10 +240,6 @@
                   </div>
                 </div>
                 <div class="comment-actions">
-                  <mat-chip *ngIf="comment.type === 'suggestion'" class="suggestion-badge">
-                    <mat-icon>recommend</mat-icon>
-                    Sugestão
-                  </mat-chip>
                   <button 
                     mat-icon-button 
                     *ngIf="comment.canDelete"

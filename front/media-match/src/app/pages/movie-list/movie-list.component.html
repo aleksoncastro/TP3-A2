@@ -1,40 +1,172 @@
 <div class="container list-container">
   <h1 class="page-title">{{ pageTitle }}</h1>
 
-  <div class="movie-grid" *ngIf="movies$ | async as movies; else loading">
-    
-    <div class="movie-item" *ngFor="let movie of movies">
-      <a [routerLink]="['/movie', movie.id]" class="media-card">
-        <div class="poster-wrapper">
-          <img 
-            [src]="getImageUrl(movie.poster_path)" 
-            [alt]="movie.title" 
-            class="media-poster" 
-            loading="lazy"
-            (error)="onImgError($event)"
+  <div class="list-layout">
+    <aside class="filter-panel">
+      <div class="filter-header">
+        <h2>Explorar filmes</h2>
+        <p>Combine coleções e busca refinada para encontrar o próximo título da maratona.</p>
+      </div>
+
+      <div class="filter-section">
+        <span class="section-title">Coleções rápidas</span>
+        <div class="collection-buttons">
+          <button
+            type="button"
+            *ngFor="let option of collectionOptions"
+            class="collection-button"
+            [class.active]="isActiveCollection(option.type)"
+            (click)="switchCollection(option.type)"
           >
-          <div class="media-overlay">
-            <h3 class="media-title">{{ movie.title }}</h3>
-            <div class="media-rating">
-              <mat-icon class="rating-icon">star</mat-icon>
-              <span>{{ formatRating(movie.vote_average) }}</span>
+            <mat-icon>{{ option.icon }}</mat-icon>
+            <div class="collection-info">
+              <span class="collection-label">{{ option.label }}</span>
+              <small>{{ option.description }}</small>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <form class="filter-form" [formGroup]="filterForm" (ngSubmit)="applyFilters()">
+        <span class="section-title">Busca refinada</span>
+
+        <div class="app-input-wrapper">
+          <label class="app-input-label" for="filter-query">Palavra-chave</label>
+          <div class="app-input-inner">
+            <mat-icon class="app-input-icon">search</mat-icon>
+            <input
+              id="filter-query"
+              type="text"
+              formControlName="query"
+              placeholder="Ex: Matrix, Barbie..."
+              (input)="clearFilterError()"
+            />
+          </div>
+        </div>
+
+        <div class="app-input-wrapper">
+          <label class="app-input-label" for="filter-language">Idioma</label>
+          <div class="app-input-inner">
+            <mat-icon class="app-input-icon">translate</mat-icon>
+            <select id="filter-language" formControlName="language">
+              <option *ngFor="let lang of languageOptions" [value]="lang.value">{{ lang.label }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="app-input-wrapper">
+          <label class="app-input-label" for="filter-region">Região</label>
+          <div class="app-input-inner">
+            <mat-icon class="app-input-icon">public</mat-icon>
+            <select id="filter-region" formControlName="region">
+              <option *ngFor="let region of regionOptions" [value]="region.value">{{ region.label }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="inline-fields">
+          <div class="app-input-wrapper">
+            <label class="app-input-label" for="filter-primary-year">Ano (exato)</label>
+            <div class="app-input-inner">
+              <mat-icon class="app-input-icon">calendar_month</mat-icon>
+              <input
+                id="filter-primary-year"
+                type="text"
+                inputmode="numeric"
+                maxlength="4"
+                formControlName="primaryReleaseYear"
+                placeholder="1999"
+                (input)="clearFilterError()"
+              />
+            </div>
+          </div>
+          <div class="app-input-wrapper">
+            <label class="app-input-label" for="filter-year">Ano (intervalo)</label>
+            <div class="app-input-inner">
+              <mat-icon class="app-input-icon">schedule</mat-icon>
+              <input
+                id="filter-year"
+                type="text"
+                formControlName="year"
+                placeholder="1990-2000"
+                (input)="clearFilterError()"
+              />
             </div>
           </div>
         </div>
-      </a>
-    </div>
 
-    <div *ngIf="movies.length === 0" class="no-results">
-      <p>Nenhum filme encontrado.</p>
-    </div>
+        <div class="checkbox-field">
+          <label>
+            <input type="checkbox" formControlName="includeAdult" />
+            <span>Incluir conteúdo adulto</span>
+          </label>
+        </div>
 
-    <div class="end-of-list">
-      <button class="load-more-btn" (click)="loadMore()" [disabled]="loadingMore || !canLoadMore" aria-label="Mostrar mais resultados">
-        <span>Mostrar mais</span>
-        <mat-spinner *ngIf="loadingMore" diameter="18" class="btn-spinner" color="accent"></mat-spinner>
-      </button>
-    </div>
+        <div *ngIf="filterError" class="filter-error">
+          <mat-icon>error_outline</mat-icon>
+          <span>{{ filterError }}</span>
+        </div>
 
+        <div class="filter-actions">
+          <button type="submit" class="apply-btn">
+            <mat-icon>tune</mat-icon>
+            <span>Aplicar filtros</span>
+          </button>
+          <button type="button" class="clear-btn" (click)="resetFilters()">
+            <mat-icon>refresh</mat-icon>
+            <span>Limpar</span>
+          </button>
+        </div>
+      </form>
+    </aside>
+
+    <section class="movies-section">
+      <div class="search-context" *ngIf="searchBadgeText">
+        <mat-icon>filter_alt</mat-icon>
+        <span>{{ searchBadgeText }}</span>
+        <button type="button" (click)="resetFilters()">Limpar busca</button>
+      </div>
+
+      <div class="movie-grid" *ngIf="movies$ | async as movies; else loading">
+        <div class="movie-item" *ngFor="let movie of movies">
+          <a [routerLink]="['/movie', movie.id]" class="media-card">
+            <div class="poster-wrapper">
+              <img
+                [src]="getImageUrl(movie.poster_path)"
+                [alt]="movie.title"
+                class="media-poster"
+                loading="lazy"
+                (error)="onImgError($event)"
+              />
+              <div class="media-overlay">
+                <h3 class="media-title">{{ movie.title }}</h3>
+                <div class="media-rating">
+                  <mat-icon class="rating-icon">star</mat-icon>
+                  <span>{{ formatRating(movie.vote_average) }}</span>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div *ngIf="movies.length === 0" class="no-results">
+          <p>Nenhum filme encontrado.</p>
+          <button type="button" class="clear-btn" (click)="resetFilters()">Remover filtros</button>
+        </div>
+
+        <div class="end-of-list" *ngIf="movies.length > 0">
+          <button
+            class="load-more-btn"
+            (click)="loadMore()"
+            [disabled]="loadingMore || !canLoadMore"
+            aria-label="Mostrar mais resultados"
+          >
+            <span>Mostrar mais</span>
+            <mat-spinner *ngIf="loadingMore" diameter="18" class="btn-spinner" color="accent"></mat-spinner>
+          </button>
+        </div>
+      </div>
+    </section>
   </div>
 
   <ng-template #loading>
