@@ -9,7 +9,7 @@ MediaMatch e uma plataforma para descobrir filmes, series e trilhas sonoras dos 
 - Frontend Angular 21 com Angular Material
 ![alt text](images/image1.png)
 ![alt text](images/image2.png)
-
+![diagrama BD](images/image3.png)
 ## Tecnologias principais
 - **Backend:** .NET 8, ASP.NET Core, EF Core, SQL Server, Swagger, JWT
 - **Frontend:** Angular 21, Angular Material
