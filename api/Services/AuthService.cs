@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Collections.Generic;
 
 namespace MediaMatch.Services
 {
@@ -17,6 +18,7 @@ namespace MediaMatch.Services
         Task<UserProfileDto> GetUserProfileAsync(int userId);
         Task<UserProfileDto> UpdateProfileAsync(int userId, UpdateProfileDto dto);
         Task<string> UpdateProfilePictureAsync(int userId, IFormFile file);
+        Task DeleteUserAsync(int userId, int requesterId);
     }
 
     public class AuthService : IAuthService
@@ -213,6 +215,57 @@ namespace MediaMatch.Services
             await _context.SaveChangesAsync();
 
             return imageUrl;
+        }
+
+        public async Task DeleteUserAsync(int userId, int requesterId)
+        {
+            if (userId == requesterId)
+                throw new InvalidOperationException("Você não pode excluir o próprio usuário.");
+
+            var user = await _context.Users
+                .Include(u => u.UserRoles)
+                .Include(u => u.ClubMemberships)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+                throw new KeyNotFoundException("Usuário não encontrado.");
+
+            var ownsClub = await _context.Clubs.AnyAsync(c => c.OwnerId == userId);
+            if (ownsClub)
+                throw new InvalidOperationException("Usuário é proprietário de um clube. Transfira ou exclua o clube antes de remover o usuário.");
+
+            var hasPosts = await _context.Posts.AnyAsync(p => p.AuthorId == userId);
+            if (hasPosts)
+                throw new InvalidOperationException("Usuário possui posts publicados. Remova os posts antes de excluir o usuário.");
+
+            var hasComments = await _context.Comments.AnyAsync(c => c.AuthorId == userId);
+            if (hasComments)
+                throw new InvalidOperationException("Usuário possui comentários. Exclua os comentários antes de remover o usuário.");
+
+            var hasLists = await _context.MediaLists.AnyAsync(ml => ml.UserId == userId);
+            if (hasLists)
+                throw new InvalidOperationException("Usuário possui listas de mídia. Exclua as listas antes de remover o usuário.");
+
+            var hasListComments = await _context.MediaListComments.AnyAsync(mlc => mlc.AuthorId == userId);
+            if (hasListComments)
+                throw new InvalidOperationException("Usuário possui comentários em listas. Exclua-os antes de remover o usuário.");
+
+            var hasSoundtracks = await _context.MediaSoundtracks.AnyAsync(ms => ms.AddedBy == userId);
+            if (hasSoundtracks)
+                throw new InvalidOperationException("Usuário possui trilhas sonoras associadas. Remova-as antes de excluir o usuário.");
+
+            if (user.ClubMemberships.Any())
+            {
+                _context.ClubMembers.RemoveRange(user.ClubMemberships);
+            }
+
+            if (user.UserRoles.Any())
+            {
+                _context.UserRoles.RemoveRange(user.UserRoles);
+            }
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -61,15 +61,7 @@ export class AdminUsersComponent {
     this.admin.changeRole({ userId: row.id, role: row.role }).subscribe(() => this.load());
   }
 
-  promote(row: { id: number; role: string }) {
-    if (row.role !== 'admin') {
-      this.admin.changeRole({ userId: row.id, role: 'admin' }).subscribe(() => this.load());
-    }
-  }
-
-  demote(row: { id: number; role: string }) {
-    if (row.role !== 'user') {
-      this.admin.changeRole({ userId: row.id, role: 'user' }).subscribe(() => this.load());
-    }
+  remove(row: { id: number }) {
+    this.admin.deleteUser(row.id).subscribe(() => this.load());
   }
 }

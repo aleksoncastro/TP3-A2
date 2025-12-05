@@ -1,98 +1,116 @@
-.container { 
-  padding: 24px; 
+.admin-users-component {
+  background: radial-gradient(circle at top, #1e293b 0%, #0f172a 55%, #020617 100%);
+  min-height: 100vh;
+  padding: 40px 0;
+}
+
+.container {
+  background: rgba(12, 19, 38, 0.85);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 24px;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.55);
+  padding: 32px;
   max-width: 1400px;
   margin: 0 auto;
 }
 
 h2 {
-  color: #E50914;
-  font-size: 2rem;
+  color: #38bdf8;
+  font-size: 2.25rem;
   margin-bottom: 24px;
   font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
-.filters { 
-  display: flex; 
-  gap: 16px; 
-  align-items: center; 
+.filters {
+  display: flex;
+  gap: 16px;
+  align-items: center;
   margin-bottom: 24px;
   flex-wrap: wrap;
 }
 
-table { 
+mat-form-field {
+  width: 220px;
+}
+
+table {
   width: 100%;
-  background: #1E1E1E;
+  border-radius: 16px;
+  overflow: hidden;
 }
 
-mat-form-field { 
-  width: 200px;
-}
-
-/* Material Theme Overrides for Dark Theme */
+/* Material overrides scoped to component */
 ::ng-deep .admin-users-component .mat-mdc-text-field-wrapper {
-  background-color: #1E1E1E !important;
+  background-color: rgba(15, 23, 42, 0.85) !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(148, 163, 184, 0.25) !important;
 }
 
-::ng-deep .admin-users-component .mat-mdc-form-field .mat-mdc-input-element {
-  color: #F5F5F5 !important;
+::ng-deep .admin-users-component .mat-mdc-form-field .mat-mdc-input-element,
+::ng-deep .admin-users-component .mat-mdc-form-field .mat-mdc-select-value {
+  color: #e2e8f0 !important;
 }
 
 ::ng-deep .admin-users-component .mat-mdc-form-field .mat-mdc-floating-label {
-  color: #B3B3B3 !important;
+  color: rgba(148, 163, 184, 0.8) !important;
 }
 
 ::ng-deep .admin-users-component .mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
-  color: #E50914 !important;
+  color: #38bdf8 !important;
 }
 
-::ng-deep .admin-users-component .mat-mdc-select {
-  color: #F5F5F5 !important;
-}
-
-::ng-deep .admin-users-component .mat-mdc-select-value {
-  color: #F5F5F5 !important;
+::ng-deep .admin-users-component .mat-mdc-select-arrow-wrapper {
+  color: rgba(148, 163, 184, 0.8) !important;
 }
 
 ::ng-deep .admin-users-component .mat-mdc-table {
-  background: #1E1E1E !important;
+  background: rgba(15, 23, 42, 0.85) !important;
 }
 
 ::ng-deep .admin-users-component .mat-mdc-header-cell {
-  color: #E50914 !important;
+  color: #38bdf8 !important;
   font-weight: 600 !important;
-  background: #141414 !important;
+  background: rgba(8, 16, 32, 0.95) !important;
 }
 
 ::ng-deep .admin-users-component .mat-mdc-cell {
-  color: #F5F5F5 !important;
-  border-bottom-color: #333 !important;
+  color: #e2e8f0 !important;
+  border-bottom-color: rgba(30, 41, 59, 0.75) !important;
 }
 
 ::ng-deep .admin-users-component .mat-mdc-row:hover {
-  background: #2A2A2A !important;
+  background: rgba(56, 189, 248, 0.08) !important;
 }
 
 ::ng-deep .admin-users-component .mat-mdc-paginator {
-  background: #1E1E1E !important;
-  color: #F5F5F5 !important;
+  background: rgba(15, 23, 42, 0.85) !important;
+  color: #e2e8f0 !important;
+  border-top: 1px solid rgba(148, 163, 184, 0.15);
 }
 
-::ng-deep .admin-users-component .mat-mdc-button.mat-primary {
-  background-color: #E50914 !important;
-  color: white !important;
+::ng-deep .admin-users-component .mat-mdc-raised-button.mat-primary {
+  background: linear-gradient(135deg, #38bdf8, #6366f1) !important;
+  color: #0f172a !important;
+  font-weight: 600;
 }
 
-::ng-deep .admin-users-component .mat-mdc-outlined-button.mat-primary {
-  border-color: #E50914 !important;
-  color: #E50914 !important;
+::ng-deep .admin-users-component .mat-mdc-outlined-button {
+  border-radius: 9999px !important;
 }
 
-::ng-deep .admin-users-component .mat-mdc-outlined-button.mat-warn {
-  border-color: #B3B3B3 !important;
-  color: #B3B3B3 !important;
+::ng-deep .admin-users-component .mat-mdc-stroked-button {
+  border-color: rgba(148, 163, 184, 0.35) !important;
+  color: #e2e8f0 !important;
 }
 
-::ng-deep .admin-users-component .mat-mdc-outlined-button:hover {
-  background-color: rgba(229, 9, 20, 0.1) !important;
+::ng-deep .admin-users-component .mat-mdc-stroked-button.mat-warn {
+  border-color: rgba(248, 113, 113, 0.65) !important;
+  color: #f87171 !important;
+}
+
+::ng-deep .admin-users-component .mat-mdc-stroked-button:hover {
+  background: rgba(148, 163, 184, 0.1) !important;
 }
 

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.RateLimiting;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 
 namespace MediaMatch.Controllers
 {
@@ -270,6 +271,32 @@ namespace MediaMatch.Controllers
             _logger.LogInformation("Role alterada: UserId={UserId} NewRole={Role} ChangedBy={ChangedBy}", targetUser.Id, newRole, requesterId);
 
             return NoContent();
+        }
+
+        [HttpDelete("users/{id:int}")]
+        [Authorize(Policy = "AdminOnly")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var idClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(idClaim)) return Unauthorized();
+            if (!int.TryParse(idClaim, out var requesterId)) return Unauthorized();
+
+            try
+            {
+                await _authService.DeleteUserAsync(id, requesterId);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

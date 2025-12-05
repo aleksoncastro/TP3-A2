@@ -35,5 +35,9 @@ export class AdminService {
   changeRole(request: { userId: number; role: string }) {
     return this.http.put<void>(`${this.base}/Auth/roles`, request);
   }
+
+  deleteUser(userId: number) {
+    return this.http.delete<void>(`${this.base}/Auth/users/${userId}`);
+  }
 }
 
