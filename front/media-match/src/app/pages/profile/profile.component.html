@@ -1,0 +1,159 @@
+<div class="profile-container">
+  <div class="profile-content" *ngIf="!isLoading && profile">
+    <!-- Header do Perfil -->
+    <mat-card class="profile-header-card">
+      <div class="profile-header">
+        <div class="avatar-section">
+          <div class="avatar-large">
+            <img 
+              *ngIf="avatarPreview" 
+              [src]="getImageUrl(avatarPreview)" 
+              alt="Avatar"
+              class="avatar-image"
+            />
+            <div *ngIf="!avatarPreview" class="avatar-placeholder">
+              {{ getUserInitials() }}
+            </div>
+          </div>
+          
+          <div *ngIf="isEditMode" class="avatar-upload">
+            <input 
+              type="file" 
+              #fileInput 
+              (change)="onFileSelected($event)"
+              accept="image/*"
+              style="display: none;"
+            />
+            <button 
+              mat-raised-button 
+              color="primary" 
+              (click)="fileInput.click()"
+              type="button"
+            >
+              <mat-icon>photo_camera</mat-icon>
+              Alterar Foto
+            </button>
+          </div>
+        </div>
+
+        <div class="profile-info">
+          <h1 class="profile-name">{{ profile.userName }}</h1>
+          <p class="profile-email">{{ profile.email }}</p>
+          <div class="profile-meta">
+            <span class="profile-role" [class.admin]="profile.role === 'admin'">
+              <mat-icon>{{ profile.role === 'admin' ? 'admin_panel_settings' : 'person' }}</mat-icon>
+              {{ profile.role === 'admin' ? 'Administrador' : 'Usuário' }}
+            </span>
+            <span class="profile-joined">
+              Membro desde {{ getFormattedDate(profile.createdAt) }}
+            </span>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <button 
+            mat-raised-button 
+            [color]="isEditMode ? 'warn' : 'primary'"
+            (click)="toggleEditMode()"
+            type="button"
+          >
+            <mat-icon>{{ isEditMode ? 'close' : 'edit' }}</mat-icon>
+            {{ isEditMode ? 'Cancelar' : 'Editar Perfil' }}
+          </button>
+        </div>
+      </div>
+    </mat-card>
+
+    <!-- Formulário de Edição -->
+    <mat-card class="profile-form-card">
+      <h2>Informações do Perfil</h2>
+      
+      <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+        <div class="form-grid">
+          <!-- Nome de Usuário -->
+          <div class="full-width profile-input-wrapper" [class.readonly]="!isEditMode">
+            <div class="profile-input-inner">
+              <mat-icon class="profile-input-icon">person</mat-icon>
+              <input
+                type="text"
+                formControlName="userName"
+                [readonly]="!isEditMode"
+                placeholder="Seu nome de usuário"
+              />
+            </div>
+            <div class="profile-input-error" *ngIf="profileForm.get('userName')?.touched && profileForm.get('userName')?.invalid">
+              <span *ngIf="profileForm.get('userName')?.hasError('required')">Nome é obrigatório</span>
+              <span *ngIf="profileForm.get('userName')?.hasError('minlength')">Mínimo 3 caracteres</span>
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="full-width profile-input-wrapper" [class.readonly]="!isEditMode">
+            <div class="profile-input-inner">
+              <mat-icon class="profile-input-icon">email</mat-icon>
+              <input
+                type="email"
+                formControlName="email"
+                [readonly]="!isEditMode"
+                placeholder="seu@email.com"
+              />
+            </div>
+            <div class="profile-input-error" *ngIf="profileForm.get('email')?.touched && profileForm.get('email')?.invalid">
+              <span *ngIf="profileForm.get('email')?.hasError('required')">Email é obrigatório</span>
+              <span *ngIf="profileForm.get('email')?.hasError('email')">Email inválido</span>
+            </div>
+          </div>
+
+          <!-- Telefone -->
+          <div class="full-width profile-input-wrapper" [class.readonly]="!isEditMode">
+            <div class="profile-input-inner">
+              <mat-icon class="profile-input-icon">phone</mat-icon>
+              <input
+                type="text"
+                formControlName="phoneNumber"
+                [readonly]="!isEditMode"
+                placeholder="(00) 00000-0000"
+              />
+            </div>
+          </div>
+
+          <!-- Bio -->
+          <div class="full-width profile-input-wrapper bio-field" [class.readonly]="!isEditMode">
+            <div class="profile-input-inner profile-textarea-inner">
+              <mat-icon class="profile-input-icon">description</mat-icon>
+              <textarea
+                formControlName="bio"
+                [readonly]="!isEditMode"
+                placeholder="Conte um pouco sobre você..."
+                rows="4"
+                maxlength="500"
+              ></textarea>
+            </div>
+            <div class="profile-input-hint">
+              {{ profileForm.get('bio')?.value?.length || 0 }}/500
+            </div>
+          </div>
+        </div>
+
+        <!-- Botão de Salvar -->
+        <div class="form-actions" *ngIf="isEditMode">
+          <button 
+            mat-raised-button 
+            color="primary" 
+            type="submit"
+            [disabled]="profileForm.invalid || isLoading"
+          >
+            <mat-icon>save</mat-icon>
+            Salvar Alterações
+          </button>
+        </div>
+      </form>
+    </mat-card>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner></mat-spinner>
+    <p>Carregando perfil...</p>
+  </div>
+</div>

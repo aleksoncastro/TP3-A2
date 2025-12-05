@@ -1,0 +1,245 @@
+<div class="club-detail-container" *ngIf="!loading && club">
+  <!-- Club Banner -->
+  <div class="club-banner" [style.background-image]="'url(' + getImageUrl(club.imageUrl) + ')'">
+    <div class="banner-overlay">
+      <div class="club-info">
+        <h1 class="club-title">{{ club.name }}</h1>
+        <p class="club-description">{{ club.description }}</p>
+        <div class="club-meta">
+          <span><mat-icon>group</mat-icon> {{ club.membersCount }} membros</span>
+          <span><mat-icon>list</mat-icon> {{ club.mediaListsCount }} listas</span>
+          <span><mat-icon>event</mat-icon> Criado em {{ formatDate(club.createdAt) }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Club Actions -->
+  <div class="club-actions">
+    <button mat-raised-button color="primary" *ngIf="isAuthenticated && !club.isMember && !club.isOwner" (click)="joinClub()">
+      <mat-icon>add</mat-icon> Entrar no Clube
+    </button>
+    <button mat-raised-button color="warn" *ngIf="club.isMember && !club.isOwner" (click)="leaveClub()">
+      <mat-icon>exit_to_app</mat-icon> Sair do Clube
+    </button>
+    <button mat-raised-button color="accent" *ngIf="club.isOwner" [routerLink]="['/clubs', clubId, 'edit']">
+      <mat-icon>settings</mat-icon> Configurações do Clube
+    </button>
+  </div>
+
+  <div class="auth-required-banner" *ngIf="!isAuthenticated">
+    <mat-icon>lock</mat-icon>
+    <div>
+      <strong>Entre para participar do clube</strong>
+      <p>Faça login para entrar neste clube e interagir com outros membros.</p>
+    </div>
+  </div>
+
+  <!-- Media Lists Section -->
+  <app-media-lists 
+    [clubId]="clubId" 
+    [canManage]="club.isOwner || isCurrentUserModerator()">
+  </app-media-lists>
+
+  <!-- Create Post Section -->
+  <mat-card class="create-post-card" *ngIf="club.isMember">
+    <h3>Criar Post</h3>
+    <div class="post-input-wrapper">
+      <label class="post-input-label" for="clubPostInput">O que você está pensando?</label>
+      <div class="post-input-inner">
+        <mat-icon>edit_note</mat-icon>
+        <textarea
+          id="clubPostInput"
+          [(ngModel)]="newPostContent"
+          rows="4"
+          maxlength="500"
+          placeholder="Compartilhe algo com o clube..."></textarea>
+      </div>
+      <div class="post-input-hint">{{ newPostContent.length }}/500</div>
+    </div>
+    
+    <!-- Image Previews -->
+    <div class="image-previews" *ngIf="imagePreviews.length > 0">
+      <div class="preview-item" *ngFor="let preview of imagePreviews; let i = index" [class.first-image]="i === 0">
+        <img [src]="preview" alt="Preview">
+        <button mat-icon-button class="remove-preview" (click)="removeImage(i)">
+          <mat-icon>close</mat-icon>
+        </button>
+        <span class="first-badge" *ngIf="i === 0 && imagePreviews.length > 1">Principal</span>
+      </div>
+    </div>
+    <p class="image-info" *ngIf="imagePreviews.length > 0">
+      <mat-icon>info</mat-icon>
+      {{ imagePreviews.length === 1 ? '1 imagem selecionada' : imagePreviews.length + ' imagens selecionadas (serão exibidas em carrossel)' }}
+    </p>
+
+    <div class="post-actions">
+      <input 
+        type="file" 
+        accept="image/*" 
+        multiple
+        (change)="onFileSelected($event)" 
+        #fileInput 
+        style="display: none">
+      <button mat-button (click)="fileInput.click()" [disabled]="selectedPostImages.length >= 5">
+        <mat-icon>image</mat-icon> 
+        {{ selectedPostImages.length > 0 ? 'Adicionar Mais (' + selectedPostImages.length + '/5)' : 'Adicionar Imagens' }}
+      </button>
+      <button 
+        mat-raised-button 
+        color="primary" 
+        (click)="createPost()" 
+        [disabled]="!newPostContent.trim()">
+        Publicar
+      </button>
+    </div>
+  </mat-card>
+
+  <!-- Posts Feed -->
+  <div class="posts-feed">
+    <h2>Posts do Clube</h2>
+    
+    <mat-card class="post-card" *ngFor="let post of posts">
+      <!-- Post Header -->
+      <div class="post-header">
+        <div class="author-info">
+          <img 
+            *ngIf="post.authorProfilePictureUrl" 
+            [src]="post.authorProfilePictureUrl" 
+            [alt]="post.authorName"
+            class="author-avatar-img"
+            (error)="$any($event.target).style.display='none'; $any($event.target).nextElementSibling.style.display='block'">
+          <mat-icon class="author-avatar" [style.display]="post.authorProfilePictureUrl ? 'none' : 'block'">account_circle</mat-icon>
+          <div>
+            <span class="author-name">{{ post.authorName }}</span>
+            <span class="post-date">{{ formatDate(post.createdAt) }}</span>
+          </div>
+        </div>
+        <div class="post-actions-menu">
+          <span class="edited-badge" *ngIf="post.isEdited">Editado</span>
+          <button mat-icon-button [matMenuTriggerFor]="menu" *ngIf="post.canDelete">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="deletePost(post.id)">
+              <mat-icon>delete</mat-icon>
+              <span>Excluir</span>
+            </button>
+          </mat-menu>
+        </div>
+      </div>
+
+      <!-- Post Content -->
+      <div class="post-content">
+        <p>{{ post.content }}</p>
+        <!-- Multiple Images Carousel -->
+        <div *ngIf="post.imageUrls && post.imageUrls.length > 0" class="post-carousel">
+          <div class="carousel-container">
+            <div class="carousel-images" [attr.data-post-id]="post.id">
+              <img 
+                *ngFor="let imageUrl of post.imageUrls; let i = index" 
+                [src]="getImageUrl(imageUrl)" 
+                [class.active]="getCurrentImageIndex(post.id) === i"
+                alt="Imagem {{ i + 1 }} de {{ post.imageUrls.length }}" 
+                class="carousel-image">
+            </div>
+            
+            <!-- Navigation Buttons (only show if more than 1 image) -->
+            <button 
+              *ngIf="post.imageUrls.length > 1"
+              mat-icon-button 
+              class="carousel-btn prev" 
+              (click)="previousImage(post.id, post.imageUrls.length)">
+              <mat-icon>chevron_left</mat-icon>
+            </button>
+            <button 
+              *ngIf="post.imageUrls.length > 1"
+              mat-icon-button 
+              class="carousel-btn next" 
+              (click)="nextImage(post.id, post.imageUrls.length)">
+              <mat-icon>chevron_right</mat-icon>
+            </button>
+          </div>
+          
+          <!-- Image Counter -->
+          <div *ngIf="post.imageUrls.length > 1" class="image-counter">
+            {{ getCurrentImageIndex(post.id) + 1 }} / {{ post.imageUrls.length }}
+          </div>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- Post Stats -->
+      <div class="post-stats">
+        <button mat-button (click)="toggleComments(post.id)">
+          <mat-icon>comment</mat-icon>
+          {{ post.commentsCount }} comentários
+        </button>
+      </div>
+
+      <!-- Comments Section -->
+      <div class="comments-section" *ngIf="isExpanded(post.id)">
+        <mat-divider></mat-divider>
+        
+        <!-- New Comment -->
+        <div class="new-comment" *ngIf="club.isMember">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Adicionar comentário</mat-label>
+            <input 
+              matInput 
+              [(ngModel)]="newCommentContent[post.id]" 
+              placeholder="Escreva seu comentário..."
+              (keyup.enter)="createComment(post.id)">
+          </mat-form-field>
+          <button 
+            mat-icon-button 
+            color="primary" 
+            (click)="createComment(post.id)"
+            [disabled]="!newCommentContent[post.id]?.trim()">
+            <mat-icon>send</mat-icon>
+          </button>
+        </div>
+
+        <!-- Comments List -->
+        <div class="comments-list" *ngIf="post.comments && post.comments.length > 0">
+          <div class="comment" *ngFor="let comment of post.comments">
+            <div class="comment-header">
+              <img 
+                *ngIf="comment.authorProfilePictureUrl" 
+                [src]="comment.authorProfilePictureUrl" 
+                [alt]="comment.authorName"
+                class="comment-avatar-img"
+                (error)="$any($event.target).style.display='none'; $any($event.target).nextElementSibling.style.display='block'">
+              <mat-icon class="comment-avatar" [style.display]="comment.authorProfilePictureUrl ? 'none' : 'block'">account_circle</mat-icon>
+              <div class="comment-info">
+                <span class="comment-author">{{ comment.authorName }}</span>
+                <span class="comment-date">{{ formatDate(comment.createdAt) }}</span>
+              </div>
+              <button 
+                mat-icon-button 
+                *ngIf="comment.canDelete" 
+                (click)="deleteComment(post.id, comment.id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+            <p class="comment-content">{{ comment.content }}</p>
+          </div>
+        </div>
+
+        <p class="no-comments" *ngIf="!post.comments || post.comments.length === 0">
+          Nenhum comentário ainda. Seja o primeiro a comentar!
+        </p>
+      </div>
+    </mat-card>
+
+    <p class="no-posts" *ngIf="posts.length === 0">
+      <mat-icon>post_add</mat-icon>
+      Nenhum post ainda. Seja o primeiro a compartilhar algo!
+    </p>
+  </div>
+</div>
+
+<div class="loading-container" *ngIf="loading">
+  <mat-spinner></mat-spinner>
+</div>

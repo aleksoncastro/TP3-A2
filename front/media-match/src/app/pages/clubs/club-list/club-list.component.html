@@ -1,0 +1,171 @@
+<div class="clubs-container">
+  <!-- Header -->
+  <div class="header-section">
+    <div class="header-content">
+      <h1 class="page-title">Clubes</h1>
+      <p class="page-subtitle">Conecte-se com outros fãs e compartilhe suas paixões</p>
+    </div>
+    <button mat-raised-button color="primary" class="create-btn" (click)="navigateToCreateClub()">
+      <mat-icon>add</mat-icon>
+      Criar Clube
+    </button>
+  </div>
+
+  <div class="auth-reminder-banner" *ngIf="authBannerMessage">
+    <div class="auth-reminder-icon">
+      <mat-icon>lock</mat-icon>
+    </div>
+    <div class="auth-reminder-content">
+      <strong>{{ authBannerMessage }}</strong>
+      <button mat-stroked-button color="primary" class="auth-reminder-action" (click)="handleLoginRedirect($event)">
+        <mat-icon>login</mat-icon>
+        Fazer login
+      </button>
+    </div>
+    <button mat-icon-button type="button" class="auth-reminder-dismiss" (click)="dismissAuthReminder()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-section">
+    <div class="filter-controls">
+      <!-- Search input no estilo do header -->
+      <div class="search-field">
+        <div class="search-input-wrapper">
+          <input
+            type="text"
+            [(ngModel)]="searchTerm"
+            (keyup.enter)="onSearch()"
+            placeholder="Buscar clubes..."
+            class="search-input-clubs"
+          />
+          <button type="button" class="search-icon-btn" (click)="onSearch()">
+            <mat-icon>search</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <!-- Select customizado mantendo o MatSelect, mas com casca parecida com input -->
+      <div class="sort-field">
+        <mat-form-field appearance="outline" class="sort-field-styled">
+          <mat-select [(ngModel)]="sortBy" (selectionChange)="onSortChange()">
+            <mat-option *ngFor="let option of sortOptions" [value]="option.value">
+              {{ option.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="view-toggle">
+      <button mat-button [class.active]="viewMode === 'all'" (click)="switchView('all')">
+        <mat-icon>public</mat-icon>
+        Todos os Clubes
+      </button>
+      <button mat-button [class.active]="viewMode === 'member'" (click)="switchView('member')">
+        <mat-icon>group</mat-icon>
+        Participando
+      </button>
+      <button mat-button [class.active]="viewMode === 'owner'" (click)="switchView('owner')">
+        <mat-icon>star</mat-icon>
+        Gerenciando
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-container" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <!-- Clubs Grid -->
+  <div class="clubs-grid" *ngIf="!loading">
+    <mat-card *ngFor="let club of displayedClubs" class="club-card" (click)="navigateToClub(club.id)">
+      <div class="club-image-container">
+        <img [src]="getImageUrl(club.imageUrl)" [alt]="club.name" class="club-image">
+        <div class="club-overlay"></div>
+
+      </div>
+
+      <mat-card-content>
+        <h3 class="club-name">{{ club.name }}</h3>
+        <p class="club-description">{{ club.description || 'Sem descrição' }}</p>
+        
+        <div class="club-stats">
+          <div class="stat">
+            <mat-icon>group</mat-icon>
+            <span>{{ club.membersCount }} membros</span>
+          </div>
+          <div class="stat">
+            <mat-icon>list</mat-icon>
+            <span>{{ club.mediaListsCount }} listas</span>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <ng-container *ngIf="!club.isOwner">
+          <ng-container *ngIf="isAuthenticated; else loginToJoin">
+            <button 
+              mat-raised-button 
+              *ngIf="!club.isMember"
+              color="primary"
+              (click)="joinClub(club, $event)"
+              class="action-btn">
+              <mat-icon>add</mat-icon>
+              Entrar
+            </button>
+          </ng-container>
+          <ng-template #loginToJoin>
+            <button 
+              mat-stroked-button 
+              color="primary"
+              (click)="handleLoginRedirect($event)"
+              class="action-btn">
+              <mat-icon>login</mat-icon>
+              Fazer login
+            </button>
+          </ng-template>
+        </ng-container>
+        <button 
+          mat-stroked-button 
+          *ngIf="club.isMember && !club.isOwner"
+          color="warn"
+          (click)="leaveClub(club, $event)"
+          class="action-btn">
+          <mat-icon>exit_to_app</mat-icon>
+          Sair
+        </button>
+        <button 
+          mat-raised-button 
+          *ngIf="club.isOwner"
+          color="accent"
+          (click)="navigateToClub(club.id); $event.stopPropagation()"
+          class="action-btn">
+          <mat-icon>settings</mat-icon>
+          Gerenciar
+        </button>
+        <button 
+          mat-raised-button 
+          *ngIf="!club.isOwner"
+          color="accent"
+          class="action-btn">
+          <mat-icon>visibility</mat-icon>
+          Ver Detalhes
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="!loading && displayedClubs.length === 0">
+    <mat-icon class="empty-icon">{{ viewMode === 'owner' ? 'star_border' : 'group_off' }}</mat-icon>
+    <h3>{{ emptyStateMessage.title }}</h3>
+    <p>{{ emptyStateMessage.subtitle }}</p>
+    <button mat-raised-button color="primary" (click)="navigateToCreateClub()">
+      <mat-icon>add</mat-icon>
+      {{ viewMode === 'owner' ? 'Criar Primeiro Clube' : 'Criar Novo Clube' }}
+    </button>
+  </div>
+</div>

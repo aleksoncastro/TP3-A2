@@ -1,0 +1,72 @@
+<div class="media-lists-container">
+  <div class="lists-header">
+    <div class="header-content">
+      <mat-icon class="header-icon">format_list_bulleted</mat-icon>
+      <h2>Listas de Mídia</h2>
+    </div>
+    <button mat-raised-button color="primary" *ngIf="canManage" (click)="openCreateDialog()" class="create-btn">
+      <mat-icon>add</mat-icon>
+      Nova Lista
+    </button>
+  </div>
+
+  <div class="lists-loading" *ngIf="loading">
+    <mat-icon class="loading-icon">hourglass_empty</mat-icon>
+    <p>Carregando listas...</p>
+  </div>
+
+  <div class="lists-grid" *ngIf="!loading && lists.length > 0">
+    <div class="list-card" *ngFor="let list of lists" (click)="openListDetail(list)">
+      <div class="card-header">
+        <div class="card-title-row">
+          <h3 class="card-title">{{ list.name }}</h3>
+          <span class="visibility-badge" [class.public]="list.isPublic" [class.private]="!list.isPublic">
+            <mat-icon>{{ list.isPublic ? 'public' : 'lock' }}</mat-icon>
+            {{ list.isPublic ? 'Pública' : 'Privada' }}
+          </span>
+        </div>
+        <div class="card-actions" *ngIf="list.canEdit" (click)="$event.stopPropagation()">
+          <button mat-icon-button (click)="openEditDialog(list, $event)" class="action-btn edit-btn" matTooltip="Editar">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="deleteList(list, $event)" class="action-btn delete-btn" matTooltip="Deletar">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+      
+      <div class="card-content">
+        <p class="card-description" *ngIf="list.description">{{ list.description }}</p>
+        <p class="card-description empty" *ngIf="!list.description">Sem descrição</p>
+        
+        <div class="card-footer">
+          <div class="stats">
+            <span class="stat-item">
+              <mat-icon>movie_filter</mat-icon>
+              <span class="stat-value">{{ list.itemsCount }}</span>
+              <span class="stat-label">{{ list.itemsCount === 1 ? 'item' : 'itens' }}</span>
+            </span>
+            <span class="stat-divider">•</span>
+            <span class="stat-item">
+              <mat-icon>chat_bubble_outline</mat-icon>
+              <span class="stat-value">{{ list.commentsCount }}</span>
+              <span class="stat-label">{{ list.commentsCount === 1 ? 'comentário' : 'comentários' }}</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="no-lists" *ngIf="!loading && lists.length === 0">
+    <div class="empty-state">
+      <mat-icon class="empty-icon">inbox</mat-icon>
+      <h3>Nenhuma lista ainda</h3>
+      <p>Crie sua primeira lista para organizar filmes e séries</p>
+      <button mat-raised-button color="primary" *ngIf="canManage" (click)="openCreateDialog()" class="create-first-btn">
+        <mat-icon>add</mat-icon>
+        Criar Primeira Lista
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,253 @@
+@import "@spartan-ng/brain/hlm-tailwind-preset.css";
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/preflight.css' layer(base);
+@import 'tailwindcss/utilities.css';
+@import "@angular/cdk/overlay-prebuilt.css";
+@layer theme, base, components, utilities;
+
+:root {
+color-scheme: dark;
+--font-sans: 'Inter', 'Roboto', Arial, sans-serif;
+--font-display: 'Montserrat', sans-serif;
+
+--background: #141414;
+--foreground: #F5F5F5;
+--card: #1E1E1E;
+--card-foreground: #F5F5F5;
+--popover: #1E1E1E;
+--popover-foreground: #F5F5F5;
+
+--primary: #E50914;
+--primary-foreground: #FFFFFF;
+--secondary: #2A2A2A;
+--secondary-foreground: #F5F5F5;
+
+--muted: #2A2A2A;
+--muted-foreground: #AAAAAA;
+--accent: #F61D27;
+--accent-foreground: #FFFFFF;
+--destructive: #D32F2F;
+
+--border: #3D3D3D;
+--input: #2A2A2A;
+--ring: #B90710;
+}
+
+body {
+background: var(--background);
+color: var(--foreground);
+font-family: var(--font-sans);
+}
+
+h1, h2, h3, h4, h5, h6, .brand {
+font-family: var(--font-display);
+}
+
+/* Shared input styling used across dialogs and profile forms */
+.app-input-wrapper,
+.profile-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: 100%;
+}
+
+.app-input-label,
+.profile-input-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--muted-foreground);
+}
+
+.app-input-inner,
+.profile-input-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background-color: var(--input);
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.app-input-inner:focus-within,
+.profile-input-inner:focus-within {
+  border-color: var(--ring);
+  background-color: var(--card);
+  box-shadow: 0 0 0 1px rgba(229, 9, 20, 0.35);
+}
+
+.app-input-inner input,
+.app-input-inner textarea,
+.profile-input-inner input,
+.profile-input-inner textarea {
+  flex: 1;
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+}
+
+.app-input-inner input::placeholder,
+.app-input-inner textarea::placeholder,
+.profile-input-inner input::placeholder,
+.profile-input-inner textarea::placeholder {
+  color: var(--muted-foreground);
+}
+
+.app-input-icon,
+.profile-input-icon {
+  color: var(--muted-foreground);
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+}
+
+.app-input-inner:focus-within .app-input-icon,
+.profile-input-inner:focus-within .profile-input-icon {
+  color: var(--primary);
+}
+
+.app-textarea-inner,
+.profile-textarea-inner {
+  align-items: flex-start;
+}
+
+.app-textarea-inner textarea,
+.profile-textarea-inner textarea {
+  min-height: 100px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.app-input-hint,
+.profile-input-hint {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  text-align: right;
+}
+
+.app-input-error span,
+.profile-input-error span {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--destructive);
+}
+
+.app-input-wrapper.readonly .app-input-inner,
+.profile-input-wrapper.readonly .profile-input-inner {
+  opacity: 0.7;
+  cursor: default;
+}
+
+
+/*
+:root {
+color-scheme: light;
+
+
+
+--radius: 0.625rem;
+--background: oklch(1 0 0);
+--foreground: oklch(0.145 0 0);
+--card: oklch(1 0 0);
+--card-foreground: oklch(0.145 0 0);
+--popover: oklch(1 0 0);
+--popover-foreground: oklch(0.145 0 0);
+--primary: oklch(0.205 0 0);
+--primary-foreground: oklch(0.985 0 0);
+--secondary: oklch(0.97 0 0);
+--secondary-foreground: oklch(0.205 0 0);
+--muted: oklch(0.97 0 0);
+--muted-foreground: oklch(0.556 0 0);
+--accent: oklch(0.97 0 0);
+--accent-foreground: oklch(0.205 0 0);
+--destructive: oklch(0.577 0.245 27.325);
+--border: oklch(0.922 0 0);
+--input: oklch(0.922 0 0);
+--ring: oklch(0.708 0 0);
+--sidebar: oklch(0.985 0 0);
+--sidebar-foreground: oklch(0.145 0 0);
+--sidebar-primary: oklch(0.205 0 0);
+--sidebar-primary-foreground: oklch(0.985 0 0);
+--sidebar-accent: oklch(0.97 0 0);
+--sidebar-accent-foreground: oklch(0.205 0 0);
+--sidebar-border: oklch(0.922 0 0);
+--sidebar-ring: oklch(0.708 0 0);
+}
+
+:root.dark {
+color-scheme: dark;
+
+--background: oklch(0.145 0 0);
+--foreground: oklch(0.985 0 0);
+--card: oklch(0.205 0 0);
+--card-foreground: oklch(0.985 0 0);
+--popover: oklch(0.205 0 0);
+--popover-foreground: oklch(0.985 0 0);
+--primary: oklch(0.922 0 0);
+--primary-foreground: oklch(0.205 0 0);
+--secondary: oklch(0.269 0 0);
+--secondary-foreground: oklch(0.985 0 0);
+--muted: oklch(0.269 0 0);
+--muted-foreground: oklch(0.708 0 0);
+--accent: oklch(0.269 0 0);
+--accent-foreground: oklch(0.985 0 0);
+--destructive: oklch(0.704 0.191 22.216);
+--border: oklch(1 0 0 / 10%);
+--input: oklch(1 0 0 / 15%);
+--ring: oklch(0.556 0 0);
+--sidebar: oklch(0.205 0 0);
+--sidebar-foreground: oklch(0.985 0 0);
+--sidebar-primary: oklch(0.985 0 0);
+--sidebar-primary-foreground: oklch(0.205 0 0);
+--sidebar-accent: oklch(0.269 0 0);
+--sidebar-accent-foreground: oklch(0.985 0 0);
+--sidebar-border: oklch(1 0 0 / 10%);
+--sidebar-ring: oklch(0.556 0 0);
+}*/
+
+@layer base {
+* {
+@apply border-border outline-ring/50;
+}
+body {
+@apply bg-background text-foreground;
+}
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Dark Dialog Styles */
+.dark-dialog .mat-mdc-dialog-container {
+  background-color: #1E1E1E !important;
+  color: #F5F5F5 !important;
+}
+
+.dark-dialog .mat-mdc-dialog-container .mdc-dialog__surface {
+  background-color: #1E1E1E !important;
+}
+
+.dark-dialog .mat-mdc-button:not(.mat-mdc-raised-button) {
+  color: #B3B3B3 !important;
+}
+
+.dark-dialog .mat-mdc-button:not(.mat-mdc-raised-button):hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.dark-dialog h2 {
+  color: #F5F5F5 !important;
+}
+
+.dark-dialog p {
+  color: #E0E0E0 !important;
+}

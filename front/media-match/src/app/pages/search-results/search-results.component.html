@@ -1,0 +1,45 @@
+<div class="container list-container">
+  <h1 class="page-title">{{ pageTitle }}</h1>
+
+  <div class="movie-grid" *ngIf="items$ | async as items; else loading">
+    
+    <div class="movie-item" *ngFor="let item of items">
+      <a [routerLink]="[item.media_type === 'tv' ? '/serie' : '/movie', item.id]" class="media-card">
+        <div class="poster-wrapper">
+          <img 
+            [src]="getImageUrl(item.poster_path)" 
+            [alt]="item.title || item.name" 
+            class="media-poster" 
+            loading="lazy"
+            (error)="onImgError($event)"
+          >
+          <div class="media-overlay">
+            <h3 class="media-title">{{ item.title || item.name }}</h3>
+            <div class="media-rating">
+              <mat-icon class="rating-icon">star</mat-icon>
+              <span>{{ formatRating(item.vote_average) }}</span>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div *ngIf="items.length === 0" class="no-results">
+      <p>Nenhum resultado encontrado.</p>
+    </div>
+
+    <div class="end-of-list">
+      <button class="load-more-btn" (click)="loadMore()" [disabled]="loadingMore || !canLoadMore" aria-label="Mostrar mais resultados">
+        <span>Mostrar mais</span>
+        <mat-spinner *ngIf="loadingMore" diameter="18" class="btn-spinner" color="accent"></mat-spinner>
+      </button>
+    </div>
+
+  </div>
+
+  <ng-template #loading>
+    <div class="loading-state">
+      <mat-spinner diameter="40" color="accent"></mat-spinner>
+    </div>
+  </ng-template>
+</div>

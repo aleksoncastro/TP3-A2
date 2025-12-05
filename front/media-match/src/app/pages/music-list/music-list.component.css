@@ -1,0 +1,159 @@
+/* Container Geral */
+.music-dashboard {
+    background-color: #030303; /* Fundo bem escuro estilo YT Music */
+    min-height: 100vh;
+    padding: 24px 0 48px 24px; /* Padding left para alinhar, mas deixa o right estourar */
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    overflow-x: hidden;
+  }
+  
+  /* Loading */
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+  }
+  
+  /* Animação de entrada */
+  .fade-in {
+    animation: fadeIn 0.5s ease-in;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  /* Seção de Categoria */
+  .music-section {
+    margin-bottom: 40px;
+    position: relative;
+  }
+  
+  /* Header da Seção */
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 24px; /* Espaço para os botões não colarem na direita */
+    margin-bottom: 16px;
+  }
+  
+  .category-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    color: #f1f1f1;
+  }
+  
+  /* Botões de Navegação (Escondidos mobile, visíveis desktop) */
+  .navigation-buttons button {
+    color: #aaaaaa;
+  }
+  .navigation-buttons button:hover {
+    color: white;
+    background-color: rgba(255,255,255,0.1);
+  }
+  
+  /* O Container com Scroll Horizontal */
+  .scroll-container {
+    display: flex;
+    gap: 16px; /* Espaço entre as músicas */
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding-right: 24px; /* Espaço final */
+    
+    /* Esconder Scrollbar (Chrome, Safari, Opera) */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  
+  .scroll-container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* O Card de Música */
+  .music-card {
+    min-width: 280px; /* Largura fixa estilo YT Thumbnails largos */
+    max-width: 280px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    border-radius: 4px;
+  }
+  
+  .music-card:hover {
+    /* Leve destaque ao passar o mouse */
+    transform: scale(1.02); 
+  }
+  
+  /* Imagem e Overlay */
+  .image-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9; /* Formato retangular "vídeo" como na sua print */
+    border-radius: 6px;
+    overflow: hidden;
+    background-color: #202020;
+  }
+  
+  .image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .hover-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  
+  .music-card:hover .hover-overlay {
+    opacity: 1;
+  }
+  
+  .play-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: white;
+  }
+  
+  /* Textos do Card */
+  .info-wrapper {
+    margin-top: 10px;
+  }
+  
+  .track-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #ffffff;
+  }
+  
+  .track-artist {
+    margin: 4px 0 0 0;
+    font-size: 0.85rem;
+    color: #aaaaaa;
+  }
+  
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .music-card {
+      min-width: 220px;
+      max-width: 220px;
+    }
+    
+    .navigation-buttons {
+      display: none; /* Em mobile, usa-se o dedo para arrastar, esconde botões */
+    }
+  }

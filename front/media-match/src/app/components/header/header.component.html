@@ -1,0 +1,75 @@
+<header class="site-header">
+  <div class="container header-content">
+    
+    <nav brnNavigationMenu class="nav-menu">
+      <a routerLink="/" class="brand-logo">MediaMatch</a>
+
+      <ul brnNavigationMenuList class="nav-list">
+        <li brnNavigationMenuItem>
+          <a brnNavigationMenuLink routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link">Home</a>
+        </li>
+        <li brnNavigationMenuItem>
+          <a brnNavigationMenuLink routerLink="/movie" routerLinkActive="active" class="nav-link">Filmes</a>
+        </li>
+        <li brnNavigationMenuItem>
+          <a brnNavigationMenuLink routerLink="/series" routerLinkActive="active" class="nav-link">Séries</a>
+        </li>
+        <li brnNavigationMenuItem>
+          <a brnNavigationMenuLink routerLink="/clubs" routerLinkActive="active" class="nav-link">Clubes</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="search-container" #searchContainer style="position: relative;">
+      <form (submit)="onSearch()" class="search-form">
+        <input 
+          id="q" 
+          [(ngModel)]="q" 
+          (keyup)="onKeyUp($event)"
+          (keydown.enter)="onEnter($event)"
+          #searchInput
+          name="q" 
+          type="text" 
+          placeholder="Títulos, gente e gêneros" 
+          class="search-input" 
+          autocomplete="off"
+        />
+        <button brnButton type="submit" class="btn-primary">
+          Buscar
+        </button>
+      </form>
+
+      <ng-container *ngIf="(results$ | async) as results">
+        <div *ngIf="isDropdownOpen && results.length > 0" class="dropdown-results" #dropdownPanel>
+          <ul class="results-list">
+            <li *ngFor="let item of results">
+              <button (click)="goToDetails(item)" class="result-item">
+                <img 
+                  [src]="item.poster_path ? 'https://image.tmdb.org/t/p/w92' + item.poster_path : 'assets/placeholder.svg'" 
+                  alt="Poster" 
+                  class="result-thumb"
+                  (error)="onImgError($event)"
+                >
+                <div class="result-info">
+                  <span class="result-title">{{ item.title || item.name }}</span>
+                  <span class="result-meta">
+                    {{ (item.release_date || item.first_air_date) | date:'yyyy' }} • {{ item.media_type === 'tv' ? 'Série' : 'Filme' }}
+                  </span>
+                </div>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </ng-container>
+    </div>
+
+    <div class="auth-section">
+      <app-user-menu *ngIf="authService.isAuthenticated()"></app-user-menu>
+      <div *ngIf="!authService.isAuthenticated()" class="auth-buttons">
+        <a routerLink="/login" class="btn-secondary">Entrar</a>
+        <a routerLink="/register" class="btn-primary">Cadastrar</a>
+      </div>
+    </div>
+
+  </div>
+</header>

@@ -1,0 +1,400 @@
+/* ============================================
+   VARIÁVEIS (Da Nova Paleta)
+   ============================================ */
+:root {
+  color-scheme: dark;
+  --font-sans: 'Inter', 'Roboto', Arial, sans-serif;
+  --font-display: 'Montserrat', sans-serif;
+
+  --background: #141414;
+  --foreground: #F5F5F5;
+  --card: #1E1E1E;
+  --card-foreground: #F5F5F5;
+  --popover: #1E1E1E;
+  --popover-foreground: #F5F5F5;
+
+  --primary: #E50914;
+  --primary-foreground: #FFFFFF;
+  --secondary: #2A2A2A;
+  --secondary-foreground: #F5F5F5;
+
+  --muted: #2A2A2A;
+  --muted-foreground: #AAAAAA;
+  --accent: #F61D27;
+  --accent-foreground: #FFFFFF;
+  --destructive: #D32F2F;
+
+  --border: #3D3D3D;
+  --input: #2A2A2A;
+  --ring: #B90710;
+}
+
+/* ============================================
+   CONTAINER PRINCIPAL
+   ============================================ */
+.home-container {
+  background-color: var(--background);
+  min-height: 100vh;
+  padding-bottom: 4rem;
+  font-family: var(--font-sans);
+  color: var(--foreground);
+}
+
+/* ============================================
+   HERO SECTION
+   ============================================ */
+.hero-section {
+  position: relative;
+  height: 60vh;
+  min-height: 400px;
+  /* Ajustado para usar o background principal no gradiente */
+  background: linear-gradient(180deg, var(--background) 0%, var(--background) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 3rem;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(229, 9, 20, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 50%, rgba(229, 9, 20, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 2rem;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 800;
+  color: var(--foreground);
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+  letter-spacing: -0.02em;
+}
+
+.hero-subtitle {
+  font-family: var(--font-sans);
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: var(--muted-foreground);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+.hero-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: linear-gradient(to bottom, transparent, var(--background));
+  pointer-events: none;
+}
+
+@media (max-width: 767px) {
+  .hero-section {
+    height: 50vh;
+    min-height: 300px;
+  }
+}
+
+/* ============================================
+   SEÇÕES DE CARROSSEL
+   ============================================ */
+.carousel-section {
+  margin-bottom: 3rem;
+  padding: 0 1rem;
+}
+
+@media (min-width: 768px) {
+  .carousel-section {
+    padding: 0 3rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .carousel-section {
+    padding: 0 4rem;
+  }
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  color: var(--foreground);
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.01em;
+  position: relative;
+  display: inline-block;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background-color: var(--primary);
+  border-radius: 2px;
+}
+
+/* ============================================
+   CARROSSEL
+   ============================================ */
+.carousel-wrapper {
+  position: relative;
+}
+
+/* Mostra as setas ao passar o mouse */
+.carousel-wrapper:hover .carousel-nav {
+  opacity: 1;
+}
+
+.carousel-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) var(--background);
+}
+
+.carousel-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.carousel-container::-webkit-scrollbar-track {
+  background: var(--background);
+  border-radius: 4px;
+}
+
+.carousel-container::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 4px;
+}
+
+.carousel-container::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+.carousel-track {
+  display: flex;
+  gap: 1rem;
+  padding: 0.5rem 0;
+}
+
+.carousel-track:empty::before {
+  content: 'Carregando conteúdo...';
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 3rem;
+  color: var(--muted-foreground);
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+}
+
+.carousel-item {
+  flex: 0 0 auto;
+  width: 200px;
+}
+
+@media (min-width: 768px) {
+  .carousel-item {
+    width: 220px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .carousel-item {
+    width: 240px;
+  }
+}
+
+/* ============================================
+   NAVEGAÇÃO DO CARROSSEL
+   ============================================ */
+.carousel-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  /* Mantive o rgba para transparência ou pode usar var(--popover) */
+  background-color: rgba(20, 20, 20, 0.85);
+  border: 1px solid var(--border);
+  color: var(--foreground);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
+}
+
+/* Sobrescrevendo o fundo padrão do botão Material */
+.carousel-nav.mat-mdc-icon-button {
+  background-color: rgba(20, 20, 20, 0.85);
+  color: var(--foreground);
+}
+
+.carousel-nav:hover {
+  background-color: var(--primary) !important;
+  border-color: var(--primary);
+  transform: translateY(-50%) scale(1.1);
+  color: var(--primary-foreground);
+}
+
+.carousel-nav:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+/* Ajusta o ícone dentro do botão */
+.carousel-nav mat-icon {
+  font-size: 2rem;
+  width: 2rem;
+  height: 2rem;
+  line-height: 2rem;
+  color: inherit;
+}
+
+.carousel-nav-left {
+  left: -25px;
+}
+
+.carousel-nav-right {
+  right: -25px;
+}
+
+@media (min-width: 768px) {
+  .carousel-nav-left { left: -30px; }
+  .carousel-nav-right { right: -30px; }
+}
+
+@media (max-width: 767px) {
+  .carousel-nav {
+    width: 40px;
+    height: 40px;
+  }
+  .carousel-nav-left { left: -20px; }
+  .carousel-nav-right { right: -20px; }
+  
+  .carousel-nav mat-icon {
+    font-size: 1.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    line-height: 1.5rem;
+  }
+}
+
+/* ============================================
+   CARDS DE MEDIA (Filmes/Series)
+   ============================================ */
+.media-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 300px;
+  border-radius: 8px;
+  overflow: hidden;
+  /* Mudança: usar --card ao invés de --background para destacar do fundo */
+  background-color: var(--card);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .media-card { height: 330px; }
+}
+
+@media (min-width: 1200px) {
+  .media-card { height: 360px; }
+}
+
+.media-card:hover {
+  transform: scale(1.05) translateY(-8px);
+  /* Sombra com tom de --primary */
+  box-shadow: 0 8px 24px rgba(229, 9, 20, 0.4);
+  z-index: 5;
+}
+
+.media-poster {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: filter 0.3s ease;
+}
+
+.media-card:hover .media-poster {
+  filter: brightness(0.7);
+}
+
+.media-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.5rem 1rem;
+  background: linear-gradient(to top, rgba(20, 20, 20, 0.95) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.media-card:hover .media-overlay {
+  opacity: 1;
+}
+
+.media-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin: 0 0 0.5rem 0;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.media-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.media-rating .rating-icon {
+  font-size: 1.2rem;
+  color: var(--primary);
+  width: 1.2rem;
+  height: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.media-rating span:not(.rating-icon) {
+  color: var(--foreground);
+}

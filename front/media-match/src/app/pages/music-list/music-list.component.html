@@ -1,0 +1,52 @@
+<div class="music-dashboard">
+  
+    <div *ngIf="isLoading" class="loading-container">
+      <mat-spinner color="accent"></mat-spinner>
+    </div>
+  
+    <div *ngIf="!isLoading" class="fade-in">
+      
+      <section class="music-section" *ngFor="let group of trackGroups; let i = index">
+        
+        <div class="section-header">
+          <div class="title-area">
+            <h2 class="category-title">{{ group.title }}</h2>
+          </div>
+          
+          <div class="navigation-buttons">
+            <button mat-icon-button (click)="scroll(i, 'left')">
+              <mat-icon>chevron_left</mat-icon>
+            </button>
+            <button mat-icon-button (click)="scroll(i, 'right')">
+              <mat-icon>chevron_right</mat-icon>
+            </button>
+          </div>
+        </div>
+  
+        <div class="scroll-container" #scrollContainer>
+          
+          <div 
+            class="music-card" 
+            *ngFor="let track of group.tracks" 
+            matRipple 
+            (click)="playTrack(track)"
+          >
+            <div class="image-wrapper">
+              <img [src]="track.strTrackThumb || 'assets/placeholder.png'" alt="Capa" loading="lazy">
+              
+              <div class="hover-overlay">
+                <mat-icon class="play-icon">play_circle_filled</mat-icon>
+              </div>
+            </div>
+  
+            <div class="info-wrapper">
+              <h3 class="track-title">{{ track.strTrack }}</h3>
+              <p class="track-artist">{{ track.strGenre || 'Unknown Artist' }}</p>
+            </div>
+          </div>
+  
+        </div>
+      </section>
+  
+    </div>
+  </div>

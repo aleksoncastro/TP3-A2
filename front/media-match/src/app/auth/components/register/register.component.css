@@ -1,0 +1,144 @@
+.auth-wrap {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--background);
+  padding: 24px;
+  gap: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 50%, rgba(229, 9, 20, 0.15) 0%, transparent 50%),
+              radial-gradient(circle at 80% 50%, rgba(229, 9, 20, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.brand-logo {
+  font-family: var(--font-display, sans-serif);
+  font-weight: 800;
+  font-size: 2.5rem;
+  color: var(--primary);
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: -1px;
+}
+
+.auth-card {
+  max-width: 480px;
+  width: 100%;
+  background-color: var(--card);
+  color: var(--card-foreground);
+  border: 1px solid var(--border);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+h2.section-title {
+  font-family: var(--font-display, sans-serif);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.01em;
+  position: relative;
+  display: inline-block;
+  text-align: left;
+}
+
+
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+button[type="submit"] {
+  height: 48px;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 8px;
+  background-color: var(--primary) !important;
+  color: var(--primary-foreground) !important;
+  border-radius: 9999px;
+}
+
+button[type="submit"]:hover {
+  background-color: var(--accent) !important;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.mat-mdc-form-field .mdc-notched-outline__leading,
+.mat-mdc-form-field .mdc-notched-outline__notch,
+.mat-mdc-form-field .mdc-notched-outline__trailing {
+  border-color: var(--border);
+  transition: border-color 0.2s ease;
+}
+
+.mat-mdc-form-field:hover .mdc-notched-outline__leading,
+.mat-mdc-form-field:hover .mdc-notched-outline__notch,
+.mat-mdc-form-field:hover .mdc-notched-outline__trailing {
+  border-color: var(--accent);
+}
+
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+  border-color: var(--primary);
+}
+
+.mat-mdc-form-field .mdc-notched-outline {
+  border-radius: 8px;
+}
+
+.mat-mdc-form-field .mat-mdc-form-field-flex {
+  background-color: var(--input);
+  border-radius: 8px;
+}
+
+.mat-mdc-form-field .mdc-floating-label {
+  color: var(--muted-foreground);
+}
+
+.mat-mdc-form-field.mat-focused .mdc-floating-label {
+  color: var(--foreground);
+}
+
+.mat-mdc-input-element {
+  color: var(--foreground);
+  caret-color: var(--primary);
+}
+
+.mat-mdc-input-element::placeholder {
+  color: var(--muted-foreground);
+}
+
+.mat-mdc-form-field.mat-mdc-form-field-invalid .mdc-notched-outline__leading,
+.mat-mdc-form-field.mat-mdc-form-field-invalid .mdc-notched-outline__notch,
+.mat-mdc-form-field.mat-mdc-form-field-invalid .mdc-notched-outline__trailing {
+  border-color: var(--destructive);
+}
+
+button[color="accent"] {
+  margin-top: 16px;
+  color: var(--muted-foreground) !important;
+}
+
+button[color="accent"]:hover {
+  color: var(--foreground) !important;
+}
