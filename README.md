@@ -7,8 +7,12 @@ MediaMatch e uma plataforma para descobrir filmes, series e trilhas sonoras dos 
 - Camada de servicos para agregacao de trilhas (Spotify + TheAudioDB) e informacoes de midia (TMDB)
 - Autenticacao baseada em JWT, controle de papeis e endpoints para clubes, listas, posts e comentarios
 - Frontend Angular 21 com Angular Material
+---
 ![alt text](images/image1.png)
+---
 ![alt text](images/image2.png)
+---
+Diagrama de Banco:
 ![diagrama BD](images/image3.png)
 ## Tecnologias principais
 - **Backend:** .NET 8, ASP.NET Core, EF Core, SQL Server, Swagger, JWT

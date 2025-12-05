@@ -45,8 +45,8 @@
    ============================================ */
 .hero-section {
   position: relative;
-  height: 60vh;
-  min-height: 400px;
+  height: 10vh;
+  min-height: 200px;
   /* Ajustado para usar o background principal no gradiente */
   background: linear-gradient(180deg, var(--background) 0%, var(--background) 100%);
   display: flex;
@@ -145,7 +145,7 @@
 .section-title::after {
   content: '';
   position: absolute;
-  bottom: -5px;
+  bottom: -10px;
   left: 0;
   width: 60px;
   height: 3px;
