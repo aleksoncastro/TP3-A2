@@ -93,10 +93,10 @@ namespace MediaMatch.Services
 
             if (post == null) return null;
 
-            // Verificar permissões do usuário
-            var isSystemAdmin = await IsSystemAdminAsync(currentUserId);
-            var isClubOwner = post.Club.OwnerId == currentUserId;
-            var isClubModerator = await _context.ClubMembers
+            // Verificar permissões do usuário (se houver)
+            var isSystemAdmin = currentUserId != 0 && await IsSystemAdminAsync(currentUserId);
+            var isClubOwner = currentUserId != 0 && post.Club.OwnerId == currentUserId;
+            var isClubModerator = currentUserId != 0 && await _context.ClubMembers
                 .AnyAsync(cm => cm.ClubId == post.ClubId && cm.UserId == currentUserId && cm.IsModerator);
 
             return post.ToDetailDto(currentUserId, isSystemAdmin, isClubOwner, isClubModerator);
@@ -115,11 +115,11 @@ namespace MediaMatch.Services
                 .Take(take)
                 .ToListAsync();
 
-            // Verificar permissões do usuário uma vez
-            var isSystemAdmin = await IsSystemAdminAsync(currentUserId);
+            // Verificar permissões do usuário uma vez (se houver)
+            var isSystemAdmin = currentUserId != 0 && await IsSystemAdminAsync(currentUserId);
             var club = await _context.Clubs.FindAsync(clubId);
-            var isClubOwner = club != null && club.OwnerId == currentUserId;
-            var isClubModerator = await _context.ClubMembers
+            var isClubOwner = currentUserId != 0 && club != null && club.OwnerId == currentUserId;
+            var isClubModerator = currentUserId != 0 && await _context.ClubMembers
                 .AnyAsync(cm => cm.ClubId == clubId && cm.UserId == currentUserId && cm.IsModerator);
 
             return posts.Select(p => p.ToDto(currentUserId, isSystemAdmin, isClubOwner, isClubModerator)).ToList();

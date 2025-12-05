@@ -7,6 +7,10 @@ namespace MediaMatch.Extensions
     {
         public static ClubDto ToDto(this Club club, int? currentUserId = null)
         {
+            // Conta membros explícitos + owner como "membro lógico" para exibição
+            var explicitMembersCount = club.Members?.Count ?? 0;
+            var membersCountIncludingOwner = explicitMembersCount + 1; // owner
+
             return new ClubDto
             {
                 Id = club.Id,
@@ -16,7 +20,7 @@ namespace MediaMatch.Extensions
                 CreatedAt = club.CreatedAt,
                 OwnerId = club.OwnerId,
                 OwnerName = club.Owner?.UserName,
-                MembersCount = club.Members?.Count ?? 0,
+                MembersCount = membersCountIncludingOwner,
                 MediaListsCount = club.MediaLists?.Count ?? 0,
                 IsOwner = currentUserId.HasValue && club.OwnerId == currentUserId.Value,
                 IsMember = currentUserId.HasValue && (club.Members?.Any(m => m.UserId == currentUserId.Value) ?? false)
@@ -25,6 +29,9 @@ namespace MediaMatch.Extensions
 
         public static ClubDetailDto ToDetailDto(this Club club, int? currentUserId = null)
         {
+            var explicitMembersCount = club.Members?.Count ?? 0;
+            var membersCountIncludingOwner = explicitMembersCount + 1;
+
             return new ClubDetailDto
             {
                 Id = club.Id,
@@ -34,7 +41,7 @@ namespace MediaMatch.Extensions
                 CreatedAt = club.CreatedAt,
                 OwnerId = club.OwnerId,
                 OwnerName = club.Owner?.UserName,
-                MembersCount = club.Members?.Count ?? 0,
+                MembersCount = membersCountIncludingOwner,
                 MediaListsCount = club.MediaLists?.Count ?? 0,
                 IsOwner = currentUserId.HasValue && club.OwnerId == currentUserId.Value,
                 IsMember = currentUserId.HasValue && (club.Members?.Any(m => m.UserId == currentUserId.Value) ?? false),

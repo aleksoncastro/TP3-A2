@@ -8,7 +8,6 @@ namespace MediaMatch.Controllers
 {
     [ApiController]
     [Route("api/club/{clubId}/list")]
-    [Authorize]
     public class MediaListController : ControllerBase
     {
         private readonly MediaListService _service;
@@ -20,22 +19,25 @@ namespace MediaMatch.Controllers
             _logger = logger;
         }
 
-        private int GetCurrentUserId()
+        private int? TryGetCurrentUserId()
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            return int.TryParse(userIdClaim, out var userId) ? userId : 0;
+            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
+                return null;
+            return userId;
         }
 
         /// <summary>
         /// Cria uma nova lista no clube (apenas admins)
         /// </summary>
         [HttpPost]
+        [Authorize]
         [ProducesResponseType(typeof(MediaListDto), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> CreateList([FromRoute] int clubId, [FromBody] CreateMediaListDto dto)
         {
-            var userId = GetCurrentUserId();
+            var userId = TryGetCurrentUserId() ?? 0;
             var list = await _service.CreateListAsync(clubId, dto, userId);
             
             var listDto = new MediaListDto
@@ -55,11 +57,12 @@ namespace MediaMatch.Controllers
         /// Lista todas as listas do clube
         /// </summary>
         [HttpGet]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(List<MediaListDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetClubLists([FromRoute] int clubId)
         {
-            var userId = GetCurrentUserId();
-            var lists = await _service.GetClubListsAsync(clubId, userId);
+            var userId = TryGetCurrentUserId();
+            var lists = await _service.GetClubListsAsync(clubId, userId ?? 0);
             return Ok(lists);
         }
 
@@ -67,12 +70,13 @@ namespace MediaMatch.Controllers
         /// Obtém detalhes de uma lista específica
         /// </summary>
         [HttpGet("{listId}")]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(MediaListDetailDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetListDetail([FromRoute] int clubId, [FromRoute] int listId)
         {
-            var userId = GetCurrentUserId();
-            var list = await _service.GetListDetailAsync(listId, userId);
+            var userId = TryGetCurrentUserId();
+            var list = await _service.GetListDetailAsync(listId, userId ?? 0);
             
             if (list == null)
                 return NotFound(new { message = "Lista não encontrada" });
@@ -84,6 +88,7 @@ namespace MediaMatch.Controllers
         /// Atualiza uma lista (apenas admins)
         /// </summary>
         [HttpPut("{listId}")]
+        [Authorize]
         [ProducesResponseType(typeof(MediaListDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -92,7 +97,7 @@ namespace MediaMatch.Controllers
             [FromRoute] int listId,
             [FromBody] UpdateMediaListDto dto)
         {
-            var userId = GetCurrentUserId();
+            var userId = TryGetCurrentUserId() ?? 0;
             var list = await _service.UpdateListAsync(listId, dto, userId);
             
             var listDto = new MediaListDto
@@ -112,12 +117,13 @@ namespace MediaMatch.Controllers
         /// Deleta uma lista (apenas admins)
         /// </summary>
         [HttpDelete("{listId}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteList([FromRoute] int clubId, [FromRoute] int listId)
         {
-            var userId = GetCurrentUserId();
+            var userId = TryGetCurrentUserId() ?? 0;
             await _service.DeleteListAsync(listId, userId);
             return NoContent();
         }
@@ -128,6 +134,7 @@ namespace MediaMatch.Controllers
         /// Adiciona um filme/série à lista (apenas admins)
         /// </summary>
         [HttpPost("{listId}/item")]
+        [Authorize]
         [ProducesResponseType(typeof(MediaListItemDto), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -137,7 +144,7 @@ namespace MediaMatch.Controllers
             [FromRoute] int listId,
             [FromBody] AddMediaListItemDto dto)
         {
-            var userId = GetCurrentUserId();
+            var userId = TryGetCurrentUserId() ?? 0;
             var item = await _service.AddItemToListAsync(listId, dto, userId);
             
             var itemDto = new MediaListItemDto
@@ -162,6 +169,7 @@ namespace MediaMatch.Controllers
         /// Remove um item da lista (apenas admins)
         /// </summary>
         [HttpDelete("{listId}/item/{itemId}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -170,7 +178,7 @@ namespace MediaMatch.Controllers
             [FromRoute] int listId,
             [FromRoute] int itemId)
         {
-            var userId = GetCurrentUserId();
+            var userId = TryGetCurrentUserId() ?? 0;
             await _service.RemoveItemFromListAsync(listId, itemId, userId);
             return NoContent();
         }
@@ -181,6 +189,7 @@ namespace MediaMatch.Controllers
         /// Adiciona um comentário ou sugestão à lista
         /// </summary>
         [HttpPost("{listId}/comment")]
+        [Authorize]
         [ProducesResponseType(typeof(MediaListCommentDto), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -189,7 +198,7 @@ namespace MediaMatch.Controllers
             [FromRoute] int listId,
             [FromBody] CreateMediaListCommentDto dto)
         {
-            var userId = GetCurrentUserId();
+            var userId = TryGetCurrentUserId() ?? 0;
             var comment = await _service.CreateCommentAsync(listId, dto, userId);
             
             var commentDto = new MediaListCommentDto
@@ -217,6 +226,7 @@ namespace MediaMatch.Controllers
         /// Deleta um comentário (autor ou admin)
         /// </summary>
         [HttpDelete("{listId}/comment/{commentId}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -225,7 +235,7 @@ namespace MediaMatch.Controllers
             [FromRoute] int listId,
             [FromRoute] int commentId)
         {
-            var userId = GetCurrentUserId();
+            var userId = TryGetCurrentUserId() ?? 0;
             await _service.DeleteCommentAsync(listId, commentId, userId);
             return NoContent();
         }

@@ -16,7 +16,7 @@
 
   <!-- Club Actions -->
   <div class="club-actions">
-    <button mat-raised-button color="primary" *ngIf="!club.isMember && !club.isOwner" (click)="joinClub()">
+    <button mat-raised-button color="primary" *ngIf="isAuthenticated && !club.isMember && !club.isOwner" (click)="joinClub()">
       <mat-icon>add</mat-icon> Entrar no Clube
     </button>
     <button mat-raised-button color="warn" *ngIf="club.isMember && !club.isOwner" (click)="leaveClub()">
@@ -25,6 +25,14 @@
     <button mat-raised-button color="accent" *ngIf="club.isOwner" [routerLink]="['/clubs', clubId, 'edit']">
       <mat-icon>settings</mat-icon> Configurações do Clube
     </button>
+  </div>
+
+  <div class="auth-required-banner" *ngIf="!isAuthenticated">
+    <mat-icon>lock</mat-icon>
+    <div>
+      <strong>Entre para participar do clube</strong>
+      <p>Faça login para entrar neste clube e interagir com outros membros.</p>
+    </div>
   </div>
 
   <!-- Media Lists Section -->

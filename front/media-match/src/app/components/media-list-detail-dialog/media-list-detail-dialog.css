@@ -106,45 +106,29 @@
   box-sizing: border-box;
 }
 
-/* Form Fields & Inputs - FIX */
-::ng-deep .mat-mdc-form-field {
-  width: 100%;
-  margin-bottom: 16px;
+/* Input sections */
+.search-container .app-input-wrapper,
+.suggestion-search .app-input-wrapper,
+.comment-input {
+  margin-bottom: 1rem;
 }
 
-::ng-deep .mat-mdc-text-field-wrapper {
-  background-color: #1E1E1E !important;
-  border-radius: 4px !important;
+.search-input .app-input-inner,
+.suggestion-search-input .app-input-inner {
+  min-height: 48px;
 }
 
-::ng-deep .mat-mdc-form-field-focus-overlay {
-  background-color: rgba(255, 255, 255, 0.05) !important;
+.app-input-inner--icon {
+  display: flex;
+  align-items: center;
 }
 
-::ng-deep .mat-mdc-form-field-flex {
-  padding: 0 16px !important; /* Restore standard padding */
+.app-input-inner--icon .app-input-icon {
+  margin-left: 0.25rem;
 }
 
-::ng-deep .mat-mdc-input-element {
-  color: #F5F5F5 !important;
-  caret-color: #E50914 !important;
-}
-
-::ng-deep .mat-mdc-floating-label {
-  color: #B3B3B3 !important;
-}
-
-::ng-deep .mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
-  color: #E50914 !important;
-}
-
-::ng-deep .mdc-line-ripple::before,
-::ng-deep .mdc-line-ripple::after {
-  border-bottom-color: #333 !important;
-}
-
-::ng-deep .mat-focused .mdc-line-ripple::after {
-  border-bottom-color: #E50914 !important;
+.comment-input .app-input-inner textarea {
+  min-height: 120px;
 }
 
 /* Buttons - FIX */
@@ -170,28 +154,6 @@ button[mat-stroked-button].active-filter {
 }
 
 /* Search Section */
-.search-box {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 24px;
-  align-items: flex-start;
-}
-
-.search-box mat-form-field {
-  flex: 1;
-  margin-bottom: 0;
-}
-
-.search-box button {
-  height: 56px;
-  width: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #E50914;
-  color: white;
-}
-
 .search-results {
   display: flex;
   flex-direction: column;
@@ -390,6 +352,36 @@ button[mat-stroked-button].active-filter {
   color: #F5F5F5;
 }
 
+.login-required-message {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #1E1E1E;
+  border: 1px dashed #333;
+  border-radius: 8px;
+  padding: 16px;
+  color: #B3B3B3;
+}
+
+.login-required-message mat-icon {
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+  color: #E50914;
+}
+
+.login-required-message strong {
+  display: block;
+  color: #F5F5F5;
+  margin-bottom: 4px;
+}
+
+.login-required-message p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #B3B3B3;
+}
+
 .comment-type-selector {
   display: flex;
   gap: 12px;
@@ -439,6 +431,19 @@ button[mat-stroked-button].active-filter {
 .selected-suggestion ::ng-deep .mat-mdc-chip {
   background: #E50914 !important;
   color: white !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  border-radius: 999px !important;
+  overflow: hidden !important;
+  max-width: 100%;
+  padding-right: 4px;
+}
+
+.selected-suggestion ::ng-deep .mat-mdc-chip .mdc-evolution-chip__text-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .chip-poster {
@@ -516,14 +521,38 @@ button[mat-stroked-button].active-filter {
 }
 
 .suggestion-badge {
-  background-color: rgba(229, 9, 20, 0.1);
+  background-color: rgba(229, 9, 20, 0.12);
   color: #E50914;
-  padding: 4px 8px;
-  border-radius: 4px;
+  padding: 4px 10px;
+  border-radius: 999px;
   font-size: 0.75rem;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 4px;
+  border: 1px solid rgba(229, 9, 20, 0.4);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.suggestion-badge .name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.comment-actions ::ng-deep .mat-mdc-chip {
+  display: inline-flex !important;
+  align-items: center !important;
+  border-radius: 999px !important;
+  gap: 4px !important;
+  overflow: hidden !important;
+}
+
+.comment-actions ::ng-deep .mat-mdc-chip .mdc-evolution-chip__text-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .suggested-media {

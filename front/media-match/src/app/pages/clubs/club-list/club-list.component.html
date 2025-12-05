@@ -11,6 +11,22 @@
     </button>
   </div>
 
+  <div class="auth-reminder-banner" *ngIf="authBannerMessage">
+    <div class="auth-reminder-icon">
+      <mat-icon>lock</mat-icon>
+    </div>
+    <div class="auth-reminder-content">
+      <strong>{{ authBannerMessage }}</strong>
+      <button mat-stroked-button color="primary" class="auth-reminder-action" (click)="handleLoginRedirect($event)">
+        <mat-icon>login</mat-icon>
+        Fazer login
+      </button>
+    </div>
+    <button mat-icon-button type="button" class="auth-reminder-dismiss" (click)="dismissAuthReminder()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
   <!-- Filters -->
   <div class="filters-section">
     <div class="filter-controls">
@@ -32,15 +48,8 @@
 
       <!-- Select customizado mantendo o MatSelect, mas com casca parecida com input -->
       <div class="sort-field">
-        <div class="sort-select-wrapper" (click)="sortSelect.open()">
-          <span class="sort-label">Ordenar por</span>
-          <span class="sort-value">
-            {{ getSortLabel() }}
-          </span>
-          <mat-icon class="sort-icon">filter_list</mat-icon>
-        </div>
-        <mat-form-field appearance="outline" class="sort-field-hidden">
-          <mat-select #sortSelect [(ngModel)]="sortBy" (selectionChange)="onSortChange()">
+        <mat-form-field appearance="outline" class="sort-field-styled">
+          <mat-select [(ngModel)]="sortBy" (selectionChange)="onSortChange()">
             <mat-option *ngFor="let option of sortOptions" [value]="option.value">
               {{ option.label }}
             </mat-option>
@@ -96,15 +105,29 @@
       </mat-card-content>
 
       <mat-card-actions>
-        <button 
-          mat-raised-button 
-          *ngIf="!club.isMember && !club.isOwner"
-          color="primary"
-          (click)="joinClub(club, $event)"
-          class="action-btn">
-          <mat-icon>add</mat-icon>
-          Entrar
-        </button>
+        <ng-container *ngIf="!club.isOwner">
+          <ng-container *ngIf="isAuthenticated; else loginToJoin">
+            <button 
+              mat-raised-button 
+              *ngIf="!club.isMember"
+              color="primary"
+              (click)="joinClub(club, $event)"
+              class="action-btn">
+              <mat-icon>add</mat-icon>
+              Entrar
+            </button>
+          </ng-container>
+          <ng-template #loginToJoin>
+            <button 
+              mat-stroked-button 
+              color="primary"
+              (click)="handleLoginRedirect($event)"
+              class="action-btn">
+              <mat-icon>login</mat-icon>
+              Fazer login
+            </button>
+          </ng-template>
+        </ng-container>
         <button 
           mat-stroked-button 
           *ngIf="club.isMember && !club.isOwner"

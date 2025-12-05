@@ -1,9 +1,7 @@
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
@@ -17,8 +15,6 @@ import { MediaList, CreateMediaListDto, UpdateMediaListDto } from '../../models/
     CommonModule,
     FormsModule,
     MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
     MatButtonModule,
     MatCheckboxModule,
     MatSnackBarModule
@@ -26,21 +22,34 @@ import { MediaList, CreateMediaListDto, UpdateMediaListDto } from '../../models/
   template: `
     <h2 mat-dialog-title>{{ isEditing ? 'Editar Lista' : 'Nova Lista' }}</h2>
     <mat-dialog-content>
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Nome da Lista</mat-label>
-        <input matInput [(ngModel)]="formData.name" maxlength="100" required>
-        <mat-hint align="end">{{ formData.name.length }}/100</mat-hint>
-      </mat-form-field>
+      <div class="app-input-wrapper">
+        <label class="app-input-label" for="listNameInput">Nome da Lista</label>
+        <div class="app-input-inner">
+          <input
+            id="listNameInput"
+            type="text"
+            [(ngModel)]="formData.name"
+            maxlength="100"
+            required
+            placeholder="Informe um nome memorável para a lista"
+          >
+        </div>
+        <div class="app-input-hint">{{ formData.name.length }}/100</div>
+      </div>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Descrição</mat-label>
-        <textarea 
-          matInput 
-          [(ngModel)]="formData.description" 
-          rows="4" 
-          maxlength="500"></textarea>
-        <mat-hint align="end">{{ formData.description.length }}/500</mat-hint>
-      </mat-form-field>
+      <div class="app-input-wrapper">
+        <label class="app-input-label" for="listDescriptionInput">Descrição</label>
+        <div class="app-input-inner app-textarea-inner">
+          <textarea
+            id="listDescriptionInput"
+            [(ngModel)]="formData.description"
+            rows="4"
+            maxlength="500"
+            placeholder="Conte aos membros sobre a proposta desta lista"
+          ></textarea>
+        </div>
+        <div class="app-input-hint">{{ formData.description.length }}/500</div>
+      </div>
 
       <mat-checkbox [(ngModel)]="formData.isPublic">
         Lista pública (visível para todos os membros)
@@ -78,33 +87,19 @@ import { MediaList, CreateMediaListDto, UpdateMediaListDto } from '../../models/
       min-width: 400px;
       padding: 24px !important;
       background: #141414;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
     }
 
-    .full-width {
-      width: 100%;
-      margin-bottom: 16px;
+    .app-input-hint {
+      color: #B3B3B3;
     }
 
     /* Dark Theme Overrides */
     ::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
       background-color: #141414 !important;
       border: 1px solid #333;
-    }
-
-    ::ng-deep .mat-mdc-text-field-wrapper {
-      background-color: #1E1E1E !important;
-    }
-
-    ::ng-deep .mat-mdc-form-field .mat-mdc-input-element {
-      color: #F5F5F5 !important;
-    }
-
-    ::ng-deep .mat-mdc-form-field .mat-mdc-floating-label {
-      color: #B3B3B3 !important;
-    }
-
-    ::ng-deep .mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
-      color: #E50914 !important;
     }
 
     ::ng-deep .mat-mdc-checkbox .mdc-checkbox .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background {
@@ -134,6 +129,10 @@ import { MediaList, CreateMediaListDto, UpdateMediaListDto } from '../../models/
   `]
 })
 export class MediaListFormDialogComponent {
+  private readonly dialogRef = inject(MatDialogRef<MediaListFormDialogComponent>);
+  readonly data = inject<{ clubId: number; list?: MediaList }>(MAT_DIALOG_DATA);
+  private readonly mediaListService = inject(MediaListService);
+  private readonly snackBar = inject(MatSnackBar);
   formData: CreateMediaListDto | UpdateMediaListDto = {
     name: '',
     description: '',
@@ -142,18 +141,14 @@ export class MediaListFormDialogComponent {
   isEditing = false;
   saving = false;
 
-  constructor(
-    public dialogRef: MatDialogRef<MediaListFormDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { clubId: number; list?: MediaList },
-    private mediaListService: MediaListService,
-    private snackBar: MatSnackBar
-  ) {
-    if (data.list) {
+  constructor() {
+    const existingList = this.data.list;
+    if (existingList) {
       this.isEditing = true;
       this.formData = {
-        name: data.list.name,
-        description: data.list.description,
-        isPublic: data.list.isPublic
+        name: existingList.name,
+        description: existingList.description,
+        isPublic: existingList.isPublic
       };
     }
   }

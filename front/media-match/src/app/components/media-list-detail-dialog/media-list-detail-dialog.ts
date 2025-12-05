@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ChangeDetectorRef, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy, ViewChild, ElementRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subject, Observable, of } from 'rxjs';
@@ -7,8 +7,6 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule, MatDialog } from '@angu
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -28,8 +26,6 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog';
     MatButtonModule,
     MatIconModule,
     MatTabsModule,
-    MatFormFieldModule,
-    MatInputModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
     MatTooltipModule,
@@ -40,6 +36,13 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog';
 })
 export class MediaListDetailDialogComponent implements OnInit, OnDestroy {
   @ViewChild('searchInput') searchInput?: ElementRef;
+  private readonly dialogRef = inject(MatDialogRef<MediaListDetailDialogComponent>);
+  readonly data = inject<{ clubId: number; listId: number; canManage: boolean }>(MAT_DIALOG_DATA);
+  private readonly mediaListService = inject(MediaListService);
+  private readonly searchService = inject(SearchService);
+  private readonly snackBar = inject(MatSnackBar);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly dialog = inject(MatDialog);
   list?: MediaListDetail;
   loading = true;
   
@@ -55,22 +58,16 @@ export class MediaListDetailDialogComponent implements OnInit, OnDestroy {
   newCommentContent = '';
   commentType: 'comment' | 'suggestion' = 'comment';
   selectedSuggestion: any = null;
+  isAuthenticated = false;
   
   // Adding item
   addingItem = false;
   itemNote = '';
 
-  constructor(
-    public dialogRef: MatDialogRef<MediaListDetailDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { clubId: number; listId: number; canManage: boolean },
-    private mediaListService: MediaListService,
-    private searchService: SearchService,
-    private snackBar: MatSnackBar,
-    private cdr: ChangeDetectorRef,
-    private dialog: MatDialog
-  ) {}
-
   ngOnInit() {
+    this.isAuthenticated =
+      (typeof localStorage !== 'undefined' && !!localStorage.getItem('token')) ||
+      (typeof sessionStorage !== 'undefined' && !!sessionStorage.getItem('token'));
     this.loadListDetail();
     this.initializeSearch();
   }
@@ -213,6 +210,11 @@ export class MediaListDetailDialogComponent implements OnInit, OnDestroy {
   }
 
   createComment() {
+    if (!this.isAuthenticated) {
+      this.snackBar.open('Faça login para comentar nesta lista.', 'Fechar', { duration: 3000 });
+      return;
+    }
+
     if (!this.newCommentContent.trim()) return;
 
     const dto: CreateMediaListCommentDto = {

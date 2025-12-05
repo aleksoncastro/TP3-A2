@@ -25,19 +25,23 @@
           <div class="add-item-section" *ngIf="data.canManage">
             <h3><mat-icon>add</mat-icon> Adicionar Filme/Série</h3>
             
-            <div class="search-container" style="position: relative;">
-              <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Buscar mídia</mat-label>
-                <input 
-                  matInput 
-                  #searchInput
-                  [(ngModel)]="searchQuery" 
-                  (keyup)="onSearchInput()"
-                  placeholder="Digite o nome do filme ou série..."
-                  autocomplete="off">
-                <mat-icon matSuffix *ngIf="searching" class="searching-icon">hourglass_empty</mat-icon>
-                <mat-icon matSuffix *ngIf="!searching">search</mat-icon>
-              </mat-form-field>
+            <div class="search-container">
+              <div class="app-input-wrapper search-input">
+                <label class="app-input-label" for="addItemSearch">Buscar mídia</label>
+                <div class="app-input-inner app-input-inner--icon">
+                  <input
+                    id="addItemSearch"
+                    #searchInput
+                    type="text"
+                    [(ngModel)]="searchQuery"
+                    (keyup)="onSearchInput()"
+                    placeholder="Digite o nome do filme ou série..."
+                    autocomplete="off"
+                  >
+                  <mat-icon class="app-input-icon searching-icon" *ngIf="searching">hourglass_empty</mat-icon>
+                  <mat-icon class="app-input-icon" *ngIf="!searching">search</mat-icon>
+                </div>
+              </div>
 
               <!-- Dropdown Results -->
               <ng-container *ngIf="(searchResults$ | async) as results">
@@ -113,7 +117,7 @@
 
         <div class="tab-content">
           <!-- New Comment -->
-          <div class="new-comment-section">
+          <div class="new-comment-section" *ngIf="isAuthenticated; else loginRequired">
             <h3>Deixe um comentário</h3>
             
             <div class="comment-type-selector">
@@ -135,18 +139,22 @@
 
             <!-- Suggestion Search -->
             <div class="suggestion-search" *ngIf="commentType === 'suggestion' && !selectedSuggestion">
-              <div class="search-container" style="position: relative;">
-                <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>Buscar filme/série para sugerir</mat-label>
-                  <input 
-                    matInput 
-                    [(ngModel)]="searchQuery" 
-                    (keyup)="onSearchInput()"
-                    placeholder="Digite o nome..."
-                    autocomplete="off">
-                  <mat-icon matSuffix *ngIf="searching" class="searching-icon">hourglass_empty</mat-icon>
-                  <mat-icon matSuffix *ngIf="!searching">search</mat-icon>
-                </mat-form-field>
+              <div class="search-container">
+                <div class="app-input-wrapper suggestion-search-input">
+                  <label class="app-input-label" for="suggestSearch">Buscar filme/série para sugerir</label>
+                  <div class="app-input-inner app-input-inner--icon">
+                    <input
+                      id="suggestSearch"
+                      type="text"
+                      [(ngModel)]="searchQuery"
+                      (keyup)="onSearchInput()"
+                      placeholder="Digite o nome..."
+                      autocomplete="off"
+                    >
+                    <mat-icon class="app-input-icon searching-icon" *ngIf="searching">hourglass_empty</mat-icon>
+                    <mat-icon class="app-input-icon" *ngIf="!searching">search</mat-icon>
+                  </div>
+                </div>
 
                 <!-- Dropdown Results for Suggestions -->
                 <ng-container *ngIf="(searchResults$ | async) as results">
@@ -178,16 +186,19 @@
               </mat-chip>
             </div>
 
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Seu comentário</mat-label>
-              <textarea 
-                matInput 
-                [(ngModel)]="newCommentContent" 
-                rows="3" 
-                maxlength="500"
-                [placeholder]="commentType === 'suggestion' ? 'Explique por que está sugerindo...' : 'Escreva seu comentário...'"></textarea>
-              <mat-hint align="end">{{ newCommentContent.length }}/500</mat-hint>
-            </mat-form-field>
+            <div class="app-input-wrapper comment-input">
+              <label class="app-input-label" for="commentContent">Seu comentário</label>
+              <div class="app-input-inner app-textarea-inner">
+                <textarea
+                  id="commentContent"
+                  [(ngModel)]="newCommentContent"
+                  rows="3"
+                  maxlength="500"
+                  [placeholder]="commentType === 'suggestion' ? 'Explique por que está sugerindo...' : 'Escreva seu comentário...'"
+                ></textarea>
+              </div>
+              <div class="app-input-hint">{{ newCommentContent.length }}/500</div>
+            </div>
 
             <button 
               mat-raised-button 
@@ -198,6 +209,18 @@
               Enviar
             </button>
           </div>
+
+          <ng-template #loginRequired>
+            <div class="login-required-message">
+              <mat-icon>lock</mat-icon>
+              <div>
+                <strong>Faça login para comentar</strong>
+                <p>
+                  Entre na sua conta para deixar comentários e sugestões nesta lista.
+                </p>
+              </div>
+            </div>
+          </ng-template>
 
           <!-- Comments List -->
           <div class="comments-list" *ngIf="list.comments.length > 0">

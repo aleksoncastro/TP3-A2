@@ -69,6 +69,49 @@
   font-weight: 600;
 }
 
+.auth-reminder-banner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(229, 9, 20, 0.1);
+  border: 1px solid rgba(229, 9, 20, 0.4);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  color: var(--foreground);
+  margin-bottom: 1.5rem;
+}
+
+.auth-reminder-icon mat-icon {
+  font-size: 1.75rem;
+  width: 1.75rem;
+  height: 1.75rem;
+  color: var(--primary);
+}
+
+.auth-reminder-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.auth-reminder-content strong {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.auth-reminder-action {
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.auth-reminder-dismiss {
+  color: var(--muted-foreground);
+  margin-left: auto;
+}
+
 /* Filters Section */
 .filters-section {
   display: flex;
@@ -350,11 +393,6 @@
 ::ng-deep .clubs-container .mat-mdc-form-field {
   width: 100%;
 }
-/* Escondemos o form-field do sort customizado para usar apenas o painel do select */
-::ng-deep .clubs-container .sort-field-hidden .mat-mdc-form-field-flex,
-::ng-deep .clubs-container .sort-field-hidden .mat-mdc-text-field-wrapper {
-  display: none !important;
-}
 
 ::ng-deep .clubs-container .mat-mdc-form-field-focus-overlay {
   background-color: transparent;
@@ -408,58 +446,40 @@
   background-color: var(--card);
 }
 
-/* SORT SELECT WRAPPER */
-.sort-select-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  background-color: var(--input);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 0.5rem 0.75rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
+/* SORT SELECT STYLED */
+.sort-field-styled {
+  width: 100%;
 }
 
-/* Garante mesma altura visual entre input de busca e sort */
-.search-input-wrapper,
-.sort-select-wrapper {
+::ng-deep .sort-field-styled .mat-mdc-text-field-wrapper {
+  background-color: var(--input);
+  border-radius: 4px;
+}
+
+::ng-deep .sort-field-styled .mat-mdc-form-field-flex {
+  background-color: transparent;
+  padding: 0.5rem 0.75rem;
   min-height: 44px;
 }
 
-.sort-label,
-.sort-value,
-.sort-icon {
-  display: flex;
-  align-items: center;
-}
-
-.sort-select-wrapper:hover {
-  border-color: var(--ring);
-  background-color: var(--card);
-}
-
-.sort-label {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--muted-foreground);
-}
-
-.sort-value {
-  flex: 1;
-  font-size: 0.9rem;
+::ng-deep .sort-field-styled .mat-mdc-select {
   color: var(--foreground);
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 0.9rem;
 }
 
-.sort-icon {
-  font-size: 1.1rem;
-  width: 1.1rem;
-  height: 1.1rem;
+::ng-deep .sort-field-styled .mat-mdc-form-field-outline {
+  color: var(--border);
+}
+
+::ng-deep .sort-field-styled .mat-mdc-form-field-outline-thick {
+  color: var(--ring);
+}
+
+::ng-deep .sort-field-styled:hover .mat-mdc-form-field-outline {
+  color: var(--ring);
+}
+
+::ng-deep .sort-field-styled .mat-mdc-select-arrow {
   color: var(--muted-foreground);
 }
 

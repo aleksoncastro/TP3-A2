@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -49,11 +49,17 @@ export class ClubListComponent implements OnInit {
     { value: 'members', label: 'Mais Membros' }
   ];
 
+  authBannerMessage: string | null = null;
+
   constructor(
-    private clubService: ClubService,
-    private router: Router,
-    private cdr: ChangeDetectorRef
+    @Inject(ClubService) private clubService: ClubService,
+    @Inject(Router) private router: Router,
+    @Inject(ChangeDetectorRef) private cdr: ChangeDetectorRef
   ) {}
+
+  get isAuthenticated(): boolean {
+    return !!this.getToken();
+  }
 
   getSortLabel(): string {
     const option = this.sortOptions.find(o => o.value === this.sortBy);
@@ -83,17 +89,20 @@ export class ClubListComponent implements OnInit {
 
   onSortChange(): void {
     this.loading = true;
-    this.loadClubs();
+    if (this.viewMode === 'all') {
+      this.loadClubs();
+    } else {
+      this.loadMyClubs();
+    }
   }
 
   loadMyClubs(): void {
     // Verifica se há token antes de tentar carregar
-    const token = localStorage.getItem('token');
-    if (!token) {
+    if (!this.isAuthenticated) {
       this.loading = false;
       this.myClubs = [];
       this.managedClubs = [];
-      alert('Você precisa estar autenticado para ver seus clubes. Por favor, faça login.');
+      this.showLoginReminder('Faça login para ver os clubes que você participa.');
       this.viewMode = 'all';
       this.cdr.detectChanges();
       return;
@@ -102,8 +111,8 @@ export class ClubListComponent implements OnInit {
     this.clubService.getMyClubs().subscribe({
       next: (clubs) => {
         // Separa clubes em que é membro vs dono
-        this.myClubs = clubs.filter(c => c.isMember && !c.isOwner);
-        this.managedClubs = clubs.filter(c => c.isOwner);
+        this.myClubs = this.sortClubs(clubs.filter(c => c.isMember && !c.isOwner));
+        this.managedClubs = this.sortClubs(clubs.filter(c => c.isOwner));
         this.loading = false;
         this.cdr.detectChanges();
       },
@@ -114,13 +123,29 @@ export class ClubListComponent implements OnInit {
         if (error.status === 401 || error.status === 500) {
           this.myClubs = [];
           this.managedClubs = [];
-          alert('Você precisa estar autenticado para ver seus clubes. Por favor, faça login.');
+          this.showLoginReminder('Sua sessão expirou. Faça login novamente para ver seus clubes.');
           // Volta para a visualização de todos os clubes
           this.viewMode = 'all';
         }
         this.cdr.detectChanges();
       }
     });
+  }
+
+  sortClubs(clubs: Club[]): Club[] {
+    const sorted = [...clubs];
+    switch (this.sortBy) {
+      case 'newest':
+        return sorted.sort((a, b) => b.id - a.id);
+      case 'oldest':
+        return sorted.sort((a, b) => a.id - b.id);
+      case 'name':
+        return sorted.sort((a, b) => a.name.localeCompare(b.name));
+      case 'members':
+        return sorted.sort((a, b) => b.membersCount - a.membersCount);
+      default:
+        return sorted;
+    }
   }
 
   onSearch(): void {
@@ -147,20 +172,27 @@ export class ClubListComponent implements OnInit {
 
   joinClub(club: Club, event: Event): void {
     event.stopPropagation();
+    if (!this.isAuthenticated) {
+      this.showLoginReminder('Faça login para entrar em clubes e participar das discussões.');
+      return;
+    }
     this.clubService.joinClub(club.id).subscribe({
       next: () => {
         club.isMember = true;
         club.membersCount++;
         // Reload clubs to update the list
         this.loadClubs();
-        const token = localStorage.getItem('token');
-        if (token) {
+        if (this.isAuthenticated) {
           this.loadMyClubs();
         }
       },
       error: (error) => {
         console.error('Erro ao entrar no clube:', error);
-        alert('Erro ao entrar no clube. Verifique se você está autenticado.');
+        if (error.status === 401) {
+          this.showLoginReminder('Sua sessão expirou. Faça login novamente para entrar no clube.');
+          return;
+        }
+        this.showLoginReminder('Não foi possível entrar no clube no momento. Tente novamente mais tarde.');
       }
     });
   }
@@ -174,8 +206,7 @@ export class ClubListComponent implements OnInit {
           club.membersCount--;
           // Reload clubs to update the list
           this.loadClubs();
-          const token = localStorage.getItem('token');
-          if (token) {
+          if (this.isAuthenticated) {
             this.loadMyClubs();
           }
         },
@@ -185,6 +216,25 @@ export class ClubListComponent implements OnInit {
         }
       });
     }
+  }
+
+  handleLoginRedirect(event: Event): void {
+    event.stopPropagation();
+    this.showLoginReminder('Faça login para entrar em clubes ou participar das atividades.');
+    this.router.navigate(['/login']);
+  }
+
+  dismissAuthReminder(): void {
+    this.authBannerMessage = null;
+  }
+
+  private showLoginReminder(message: string): void {
+    this.authBannerMessage = message;
+    this.cdr.detectChanges();
+  }
+
+  private getToken(): string | null {
+    return localStorage.getItem('token') || sessionStorage.getItem('token');
   }
 
   getImageUrl(imageUrl?: string): string {

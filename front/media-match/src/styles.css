@@ -43,6 +43,110 @@ h1, h2, h3, h4, h5, h6, .brand {
 font-family: var(--font-display);
 }
 
+/* Shared input styling used across dialogs and profile forms */
+.app-input-wrapper,
+.profile-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: 100%;
+}
+
+.app-input-label,
+.profile-input-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--muted-foreground);
+}
+
+.app-input-inner,
+.profile-input-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background-color: var(--input);
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.app-input-inner:focus-within,
+.profile-input-inner:focus-within {
+  border-color: var(--ring);
+  background-color: var(--card);
+  box-shadow: 0 0 0 1px rgba(229, 9, 20, 0.35);
+}
+
+.app-input-inner input,
+.app-input-inner textarea,
+.profile-input-inner input,
+.profile-input-inner textarea {
+  flex: 1;
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+}
+
+.app-input-inner input::placeholder,
+.app-input-inner textarea::placeholder,
+.profile-input-inner input::placeholder,
+.profile-input-inner textarea::placeholder {
+  color: var(--muted-foreground);
+}
+
+.app-input-icon,
+.profile-input-icon {
+  color: var(--muted-foreground);
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+}
+
+.app-input-inner:focus-within .app-input-icon,
+.profile-input-inner:focus-within .profile-input-icon {
+  color: var(--primary);
+}
+
+.app-textarea-inner,
+.profile-textarea-inner {
+  align-items: flex-start;
+}
+
+.app-textarea-inner textarea,
+.profile-textarea-inner textarea {
+  min-height: 100px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.app-input-hint,
+.profile-input-hint {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  text-align: right;
+}
+
+.app-input-error span,
+.profile-input-error span {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--destructive);
+}
+
+.app-input-wrapper.readonly .app-input-inner,
+.profile-input-wrapper.readonly .profile-input-inner {
+  opacity: 0.7;
+  cursor: default;
+}
+
 
 /*
 :root {

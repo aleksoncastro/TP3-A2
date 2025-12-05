@@ -87,6 +87,37 @@
   flex-wrap: wrap;
 }
 
+.auth-required-banner {
+  margin: 0 3rem 2rem;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(229, 9, 20, 0.08);
+  border: 1px dashed rgba(229, 9, 20, 0.4);
+  border-radius: 8px;
+  color: var(--foreground);
+}
+
+.auth-required-banner mat-icon {
+  color: var(--primary);
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+}
+
+.auth-required-banner strong {
+  display: block;
+  font-family: var(--font-display);
+  margin-bottom: 4px;
+}
+
+.auth-required-banner p {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 0.95rem;
+}
+
 .create-post-card {
   margin: 0 auto 2rem;
   background-color: var(--card);

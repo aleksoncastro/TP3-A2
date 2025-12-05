@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -11,8 +11,9 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatMenuModule } from '@angular/material/menu';
 import { ClubService } from '../../../services/club.service';
-import { ClubDetail, Post, Comment, CreatePostDto, CreateCommentDto } from '../../../models/club.model';
+import { ClubDetail, Post, CreatePostDto, CreateCommentDto } from '../../../models/club.model';
 import { MediaListsComponent } from '../../../components/media-lists/media-lists';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-club-detail',
@@ -45,15 +46,18 @@ export class ClubDetailComponent implements OnInit {
   newCommentContent: { [postId: number]: string } = {};
   expandedPosts: Set<number> = new Set();
   currentImageIndexes: { [postId: number]: number } = {};
+  isAuthenticated = false;
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private clubService: ClubService,
-    private cdr: ChangeDetectorRef
+    @Inject(ActivatedRoute) private route: ActivatedRoute,
+    @Inject(Router) private router: Router,
+    @Inject(ClubService) private clubService: ClubService,
+    @Inject(ChangeDetectorRef) private cdr: ChangeDetectorRef,
+    @Inject(AuthService) private authService: AuthService
   ) {}
 
   ngOnInit(): void {
+    this.isAuthenticated = this.authService.isAuthenticated();
     this.route.params.subscribe(params => {
       this.clubId = +params['id'];
       this.loadClub();
@@ -196,6 +200,10 @@ export class ClubDetailComponent implements OnInit {
   }
 
   joinClub(): void {
+    if (!this.isAuthenticated) {
+      alert('Faça login para entrar no clube.');
+      return;
+    }
     this.clubService.joinClub(this.clubId).subscribe({
       next: () => this.loadClub(),
       error: (error) => console.error('Erro ao entrar no clube:', error)
